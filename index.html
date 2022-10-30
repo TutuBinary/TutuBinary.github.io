@@ -1,249 +1,394 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>小石头的博客</title><meta name="author" content="小石头"><meta name="copyright" content="小石头"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="挫折经历的太少，才会觉得鸡毛蒜皮都是烦恼">
+<meta property="og:type" content="website">
+<meta property="og:title" content="小石头的博客">
+<meta property="og:url" content="http://tulei.love/index.html">
+<meta property="og:site_name" content="小石头的博客">
+<meta property="og:description" content="挫折经历的太少，才会觉得鸡毛蒜皮都是烦恼">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tulei.love/img/logo.jpg">
+<meta property="article:author" content="小石头">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tulei.love/img/logo.jpg"><link rel="shortcut icon" href="/img/logo.jpg"><link rel="canonical" href="http://tulei.love/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":150},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '小石头的博客',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-10-30 10:41:15'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
   
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
-  
-<meta name="generator" content="Hexo 6.3.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
         
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-test-my-site" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/10/22/test-my-site/" class="article-date">
-  <time class="dt-published" datetime="2022-10-22T03:22:02.000Z" itemprop="datePublished">2022-10-22</time>
-</a>
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/10/22/test-my-site/">test_my_site</a>
-    </h1>
-  
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script async src="/css/custom/runtime.css"></script><link rel="stylesheet" href="/css/custom/font.css"><link rel="stylesheet" href="/css/custom/custom.css"  media="defer" onload="this.media='all'"><script async src="/js/custom/diytitle.js"></script><link rel="stylesheet" href="/css/custom/daohanglan.css"><link rel="stylesheet" href="/css/custom/iconfont.css"><svg aria-hidden="true" style="position:absolute; overflow:hidden; width:0; height:0"><symbol id="icon-sun" viewBox="0 0 1024 1024"><path d="M960 512l-128 128v192h-192l-128 128-128-128H192v-192l-128-128 128-128V192h192l128-128 128 128h192v192z" fill="#FFD878" p-id="8420"></path><path d="M736 512a224 224 0 1 0-448 0 224 224 0 1 0 448 0z" fill="#FFE4A9" p-id="8421"></path><path d="M512 109.248L626.752 224H800v173.248L914.752 512 800 626.752V800h-173.248L512 914.752 397.248 800H224v-173.248L109.248 512 224 397.248V224h173.248L512 109.248M512 64l-128 128H192v192l-128 128 128 128v192h192l128 128 128-128h192v-192l128-128-128-128V192h-192l-128-128z" fill="#4D5152" p-id="8422"></path><path d="M512 320c105.888 0 192 86.112 192 192s-86.112 192-192 192-192-86.112-192-192 86.112-192 192-192m0-32a224 224 0 1 0 0 448 224 224 0 0 0 0-448z" fill="#4D5152" p-id="8423"></path></symbol><symbol id="icon-moon" viewBox="0 0 1024 1024"><path d="M611.370667 167.082667a445.013333 445.013333 0 0 1-38.4 161.834666 477.824 477.824 0 0 1-244.736 244.394667 445.141333 445.141333 0 0 1-161.109334 38.058667 85.077333 85.077333 0 0 0-65.066666 135.722666A462.08 462.08 0 1 0 747.093333 102.058667a85.077333 85.077333 0 0 0-135.722666 65.024z" fill="#FFB531" p-id="11345"></path><path d="M329.728 274.133333l35.157333-35.157333a21.333333 21.333333 0 1 0-30.165333-30.165333l-35.157333 35.157333-35.114667-35.157333a21.333333 21.333333 0 0 0-30.165333 30.165333l35.114666 35.157333-35.114666 35.157334a21.333333 21.333333 0 1 0 30.165333 30.165333l35.114667-35.157333 35.157333 35.157333a21.333333 21.333333 0 1 0 30.165333-30.165333z" fill="#030835" p-id="11346"></path></symbol></svg><!-- hexo injector head_end start --><link rel="stylesheet" href="/css/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/10/22/test-my-site/" data-id="cl9jehzeu0001xogc56jiawfa" data-title="test_my_site" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/logo.jpg" onerror="onerror=null;src='/img/404/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont   icon-lihe"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont   icon-boluo"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont   icon-shutiao1-copy"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw iconfont   icon-icon"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw iconfont   icon-ningmeng"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">小石头的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont   icon-lihe"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont   icon-boluo"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont   icon-shutiao1-copy"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw iconfont   icon-icon"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw iconfont   icon-ningmeng"></i><span> 关于</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center></div><div id="nav-right"></div><div id="search-button"><a class="site-page social-icon search"><i class="iconfont icon-icon1"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></nav><div id="site-info"><h1 id="site-title">小石头的博客</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/stone" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2022/10/24/hello-world/" title="Hello World"><img class="post_bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="Hello World"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/10/24/hello-world/" title="Hello World">Hello World</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-24T02:10:26.249Z" title="发表于 2022-10-24 10:10:26">2022-10-24</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-22T12:49:01.608Z" title="更新于 2022-10-22 20:49:01">2022-10-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%B0%B4%E6%9E%9C/">水果</a><i class="fas fa-angle-right article-meta-link"></i><a class="article-meta__categories" href="/categories/%E6%B0%B4%E6%9E%9C/%E8%8B%B9%E6%9E%9C/">苹果</a></span></div><div class="content">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;
+
+More info: Writing
+Run server1$ hexo server
+
+More info: Server
+Generate static files1$ hexo generate
+
+More info: Generating
+Deploy to remote sites1$ hexo deploy
+
+More info: Deployment
+</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/10/22/test-my-site/" title="test_my_site"><img class="post_bg" src="/img/logo.jpg" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="test_my_site"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/10/22/test-my-site/" title="test_my_site">test_my_site</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-22T03:22:02.000Z" title="发表于 2022-10-22 11:22:02">2022-10-22</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-25T01:18:58.641Z" title="更新于 2022-10-25 09:18:58">2022-10-25</time></span></div><div class="content">nihao 标题2标题31这里是代码
 
 
+asdfasdfsdaf
 
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/10/21/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2022-10-21T15:36:24.825Z" itemprop="datePublished">2022-10-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/10/21/hello-world/">Hello World</a>
-    </h1>
-  
+asdfasdfsdaf
+asdfasdfsdaf
+手打发送到发送到
+大富大贵都分给
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+123456789101112131415161718$ hexo new &quot;My New Post&quot;$ hexo new &quot;My New Post&quot;$ hexo new &quot;My New Post&quot;$ hexo new &quot;My New Post&quot;$ hexo new &quot;My New Post&quot;$ hexo new &quot;My New Post&quot;$ hexo new &quot;My New Post&quot;$ hexo new &quot;My New Post&quot;$ hexo new &quot;My New Post&quot;$ hexo new &quot;My New Post&quot;$ hexo new &quot;My New Post&quot;$ hexo new &quot;My  ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/" title="分布式"><img class="post_bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="分布式"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/" title="分布式">分布式</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-01-04T16:00:00.000Z" title="发表于 2021-01-05 00:00:00">2021-01-05</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-25T06:54:40.648Z" title="更新于 2022-10-25 14:54:40">2022-10-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%B8%93%E6%A0%8F/">专栏</a></span></div><div class="content">什么是分布式事务？怎么解决分布式事务？
+两阶段提交方案 &#x2F; XA方案
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+两阶段提交有一个事务管理器的概念，负责协调多个数据源的事务，事务管理器先问问各个数据库你准备好了吗？如果每个数据库都回复ok,那么就正事提交事务，在各个数据库上执行操作，如果任何一个数据库回答不ok，那么就回滚事务
+这种分布式事务方案，比较适合单块应用里面，跨多个数据库的分布式事务，而且因为严重依赖于数据库层面来搞定复杂的事务，效率很低绝对不适合高并发的场景。可以通过Spring + JTA来实现
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/10/21/hello-world/" data-id="cl9jehzeh0000xogc3osp79k7" data-title="Hello World" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
+TCC方案 （Try + Confirm + Cancel）
+Try阶段：这个阶段说的就是对各个服务的资源做检测以及对资源进行锁定或者预留
+Confirm阶段： 这个阶段就是在各个服务中执行实际的操作
+Cancel阶段： 如果任何一个服务的业务方法执行出错，那么这里就需要进行补偿，就是执行已经执行成功业务逻辑的回滚操作
 
 
 
-  
+除非你的系统对一致性要求非常高，是你系统中核心中的核心场景，并且最好各个业务的执行时间较短。比如常见的就是资金类的场景，那就可以用TCC方案。自己编写大量的业务逻辑，自己判断一个事务中的 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E7%BC%93%E5%AD%98/" title="缓存"><img class="post_bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="缓存"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E7%BC%93%E5%AD%98/" title="缓存">缓存</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-01-04T16:00:00.000Z" title="发表于 2021-01-05 00:00:00">2021-01-05</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-25T06:54:40.651Z" title="更新于 2022-10-25 14:54:40">2022-10-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%B8%93%E6%A0%8F/">专栏</a></span></div><div class="content">为什么要使用缓存？
+高性能
+同一条数据多次查询，第二次查询用缓存耗时缩短
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/10/22/test-my-site/">test_my_site</a>
-          </li>
-        
-          <li>
-            <a href="/2022/10/21/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2022 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
+高并发
+数据库并发能力有限（2000&#x2F;s）,缓存是走内存的天然高并发（4w&#x2F;s）
 
 
 
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+用了缓存会有什么问题？
+缓存与数据库双写不一致的问题
+缓存的雪崩
+缓存的穿透
+缓存的并发竞争
+
+为什么redis单线程模型也能够效率这么高？
+纯内存操作
+核心是基于非阻塞的IO多路服用机制
+单线程反而避免了多线程的频繁上下文切换问题
+
+
+redis有哪些数据类型？分别在哪些场景下比较合适？
+string
+就是普通的set和get,做简单的kv缓存
+
+
+hashMap
+类似map结构，这个一般用于结构化的数据（前提是没有嵌套），方便修改其中的一个字段
+例如只修改用户的年龄
+
+
+list
+有序列表，一类数据的集合，常用于取集合中的部分数据
+例如存储粉丝列表、评论列表，然后基于list实现分页查询；可以搞一个简单的消息队列，从list头怼进去，从list尾巴那里取出来
+
+
+set
+无序集合，自动去重
+去重的集合；交集、并集、差集；共同好友、共同关注的人
+
+
+sort set
+排序的set,写进去的时候给一个分 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/12/28/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" title="搜索引擎多连炮"><img class="post_bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="搜索引擎多连炮"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/28/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" title="搜索引擎多连炮">搜索引擎多连炮</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-12-27T16:00:00.000Z" title="发表于 2020-12-28 00:00:00">2020-12-28</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-25T06:54:40.649Z" title="更新于 2022-10-25 14:54:40">2022-10-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%B8%93%E6%A0%8F/">专栏</a></span></div><div class="content">es分布式架构的原理？es 设计的概念就是分布式搜索引擎，底层其实还是基于Lucene的
+核心的思想就是在多台机器上启动多个es进程实例，组成了一个es集群。es中存储数据的基本单位是索引，这个索引可以拆分出多个shard每个shard存储部分数据 。index -&gt; type -&gt; mapping -&gt; document -&gt; field
+shard 又分为 primary shard 和 replica shard 并且分不到集群中的不同机器中 。 数据只能写入primary shard ，然后primary shard再将数据同步到replica shard上去， es客户端获取数据既可以从primary shard 又可以从 replica shard 读
+
+es写入数据的工作原理？
+客户端选择一个node发送请求过去，这个node就是协调节点（coordinating node）
+协调节点对document进行路由(根据docId hash)，将请求转发给对应的node(有primary shard)
+实际上是由node的 primary shard  ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/12/16/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" title="消息队列多连炮"><img class="post_bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="消息队列多连炮"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/16/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" title="消息队列多连炮">消息队列多连炮</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-12-15T16:00:00.000Z" title="发表于 2020-12-16 00:00:00">2020-12-16</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-25T06:54:40.649Z" title="更新于 2022-10-25 14:54:40">2022-10-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%B8%93%E6%A0%8F/">专栏</a></span></div><div class="content">为什么使用消息队列？
+解耦
+异步
+消峰
+
+消息队列有什么优点和缺点？
+系统可用性降低
+系统复杂性变高
+一致性问题
+
+kafka、activemq、rabbitmq、rocketmq 都有什么区别以及适合的场景？
+
+
+特性
+ActiveMQ
+RabbitMQ
+RocketMQ
+Kafka
+
+
+
+单机吞吐量
+万级
+万级
+10 万级，支撑高吞吐
+10 万级，高吞吐，一般配合大数据类的系统来进行实时数据计算、日志采集等场景
+
+
+topic 数量对吞吐量的影响
+
+
+topic 可以达到几百&#x2F;几千的级别，吞吐量会有较小幅度的下降，这是 RocketMQ 的一大优势，在同等机器下，可以支撑大量的 topic
+topic 从几十到几百个时候，吞吐量会大幅度下降，在同等机器下，Kafka 尽量保证 topic 数量不要过多，如果要支撑大规模的 topic，需要增加更多的机器资源
+
+
+时效性
+ms 级
+微秒级，延迟最低
+ms 级
+ms 级
+
+
+可用性
+高，基于主从架构实现高可用
+同 ActiveMQ
+非常高，分布式架构
+非常高，分布式，一个数据多个副本，少数机器宕机，不会丢失数据，不会导致不可用 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2019/09/10/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%B8%B8%E7%94%A8%E6%A6%82%E5%BF%B5/" title="常用概念"><img class="post_bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="常用概念"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/09/10/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%B8%B8%E7%94%A8%E6%A6%82%E5%BF%B5/" title="常用概念">常用概念</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-09-09T16:00:00.000Z" title="发表于 2019-09-10 00:00:00">2019-09-10</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-25T06:54:40.649Z" title="更新于 2022-10-25 14:54:40">2022-10-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%B8%93%E6%A0%8F/">专栏</a></span></div><div class="content">吞吐量（TPS）、QPS、并发数、响应时间（RT）概念
+响应时间（RT） 响应时间是指系统对请求作出响应的时间
+吞吐量(TPS) 吞吐量是指系统在单位时间内处理请求的数量
+并发数 并发数是指系统可以同时承载的正常使用系统功能的用户的数量
+QPS(峰值时间每秒请求数)
+原理：每天80%的访问集中在20%的时间里，这20%时间叫做峰值时间
+公式：( 总PV数 * 80% ) &#x2F; ( 每天秒数 * 20% ) &#x3D; 峰值时间每秒请求数(QPS)
+机器：峰值时间每秒QPS &#x2F; 单台机器的QPS &#x3D; 需要的机器
+
+
+
+</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2019/09/10/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/" title="面试100问"><img class="post_bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="面试100问"></a></div><div class="recent-post-info"><a class="article-title" href="/2019/09/10/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/" title="面试100问">面试100问</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-09-09T16:00:00.000Z" title="发表于 2019-09-10 00:00:00">2019-09-10</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-25T06:54:40.651Z" title="更新于 2022-10-25 14:54:40">2022-10-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%B8%93%E6%A0%8F/">专栏</a></span></div><div class="content">面试基础单例模式
+要点：
+
+只能有一个实例 (构造器私有化)
+自行的创建实例 (该类的静态变量来保存这个唯一的实例)
+向整个系统提供这个实例  (直接暴露（饿汉式） | 用静态变量的get方法获取（懒汉式）)
+
+
+饿汉式：直接创建对象（类加载的时候创建对象）、不存在线程安全问题
+
+直接实例化  (简洁直观)
+枚举式  (最简洁)
+静态代码块饿汉式 (适合复杂实例化)
+
+
+懒汉式：延迟创建对象
+
+线程不安全  （单线程）
+线程安全  （多线程）
+静态内部类形式  （多线程）
+静态内部类不会随着外部类的加载和初始化而初始化，需要单独的加载和初始化
+
+
+
+成员方法、静态方法、代码块、静态代码块、父子类构造方法的执行顺序 (类的初始化过程、实例的初始化过程、父子类)
+类的初始化过程：
+一个类要创建实例需要先加载并初始化该类
+main方法所在的类需要先加载和初始化
+
+
+一个子类要初始化需要先初始化父类
+一个类初始化就是执行 clinit() 方法
+clinit() 方法由静态类变量显示赋值代码和静态代码块组成
+执行顺序是从上到下顺序执行
+clinit() 只会执行一次
 
 
 
 
-<script src="/js/script.js"></script>
+实例的初始化过程
+ ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/logo.jpg" onerror="this.onerror=null;this.src='/img/404/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">小石头</div><div class="author-info__description">挫折经历的太少，才会觉得鸡毛蒜皮都是烦恼</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/stone" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/10/24/hello-world/" title="Hello World"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2022/10/24/hello-world/" title="Hello World">Hello World</a><time datetime="2022-10-24T02:10:26.249Z" title="发表于 2022-10-24 10:10:26">2022-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/22/test-my-site/" title="test_my_site"><img src="/img/logo.jpg" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="test_my_site"/></a><div class="content"><a class="title" href="/2022/10/22/test-my-site/" title="test_my_site">test_my_site</a><time datetime="2022-10-22T03:22:02.000Z" title="发表于 2022-10-22 11:22:02">2022-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/" title="分布式"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="分布式"/></a><div class="content"><a class="title" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/" title="分布式">分布式</a><time datetime="2021-01-04T16:00:00.000Z" title="发表于 2021-01-05 00:00:00">2021-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E7%BC%93%E5%AD%98/" title="缓存"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="缓存"/></a><div class="content"><a class="title" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E7%BC%93%E5%AD%98/" title="缓存">缓存</a><time datetime="2021-01-04T16:00:00.000Z" title="发表于 2021-01-05 00:00:00">2021-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/28/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" title="搜索引擎多连炮"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="搜索引擎多连炮"/></a><div class="content"><a class="title" href="/2020/12/28/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" title="搜索引擎多连炮">搜索引擎多连炮</a><time datetime="2020-12-27T16:00:00.000Z" title="发表于 2020-12-28 00:00:00">2020-12-28</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%B8%93%E6%A0%8F/"><span class="card-category-list-name">专栏</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B0%B4%E6%9E%9C/"><span class="card-category-list-name">水果</span><span class="card-category-list-count">1</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B0%B4%E6%9E%9C/%E8%8B%B9%E6%9E%9C/"><span class="card-category-list-name">苹果</span><span class="card-category-list-count">1</span></a></li></ul></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/stone/" style="font-size: 1.1em; color: #999">stone</a> <a href="/tags/test/" style="font-size: 1.1em; color: #999">test</a> <a href="/tags/test-stm32-mcu-windwos/" style="font-size: 1.1em; color: #999">test stm32 mcu windwos</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 1.1em; color: #999">分布式</a> <a href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" style="font-size: 1.1em; color: #999">搜索引擎</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 1.1em; color: #999">消息队列</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 1.1em; color: #999">缓存</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 1.5em; color: #99a9bf">面试</a></div></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">8</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">8.2k</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-10-30T02:41:14.914Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By 小石头</div><div class="footer_custom_text">欢迎来到我的博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><a class="icon-V hidden" onclick="switchNightMode()" title="浅色和深色模式转换"><svg width="25" height="25" viewBox="0 0 1024 1024"><use id="modeicon" xlink:href="#icon-moon"></use></svg></a><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    window.typed = new Typed("#subtitle", {
+      strings: ["今日事,今日毕","Never put off till tomorrow what you can do today"],
+      startDelay: 300,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("subtitle").innerHTML = '今日事,今日毕'
+  }
+}
 
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}</script></div><script type="text/javascript" src="/js/custom/jquery.min.js"></script><script src="/js/custom/mouse_snow.min.js"></script><script src="/js/custom/sun_moon.js" async></script><script src="/js/custom/runtime.js" async></script><script src="/js/custom/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><div id="ghbdages" style="overflow:hidden;max-height:60px;height:auto;text-align:center;margin-top:10px"><div class="swiper-wrapper"><div class="swiper-slide"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" title="博客框架为Hexo_v5.4.0"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" title="主题版本Butterfly_v4.5.0"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a></div><div class="swiper-slide"><a class="github-badge" target="_blank" href="https://github.com/stone39035605" style="margin-inline:5px" title="本站项目由Github托管"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></div></div></div><style>a.github-badge:hover:before {display:none}</style>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
 
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
 
-
-
-  </div>
-</body>
-</html>
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="/js/runtime.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-footer-beautify/lib/swiperbdage_init.min.js"></script><!-- hexo injector body_end end --></body></html>

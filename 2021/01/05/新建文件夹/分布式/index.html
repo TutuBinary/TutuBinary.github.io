@@ -1,0 +1,262 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>分布式 | 小石头的博客</title><meta name="author" content="小石头"><meta name="copyright" content="小石头"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="什么是分布式事务？怎么解决分布式事务？ 两阶段提交方案 &#x2F; XA方案  两阶段提交有一个事务管理器的概念，负责协调多个数据源的事务，事务管理器先问问各个数据库你准备好了吗？如果每个数据库都回复ok,那么就正事提交事务，在各个数据库上执行操作，如果任何一个数据库回答不ok，那么就回滚事务 这种分布式事务方案，比较适合单块应用里面，跨多个数据库的分布式事务，而且因为严重依赖于数据库层面来搞定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式">
+<meta property="og:url" content="http://tulei.love/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/index.html">
+<meta property="og:site_name" content="小石头的博客">
+<meta property="og:description" content="什么是分布式事务？怎么解决分布式事务？ 两阶段提交方案 &#x2F; XA方案  两阶段提交有一个事务管理器的概念，负责协调多个数据源的事务，事务管理器先问问各个数据库你准备好了吗？如果每个数据库都回复ok,那么就正事提交事务，在各个数据库上执行操作，如果任何一个数据库回答不ok，那么就回滚事务 这种分布式事务方案，比较适合单块应用里面，跨多个数据库的分布式事务，而且因为严重依赖于数据库层面来搞定">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-25T06:54:40.648Z">
+<meta property="article:author" content="小石头">
+<meta property="article:tag" content="分布式">
+<meta name="twitter:card" content="summary"><link rel="shortcut icon" href="/img/logo.jpg"><link rel="canonical" href="http://tulei.love/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":150},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '分布式',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-25 14:54:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script async src="/css/custom/runtime.css"></script><link rel="stylesheet" href="/css/custom/font.css"><link rel="stylesheet" href="/css/custom/custom.css"  media="defer" onload="this.media='all'"><script async src="/js/custom/diytitle.js"></script><link rel="stylesheet" href="/css/custom/daohanglan.css"><link rel="stylesheet" href="/css/custom/iconfont.css"><svg aria-hidden="true" style="position:absolute; overflow:hidden; width:0; height:0"><symbol id="icon-sun" viewBox="0 0 1024 1024"><path d="M960 512l-128 128v192h-192l-128 128-128-128H192v-192l-128-128 128-128V192h192l128-128 128 128h192v192z" fill="#FFD878" p-id="8420"></path><path d="M736 512a224 224 0 1 0-448 0 224 224 0 1 0 448 0z" fill="#FFE4A9" p-id="8421"></path><path d="M512 109.248L626.752 224H800v173.248L914.752 512 800 626.752V800h-173.248L512 914.752 397.248 800H224v-173.248L109.248 512 224 397.248V224h173.248L512 109.248M512 64l-128 128H192v192l-128 128 128 128v192h192l128 128 128-128h192v-192l128-128-128-128V192h-192l-128-128z" fill="#4D5152" p-id="8422"></path><path d="M512 320c105.888 0 192 86.112 192 192s-86.112 192-192 192-192-86.112-192-192 86.112-192 192-192m0-32a224 224 0 1 0 0 448 224 224 0 0 0 0-448z" fill="#4D5152" p-id="8423"></path></symbol><symbol id="icon-moon" viewBox="0 0 1024 1024"><path d="M611.370667 167.082667a445.013333 445.013333 0 0 1-38.4 161.834666 477.824 477.824 0 0 1-244.736 244.394667 445.141333 445.141333 0 0 1-161.109334 38.058667 85.077333 85.077333 0 0 0-65.066666 135.722666A462.08 462.08 0 1 0 747.093333 102.058667a85.077333 85.077333 0 0 0-135.722666 65.024z" fill="#FFB531" p-id="11345"></path><path d="M329.728 274.133333l35.157333-35.157333a21.333333 21.333333 0 1 0-30.165333-30.165333l-35.157333 35.157333-35.114667-35.157333a21.333333 21.333333 0 0 0-30.165333 30.165333l35.114666 35.157333-35.114666 35.157334a21.333333 21.333333 0 1 0 30.165333 30.165333l35.114667-35.157333 35.157333 35.157333a21.333333 21.333333 0 1 0 30.165333-30.165333z" fill="#030835" p-id="11346"></path></symbol></svg><!-- hexo injector head_end start --><link rel="stylesheet" href="/css/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/logo.jpg" onerror="onerror=null;src='/img/404/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont   icon-lihe"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont   icon-boluo"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont   icon-shutiao1-copy"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw iconfont   icon-icon"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw iconfont   icon-ningmeng"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">小石头的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont   icon-lihe"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont   icon-boluo"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont   icon-shutiao1-copy"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw iconfont   icon-icon"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw iconfont   icon-ningmeng"></i><span> 关于</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center></div><div id="nav-right"></div><div id="search-button"><a class="site-page social-icon search"><i class="iconfont icon-icon1"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></nav><div id="post-info"><h1 class="post-title">分布式</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-01-04T16:00:00.000Z" title="发表于 2021-01-05 00:00:00">2021-01-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-25T06:54:40.648Z" title="更新于 2022-10-25 14:54:40">2022-10-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%93%E6%A0%8F/">专栏</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="分布式"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="什么是分布式事务？"><a href="#什么是分布式事务？" class="headerlink" title="什么是分布式事务？"></a>什么是分布式事务？</h4><h4 id="怎么解决分布式事务？"><a href="#怎么解决分布式事务？" class="headerlink" title="怎么解决分布式事务？"></a>怎么解决分布式事务？</h4><ul>
+<li>两阶段提交方案 &#x2F; XA方案</li>
+</ul>
+<p>两阶段提交有一个事务管理器的概念，负责协调多个数据源的事务，事务管理器先问问各个数据库你准备好了吗？如果每个数据库都回复ok<br>,那么就正事提交事务，在各个数据库上执行操作，如果任何一个数据库回答不ok，那么就回滚事务</p>
+<p>这种分布式事务方案，比较适合单块应用里面，跨多个数据库的分布式事务，而且因为严重依赖于数据库层面来搞定复杂的事务，效率很低<br>绝对不适合高并发的场景。可以通过Spring + JTA来实现</p>
+<ul>
+<li>TCC方案 （Try + Confirm + Cancel）<ul>
+<li>Try阶段：这个阶段说的就是对各个服务的资源做检测以及对资源进行锁定或者预留</li>
+<li>Confirm阶段： 这个阶段就是在各个服务中执行实际的操作</li>
+<li>Cancel阶段： 如果任何一个服务的业务方法执行出错，那么这里就需要进行补偿，就是执行已经执行成功业务逻辑的回滚操作</li>
+</ul>
+</li>
+</ul>
+<p>除非你的系统对一致性要求非常高，是你系统中核心中的核心场景，并且最好各个业务的执行时间较短。比如常见的就是资金类的场景，那就可以用TCC方案。<br>自己编写大量的业务逻辑，自己判断一个事务中的各个环节是否ok，不ok就执行回滚代码</p>
+<p>这种方案几乎很少人使用，因为这个事务回滚实际严重依赖于你写的代码来回滚和补偿，会造成补偿代码巨大，非常恶心</p>
+<ul>
+<li>本地消息表<ol>
+<li>A系统在自己本地一个事务里面操作，同时插入一条数据到消息表里面</li>
+<li>接着A系统将这个消息发送到MQ中去</li>
+<li>B系统接收到消息之后，在一个事务里，往自己本地消息表里面插入一条数据，同时执行其他的业务操作，如果这个消息已经被处理过了那么这个事务会回滚，这样保证消息不会重复处理</li>
+<li>B系统执行成功之后，就会更新自己本地消息表的状态，以及A系统消息表的状态</li>
+<li>如果B系统处理失败了，那么就不会更新消息表的状态，那么此时A系统会定时扫描自己的消息表，如果有没有处理的消息，会再次发送到MQ中去，让B再次处理</li>
+<li>这个方案保证了最终的一致性，哪怕B事务失败了，但是A会不断重发消息，直到B那边成功为止</li>
+</ol>
+</li>
+</ul>
+<p>这个方案说实话最大的问题在于严重依赖于数据库的消息表来管理事务，这就导致高并发的场景下有性能瓶颈。怎么拓展？所以一般很少使用</p>
+<p><img src="/images/%E9%9D%A2%E8%AF%95/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1-%E6%9C%AC%E5%9C%B0%E6%B6%88%E6%81%AF%E8%A1%A8.png" alt="分布式事务-本地消息表"></p>
+<ul>
+<li>可靠消息最终一致性方案 (基于RacketMQ事务消息)<ol>
+<li>A系统先发一个prepared消息到MQ,如果这个prepared消息发送失败，那么直接取消操作</li>
+<li>如果这个消息发送成了，那么接着执行一个本地事务，如果成功就告诉MQ发送确认消息，如果失败就告诉MQ发送回滚消息</li>
+<li>如果发送了确认消息，那么此时B系统会接收到确认消息，然后执行本地事务</li>
+<li>MQ会自动定时轮询所有prepared消息回调你的接口，问你这个消息是不是本地事务处理失败了，所以没有发送确认消息？那是继续重试还是回滚？一般来说这里我们就可以查询下数据库，之前本地事务是否执行了，如果回滚了那么这里也回滚吧。<br>  这样可以避免本地事务执行成功了，确认消息发送失败</li>
+<li>这个方案里，要是系统B的事务处理失败怎么办？重试，自动不断重试直到成功，如果实在是不行，那么就要针对重要的资金业务进行回滚。比如B系统本地回滚以后，想办法通知系统A也回滚；或者发送报警由人工来回滚或者补偿</li>
+</ol>
+</li>
+</ul>
+<p>这个还是比较合适的，目前国内互联网公司大都是这么玩的。要不你举用RocketMQ支持的</p>
+<p><img src="/images/%E9%9D%A2%E8%AF%95/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1-%E5%8F%AF%E9%9D%A0%E6%B6%88%E6%81%AF%E6%9C%80%E7%BB%88%E4%B8%80%E8%87%B4%E6%80%A7.png" alt="分布式事务-可靠消息最终一致性"></p>
+<ul>
+<li>最大努力通知方案<ol>
+<li>系统A本地事务执行完之后，发送个消息到MQ中</li>
+<li>这里会有一个专门消费MQ的最大努力通知服务，这个服务会消费MQ，然后写入数据库中记录下来或者放入一个内存队列中，接着调用系统B的接口</li>
+<li>要是系统B执行成功就ok了；要是系统B执行失败了，那么最大努力通知服务就定时尝试重新调用系统B。反复N次，最后还是不行就放弃</li>
+</ol>
+</li>
+</ul>
+<p><img src="/images/%E9%9D%A2%E8%AF%95/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1-%E6%9C%80%E5%A4%A7%E5%8A%AA%E5%8A%9B%E9%80%9A%E7%9F%A5.png" alt="分布式事务-最大努力通知"></p>
+<p>如果是一个资金严格要求决定不能出错的场景，你可以说你用的TCC方案，如果是一般的分布式场景，如订单插入之后要更新库存，库存数据没有资金那么敏感<br>可以用可靠消息最终一致性方案</p>
+<blockquote>
+<p>注意：rocketMQ 3.2.6之前的版本，是可以按照上面的思路来的，但是之后接口做了一些改变</p>
+</blockquote>
+<h4 id="如何设计一个高并发的系统架构？"><a href="#如何设计一个高并发的系统架构？" class="headerlink" title="如何设计一个高并发的系统架构？"></a>如何设计一个高并发的系统架构？</h4><ol>
+<li>系统拆分<ul>
+<li>将一个系统拆分为多个子系统，用dubbo来搞。然后每个系统连一个数据库，这样本来就一个库，现在多了数据库，也可以支持高并发</li>
+</ul>
+</li>
+<li>缓存（高并发读 必须用）<ul>
+<li>大部分的高并发请求，都是读多写少，所以完全可以数据库和缓存各写一份，然后读的时候大量走缓存redis，毕竟redis单机就可以支持几万的并发</li>
+</ul>
+</li>
+<li>MQ （高并发写 必须用）<ul>
+<li>把大量的写请求灌入MQ中，后面系统慢慢消费慢慢写，控制在mysql的承受范围内就可以了</li>
+</ul>
+</li>
+<li>Elasticsearch （可以考虑用）<ul>
+<li>es 是分布式的，可以随便扩容，分布式天然就可以支持高并发，因为动不动就可以扩容机器来抗更高的并发。那么一些简单的查询、统计类的操作，可以用es来承载，特别是全文检索类的操作</li>
+</ul>
+</li>
+<li>分库分表<ul>
+<li>可能到最后数据库层面还是免不了抗高并发的要求。这样我们可以将数据库拆分为多个库，多个库来抗更高的并发；如果一个表的数据量过大，我们还可以将一个表拆分成多个表，每个表的数据量保持少一点，提高sql的性能</li>
+</ul>
+</li>
+<li>读写分离<ul>
+<li>如果说大部分请求必须要落库，且读多写少，我们可以搞主从架构，主库写入，从库读取。当流量太多的时候，还可以加更多的从库</li>
+</ul>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://tulei.love">小石头</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://tulei.love/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/">http://tulei.love/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://tulei.love" target="_blank">小石头的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/10/22/test-my-site/"><img class="prev-cover" src="/img/logo.jpg" onerror="onerror=null;src='/img/404/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">test_my_site</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E7%BC%93%E5%AD%98/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">缓存</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/logo.jpg" onerror="this.onerror=null;this.src='/img/404/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">小石头</div><div class="author-info__description">挫折经历的太少，才会觉得鸡毛蒜皮都是烦恼</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/stone" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">什么是分布式事务？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">怎么解决分布式事务？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E9%AB%98%E5%B9%B6%E5%8F%91%E7%9A%84%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">如何设计一个高并发的系统架构？</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/10/24/hello-world/" title="Hello World"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2022/10/24/hello-world/" title="Hello World">Hello World</a><time datetime="2022-10-24T02:10:26.249Z" title="发表于 2022-10-24 10:10:26">2022-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/22/test-my-site/" title="test_my_site"><img src="/img/logo.jpg" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="test_my_site"/></a><div class="content"><a class="title" href="/2022/10/22/test-my-site/" title="test_my_site">test_my_site</a><time datetime="2022-10-22T03:22:02.000Z" title="发表于 2022-10-22 11:22:02">2022-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/" title="分布式"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="分布式"/></a><div class="content"><a class="title" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/" title="分布式">分布式</a><time datetime="2021-01-04T16:00:00.000Z" title="发表于 2021-01-05 00:00:00">2021-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E7%BC%93%E5%AD%98/" title="缓存"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="缓存"/></a><div class="content"><a class="title" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E7%BC%93%E5%AD%98/" title="缓存">缓存</a><time datetime="2021-01-04T16:00:00.000Z" title="发表于 2021-01-05 00:00:00">2021-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/28/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" title="搜索引擎多连炮"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="搜索引擎多连炮"/></a><div class="content"><a class="title" href="/2020/12/28/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" title="搜索引擎多连炮">搜索引擎多连炮</a><time datetime="2020-12-27T16:00:00.000Z" title="发表于 2020-12-28 00:00:00">2020-12-28</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><div id="footer-wrap"><div class="copyright">&copy;2022 By 小石头</div><div class="footer_custom_text">欢迎来到我的博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><a class="icon-V hidden" onclick="switchNightMode()" title="浅色和深色模式转换"><svg width="25" height="25" viewBox="0 0 1024 1024"><use id="modeicon" xlink:href="#icon-moon"></use></svg></a><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script type="text/javascript" src="/js/custom/jquery.min.js"></script><script src="/js/custom/mouse_snow.min.js"></script><script src="/js/custom/sun_moon.js" async></script><script src="/js/custom/runtime.js" async></script><script src="/js/custom/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><div id="ghbdages" style="overflow:hidden;max-height:60px;height:auto;text-align:center;margin-top:10px"><div class="swiper-wrapper"><div class="swiper-slide"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" title="博客框架为Hexo_v5.4.0"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" title="主题版本Butterfly_v4.5.0"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a></div><div class="swiper-slide"><a class="github-badge" target="_blank" href="https://github.com/stone39035605" style="margin-inline:5px" title="本站项目由Github托管"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></div></div></div><style>a.github-badge:hover:before {display:none}</style>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="/js/runtime.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-footer-beautify/lib/swiperbdage_init.min.js"></script><!-- hexo injector body_end end --></body></html>

@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/10/24/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>水果</category>
+        <category>苹果</category>
+      </categories>
+      <tags>
+        <tag>stone</tag>
+        <tag>test</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>test_my_site</title>
+    <url>/2022/10/22/test-my-site/</url>
+    <content><![CDATA[<h2 id="nihao"><a href="#nihao" class="headerlink" title="nihao "></a>nihao </h2><h2 id="标题2"><a href="#标题2" class="headerlink" title="标题2"></a>标题2</h2><h2 id="标题3"><a href="#标题3" class="headerlink" title="标题3"></a>标题3</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这里是代码</span><br></pre></td></tr></table></figure>
+
+
+<p>asdfasdfsdaf</p>
+<ul>
+<li>asdfasdfsdaf</li>
+<li>asdfasdfsdaf</li>
+<li>手打发送到发送到</li>
+<li>大富大贵都分给</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+]]></content>
+      <tags>
+        <tag>test stm32 mcu windwos</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>分布式</title>
+    <url>/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/</url>
+    <content><![CDATA[<h4 id="什么是分布式事务？"><a href="#什么是分布式事务？" class="headerlink" title="什么是分布式事务？"></a>什么是分布式事务？</h4><h4 id="怎么解决分布式事务？"><a href="#怎么解决分布式事务？" class="headerlink" title="怎么解决分布式事务？"></a>怎么解决分布式事务？</h4><ul>
+<li>两阶段提交方案 &#x2F; XA方案</li>
+</ul>
+<p>两阶段提交有一个事务管理器的概念，负责协调多个数据源的事务，事务管理器先问问各个数据库你准备好了吗？如果每个数据库都回复ok<br>,那么就正事提交事务，在各个数据库上执行操作，如果任何一个数据库回答不ok，那么就回滚事务</p>
+<p>这种分布式事务方案，比较适合单块应用里面，跨多个数据库的分布式事务，而且因为严重依赖于数据库层面来搞定复杂的事务，效率很低<br>绝对不适合高并发的场景。可以通过Spring + JTA来实现</p>
+<ul>
+<li>TCC方案 （Try + Confirm + Cancel）<ul>
+<li>Try阶段：这个阶段说的就是对各个服务的资源做检测以及对资源进行锁定或者预留</li>
+<li>Confirm阶段： 这个阶段就是在各个服务中执行实际的操作</li>
+<li>Cancel阶段： 如果任何一个服务的业务方法执行出错，那么这里就需要进行补偿，就是执行已经执行成功业务逻辑的回滚操作</li>
+</ul>
+</li>
+</ul>
+<p>除非你的系统对一致性要求非常高，是你系统中核心中的核心场景，并且最好各个业务的执行时间较短。比如常见的就是资金类的场景，那就可以用TCC方案。<br>自己编写大量的业务逻辑，自己判断一个事务中的各个环节是否ok，不ok就执行回滚代码</p>
+<p>这种方案几乎很少人使用，因为这个事务回滚实际严重依赖于你写的代码来回滚和补偿，会造成补偿代码巨大，非常恶心</p>
+<ul>
+<li>本地消息表<ol>
+<li>A系统在自己本地一个事务里面操作，同时插入一条数据到消息表里面</li>
+<li>接着A系统将这个消息发送到MQ中去</li>
+<li>B系统接收到消息之后，在一个事务里，往自己本地消息表里面插入一条数据，同时执行其他的业务操作，如果这个消息已经被处理过了那么这个事务会回滚，这样保证消息不会重复处理</li>
+<li>B系统执行成功之后，就会更新自己本地消息表的状态，以及A系统消息表的状态</li>
+<li>如果B系统处理失败了，那么就不会更新消息表的状态，那么此时A系统会定时扫描自己的消息表，如果有没有处理的消息，会再次发送到MQ中去，让B再次处理</li>
+<li>这个方案保证了最终的一致性，哪怕B事务失败了，但是A会不断重发消息，直到B那边成功为止</li>
+</ol>
+</li>
+</ul>
+<p>这个方案说实话最大的问题在于严重依赖于数据库的消息表来管理事务，这就导致高并发的场景下有性能瓶颈。怎么拓展？所以一般很少使用</p>
+<p><img src="/images/%E9%9D%A2%E8%AF%95/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1-%E6%9C%AC%E5%9C%B0%E6%B6%88%E6%81%AF%E8%A1%A8.png" alt="分布式事务-本地消息表"></p>
+<ul>
+<li>可靠消息最终一致性方案 (基于RacketMQ事务消息)<ol>
+<li>A系统先发一个prepared消息到MQ,如果这个prepared消息发送失败，那么直接取消操作</li>
+<li>如果这个消息发送成了，那么接着执行一个本地事务，如果成功就告诉MQ发送确认消息，如果失败就告诉MQ发送回滚消息</li>
+<li>如果发送了确认消息，那么此时B系统会接收到确认消息，然后执行本地事务</li>
+<li>MQ会自动定时轮询所有prepared消息回调你的接口，问你这个消息是不是本地事务处理失败了，所以没有发送确认消息？那是继续重试还是回滚？一般来说这里我们就可以查询下数据库，之前本地事务是否执行了，如果回滚了那么这里也回滚吧。<br>  这样可以避免本地事务执行成功了，确认消息发送失败</li>
+<li>这个方案里，要是系统B的事务处理失败怎么办？重试，自动不断重试直到成功，如果实在是不行，那么就要针对重要的资金业务进行回滚。比如B系统本地回滚以后，想办法通知系统A也回滚；或者发送报警由人工来回滚或者补偿</li>
+</ol>
+</li>
+</ul>
+<p>这个还是比较合适的，目前国内互联网公司大都是这么玩的。要不你举用RocketMQ支持的</p>
+<p><img src="/images/%E9%9D%A2%E8%AF%95/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1-%E5%8F%AF%E9%9D%A0%E6%B6%88%E6%81%AF%E6%9C%80%E7%BB%88%E4%B8%80%E8%87%B4%E6%80%A7.png" alt="分布式事务-可靠消息最终一致性"></p>
+<ul>
+<li>最大努力通知方案<ol>
+<li>系统A本地事务执行完之后，发送个消息到MQ中</li>
+<li>这里会有一个专门消费MQ的最大努力通知服务，这个服务会消费MQ，然后写入数据库中记录下来或者放入一个内存队列中，接着调用系统B的接口</li>
+<li>要是系统B执行成功就ok了；要是系统B执行失败了，那么最大努力通知服务就定时尝试重新调用系统B。反复N次，最后还是不行就放弃</li>
+</ol>
+</li>
+</ul>
+<p><img src="/images/%E9%9D%A2%E8%AF%95/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1-%E6%9C%80%E5%A4%A7%E5%8A%AA%E5%8A%9B%E9%80%9A%E7%9F%A5.png" alt="分布式事务-最大努力通知"></p>
+<p>如果是一个资金严格要求决定不能出错的场景，你可以说你用的TCC方案，如果是一般的分布式场景，如订单插入之后要更新库存，库存数据没有资金那么敏感<br>可以用可靠消息最终一致性方案</p>
+<blockquote>
+<p>注意：rocketMQ 3.2.6之前的版本，是可以按照上面的思路来的，但是之后接口做了一些改变</p>
+</blockquote>
+<h4 id="如何设计一个高并发的系统架构？"><a href="#如何设计一个高并发的系统架构？" class="headerlink" title="如何设计一个高并发的系统架构？"></a>如何设计一个高并发的系统架构？</h4><ol>
+<li>系统拆分<ul>
+<li>将一个系统拆分为多个子系统，用dubbo来搞。然后每个系统连一个数据库，这样本来就一个库，现在多了数据库，也可以支持高并发</li>
+</ul>
+</li>
+<li>缓存（高并发读 必须用）<ul>
+<li>大部分的高并发请求，都是读多写少，所以完全可以数据库和缓存各写一份，然后读的时候大量走缓存redis，毕竟redis单机就可以支持几万的并发</li>
+</ul>
+</li>
+<li>MQ （高并发写 必须用）<ul>
+<li>把大量的写请求灌入MQ中，后面系统慢慢消费慢慢写，控制在mysql的承受范围内就可以了</li>
+</ul>
+</li>
+<li>Elasticsearch （可以考虑用）<ul>
+<li>es 是分布式的，可以随便扩容，分布式天然就可以支持高并发，因为动不动就可以扩容机器来抗更高的并发。那么一些简单的查询、统计类的操作，可以用es来承载，特别是全文检索类的操作</li>
+</ul>
+</li>
+<li>分库分表<ul>
+<li>可能到最后数据库层面还是免不了抗高并发的要求。这样我们可以将数据库拆分为多个库，多个库来抗更高的并发；如果一个表的数据量过大，我们还可以将一个表拆分成多个表，每个表的数据量保持少一点，提高sql的性能</li>
+</ul>
+</li>
+<li>读写分离<ul>
+<li>如果说大部分请求必须要落库，且读多写少，我们可以搞主从架构，主库写入，从库读取。当流量太多的时候，还可以加更多的从库</li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>专栏</category>
+      </categories>
+      <tags>
+        <tag>分布式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>常用概念</title>
+    <url>/2019/09/10/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%B8%B8%E7%94%A8%E6%A6%82%E5%BF%B5/</url>
+    <content><![CDATA[<h4 id="吞吐量（TPS）、QPS、并发数、响应时间（RT）概念"><a href="#吞吐量（TPS）、QPS、并发数、响应时间（RT）概念" class="headerlink" title="吞吐量（TPS）、QPS、并发数、响应时间（RT）概念"></a>吞吐量（TPS）、QPS、并发数、响应时间（RT）概念</h4><ul>
+<li><strong>响应时间（RT）</strong> 响应时间是指系统对请求作出响应的时间</li>
+<li><strong>吞吐量(TPS)</strong> 吞吐量是指系统在单位时间内处理请求的数量</li>
+<li><strong>并发数</strong> 并发数是指系统可以同时承载的正常使用系统功能的用户的数量</li>
+<li><strong>QPS(峰值时间每秒请求数)</strong><ul>
+<li>原理：每天80%的访问集中在20%的时间里，这20%时间叫做峰值时间</li>
+<li>公式：( 总PV数 * 80% ) &#x2F; ( 每天秒数 * 20% ) &#x3D; 峰值时间每秒请求数(QPS)</li>
+<li>机器：峰值时间每秒QPS &#x2F; 单台机器的QPS &#x3D; 需要的机器</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>专栏</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>搜索引擎多连炮</title>
+    <url>/2020/12/28/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/</url>
+    <content><![CDATA[<h4 id="es分布式架构的原理？"><a href="#es分布式架构的原理？" class="headerlink" title="es分布式架构的原理？"></a>es分布式架构的原理？</h4><p>es 设计的概念就是分布式搜索引擎，底层其实还是基于Lucene的</p>
+<p>核心的思想就是在多台机器上启动多个es进程实例，组成了一个es集群。es中存储数据的基本单位是索引，这个索引可以拆分出多个shard<br>每个shard存储部分数据 。index -&gt; type -&gt; mapping -&gt; document -&gt; field</p>
+<p>shard 又分为 primary shard 和 replica shard 并且分不到集群中的不同机器中 。 数据只能写入primary shard ，然后primary shard<br>再将数据同步到replica shard上去， es客户端获取数据既可以从primary shard 又可以从 replica shard 读</p>
+<p><img src="/images/%E9%9D%A2%E8%AF%95/es%E8%AF%BB%E5%86%99%E6%95%B0%E6%8D%AE%E5%8E%9F%E7%90%86.png" alt="es读写数据原理"></p>
+<h4 id="es写入数据的工作原理？"><a href="#es写入数据的工作原理？" class="headerlink" title="es写入数据的工作原理？"></a>es写入数据的工作原理？</h4><ol>
+<li>客户端选择一个node发送请求过去，这个node就是协调节点（coordinating node）</li>
+<li>协调节点对document进行路由(根据docId hash)，将请求转发给对应的node(有primary shard)</li>
+<li>实际上是由node的 primary shard 处理请求，然后将数据同步到其他node(有replica shard)</li>
+<li>协调节点发现primary shard 和 所有 replica node都搞定之后，就返回响应结果给客户端</li>
+</ol>
+<blockquote>
+<p>数据如何写入磁盘：</p>
+</blockquote>
+<ol>
+<li>primary shard 先将数据写入buffer（在buffer里面的数据是搜索不到的），同时将数据写入translog日志文件</li>
+<li>如果buffer快写满了或者到了一定的时间（默认1秒），就会将buffer数据<strong>refresh</strong>到os cache中（在os cache中的数据可以被搜索到）<ul>
+<li><strong>es是准实时的</strong>，写入的数据1秒以后才能被看到，可以调用es API手动<strong>refresh</strong>，将buffer中的数据刷入os cache中，让数据可以立马被搜索到</li>
+</ul>
+</li>
+<li>当translog不断变大，达到一定阈值就会触发<strong>flush&#x2F;commit</strong>操作<ul>
+<li>primary shard 写入一个commit point到磁盘文件，里面标识了这个commit point对应的所有segment file</li>
+<li>强行将os cache中目前所有的数据都fsync 到磁盘中去</li>
+<li>将现有的translog清空，然后重新启用一个translog，此时commit操作完成<ul>
+<li>默认每隔30分钟会自动执行一次flush，我们也可以调用es API手动flush</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>translog其实也是先写入os cache的，每隔5秒刷一次到磁盘中去<ul>
+<li>最多丢失5秒的数据，可以设置成每次写操作必须直接fsync到磁盘，但是性能较差</li>
+</ul>
+</li>
+</ol>
+<h4 id="es读取数据的工作原理？"><a href="#es读取数据的工作原理？" class="headerlink" title="es读取数据的工作原理？"></a>es读取数据的工作原理？</h4><ol>
+<li>客户端发送请求到任意一个node, 成为协调节点</li>
+<li>协调节点对document进行路由，将请求转发到对应的node,此时会使用round-robin(随机轮询算法)，在primary shard以及所有replica<br>shard 中随机选择一个，让读请求做负载均衡</li>
+<li>接收到请求的node返回document给协调节点</li>
+<li>协调节点返回document给客户端</li>
+</ol>
+<h4 id="es搜索数据的过程？"><a href="#es搜索数据的过程？" class="headerlink" title="es搜索数据的过程？"></a>es搜索数据的过程？</h4><ol>
+<li>客户端发送请求到一个协调节点</li>
+<li>协调节点将请求转发到所有的shard（primary或replica）</li>
+<li>每个shard将自己的搜索结果（其实就是一些docId）， 返回给协调节点，然后由协调节点进行数据的合并、排序、分页等操作</li>
+<li>最后协调节点根据docId去各个节点上去拉取实际的document数据返回给客户端</li>
+</ol>
+<h4 id="es数据量很大的情况（数10亿级别），如何提高查询效率？"><a href="#es数据量很大的情况（数10亿级别），如何提高查询效率？" class="headerlink" title="es数据量很大的情况（数10亿级别），如何提高查询效率？"></a>es数据量很大的情况（数10亿级别），如何提高查询效率？</h4><ol>
+<li>性能优化的杀手锏 – filesystem cache<ul>
+<li>es设计时只存储需要搜索的字段</li>
+<li>es + hbase &#x2F; mysql</li>
+</ul>
+</li>
+<li>数据预热<ul>
+<li>定时任务手动搜索热点数据</li>
+</ul>
+</li>
+<li>冷热分离<ul>
+<li>将热点数据和冷数据分索引存储</li>
+</ul>
+</li>
+<li>document模型设计<ul>
+<li>涉及多表提前关联好需要查询的字段</li>
+</ul>
+</li>
+<li>es分页<ul>
+<li>不允许深度搜索，默认深度分页性能很差</li>
+<li>用scroll api ，顺序分页，类似于微博一页页的拉取，不允许跨页<ul>
+<li>scroll会一次性给你生成所有数据的一个快照，然后每次翻页就是通过游标移动，获取下一页数据</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="es生产集群的部署架构是什么？每个索引的数据量大概有多少？每个索引大概有多少分片？"><a href="#es生产集群的部署架构是什么？每个索引的数据量大概有多少？每个索引大概有多少分片？" class="headerlink" title="es生产集群的部署架构是什么？每个索引的数据量大概有多少？每个索引大概有多少分片？"></a>es生产集群的部署架构是什么？每个索引的数据量大概有多少？每个索引大概有多少分片？</h4><ol>
+<li>es生产集群我们部署了5台机器，每台机器是6核64G的，集群总内存是320G</li>
+<li>我们es集群的日增数据量大概是2000万条，每天日增数据量大概是500MB,每月增量数据大概是6亿&#x2F;15G。目前系统已经运行了几个月<br>，现在es集群里数据总量大概是100G左右</li>
+<li>目前线上有5个索引（这个结合业务来），每个索引的数据量大概是20G,所以这个数据量之内，我们索引分配的是8个shard,比默认的5个shard<br>多了3个shard</li>
+</ol>
+]]></content>
+      <categories>
+        <category>专栏</category>
+      </categories>
+      <tags>
+        <tag>搜索引擎</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>缓存</title>
+    <url>/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E7%BC%93%E5%AD%98/</url>
+    <content><![CDATA[<h4 id="为什么要使用缓存？"><a href="#为什么要使用缓存？" class="headerlink" title="为什么要使用缓存？"></a>为什么要使用缓存？</h4><ol>
+<li>高性能<ul>
+<li>同一条数据多次查询，第二次查询用缓存耗时缩短</li>
+</ul>
+</li>
+<li>高并发<ul>
+<li>数据库并发能力有限（2000&#x2F;s）,缓存是走内存的天然高并发（4w&#x2F;s）</li>
+</ul>
+</li>
+</ol>
+<h4 id="用了缓存会有什么问题？"><a href="#用了缓存会有什么问题？" class="headerlink" title="用了缓存会有什么问题？"></a>用了缓存会有什么问题？</h4><ul>
+<li>缓存与数据库双写不一致的问题</li>
+<li>缓存的雪崩</li>
+<li>缓存的穿透</li>
+<li>缓存的并发竞争</li>
+</ul>
+<h4 id="为什么redis单线程模型也能够效率这么高？"><a href="#为什么redis单线程模型也能够效率这么高？" class="headerlink" title="为什么redis单线程模型也能够效率这么高？"></a>为什么redis单线程模型也能够效率这么高？</h4><ol>
+<li>纯内存操作</li>
+<li>核心是基于非阻塞的IO多路服用机制</li>
+<li>单线程反而避免了多线程的频繁上下文切换问题</li>
+</ol>
+<p><img src="/images/%E9%9D%A2%E8%AF%95/redis%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B.png" alt="redis单线程模型"></p>
+<h4 id="redis有哪些数据类型？分别在哪些场景下比较合适？"><a href="#redis有哪些数据类型？分别在哪些场景下比较合适？" class="headerlink" title="redis有哪些数据类型？分别在哪些场景下比较合适？"></a>redis有哪些数据类型？分别在哪些场景下比较合适？</h4><ul>
+<li>string<ul>
+<li>就是普通的set和get,做简单的kv缓存</li>
+</ul>
+</li>
+<li>hashMap<ul>
+<li>类似map结构，这个一般用于结构化的数据（前提是没有嵌套），方便修改其中的一个字段</li>
+<li>例如只修改用户的年龄</li>
+</ul>
+</li>
+<li>list<ul>
+<li>有序列表，一类数据的集合，常用于取集合中的部分数据</li>
+<li>例如存储粉丝列表、评论列表，然后基于list实现分页查询；可以搞一个简单的消息队列，从list头怼进去，从list尾巴那里取出来</li>
+</ul>
+</li>
+<li>set<ul>
+<li>无序集合，自动去重</li>
+<li>去重的集合；交集、并集、差集；共同好友、共同关注的人</li>
+</ul>
+</li>
+<li>sort set<ul>
+<li>排序的set,写进去的时候给一个分数，自动根据分数排序</li>
+<li>分数写入时间，按照时间排序；排行版（根据用户获得的分数）</li>
+</ul>
+</li>
+</ul>
+<h4 id="redis过期策略有哪些？手写一下lru的代码？"><a href="#redis过期策略有哪些？手写一下lru的代码？" class="headerlink" title="redis过期策略有哪些？手写一下lru的代码？"></a>redis过期策略有哪些？手写一下lru的代码？</h4><ol>
+<li>设置过期时间<ul>
+<li>定期删除<ul>
+<li>redis默认每隔100ms就随机抽取一些设置了过期时间的key,检查是否过期，如果就删除</li>
+</ul>
+</li>
+<li>惰性删除<ul>
+<li>当你查询设置了过期时间key，redis会惰性的检查一下是否过期，如果过期则删除且不会返回任何结果</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. volatile-lru 使用LRU算法删除一个键(只针对设置了过期时间的key</span><br><span class="line">2. allkeys-lru(最常用) 使用LRU算法删除一个键</span><br><span class="line">3. volatile-lfu 使用LFU算法删除一个键(只针对设置了过期时间的键)</span><br><span class="line">4. allkeys-lfu 使用LFU算法删除一个键</span><br><span class="line">5. volatile-random 随机删除一个键(只针对设置了过期时间的键)</span><br><span class="line">6. allkeys-random 随机删除一个键</span><br><span class="line">7. volatile-ttl 删除最早过期的一个键</span><br><span class="line">8. noeviction 不删除键，返回错误信息(redis默认选项)</span><br></pre></td></tr></table></figure>
+
+<p>使用LinkedHashMap，将最近访问的放在头部，最老访问的放在尾部，当数据量大于指定的缓存个数时，就删除最老的数据</p>
+<h4 id="redis主从复制的原理？"><a href="#redis主从复制的原理？" class="headerlink" title="redis主从复制的原理？"></a>redis主从复制的原理？</h4><p>当启动一个slave node的时候，它会发送一个PSYNC命令给master node</p>
+<p>如果这是slave node重新连接master node，那么master node仅仅会复制给slave node部分缺少的数据；否则如果是slave node第一次连接master node<br>那么会触发一次full resynchronization,开始 full resynchronization的时候，master会启动一个后台线程，开始生成一份RDB快照文件，同时还会将<br>从客户端收到的所有写命令缓存到内存中。RDB文件生成完毕之后，master会将这个RDB发送给slave，slave会先写入本地磁盘，然后再从本地磁盘加载到<br>内存中，然后master会将内存中缓存的写命令发送给slave，slave也会同步这些数据</p>
+<p>slave node如果跟master node有网络故障，断开了连接，会自动重连。master如果发现有多个slave node都来重新连接，仅仅会启动一个RDB save操作，<br>用一份数据给所有slave node</p>
+<h5 id="主从复制的断点续传？"><a href="#主从复制的断点续传？" class="headerlink" title="主从复制的断点续传？"></a>主从复制的断点续传？</h5><p>从redis 2.8开始，就支持主从复制的断点续传；如果主从复制的过程中网络断掉，可以接着上次复制的地方继续复制下去，而不是从头开始复制。</p>
+<p>master node会在内存中维护的一个blacklog，master和slave都会保存一个replica offset还有一个master id，offset就是保存在blacklog中的。<br>如果master和slave网络连接断掉，slave会让master从上次的replica offset开始继续复制</p>
+<p>但如果没有找到对应的offset，那么就会执行一次full resynchronization</p>
+<h5 id="无磁盘化复制"><a href="#无磁盘化复制" class="headerlink" title="无磁盘化复制"></a>无磁盘化复制</h5><p>master在内存中直接创建rdb，然后发送给slave，不会在自己本地落磁盘</p>
+]]></content>
+      <categories>
+        <category>专栏</category>
+      </categories>
+      <tags>
+        <tag>缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>消息队列多连炮</title>
+    <url>/2020/12/16/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</url>
+    <content><![CDATA[<h4 id="为什么使用消息队列？"><a href="#为什么使用消息队列？" class="headerlink" title="为什么使用消息队列？"></a>为什么使用消息队列？</h4><ul>
+<li>解耦</li>
+<li>异步</li>
+<li>消峰</li>
+</ul>
+<h4 id="消息队列有什么优点和缺点？"><a href="#消息队列有什么优点和缺点？" class="headerlink" title="消息队列有什么优点和缺点？"></a>消息队列有什么优点和缺点？</h4><ul>
+<li>系统可用性降低</li>
+<li>系统复杂性变高</li>
+<li>一致性问题</li>
+</ul>
+<h4 id="kafka、activemq、rabbitmq、rocketmq-都有什么区别以及适合的场景？"><a href="#kafka、activemq、rabbitmq、rocketmq-都有什么区别以及适合的场景？" class="headerlink" title="kafka、activemq、rabbitmq、rocketmq 都有什么区别以及适合的场景？"></a>kafka、activemq、rabbitmq、rocketmq 都有什么区别以及适合的场景？</h4><table>
+<thead>
+<tr>
+<th>特性</th>
+<th align="center">ActiveMQ</th>
+<th align="center">RabbitMQ</th>
+<th align="center">RocketMQ</th>
+<th align="center">Kafka</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单机吞吐量</td>
+<td align="center">万级</td>
+<td align="center">万级</td>
+<td align="center">10 万级，支撑高吞吐</td>
+<td align="center">10 万级，高吞吐，一般配合大数据类的系统来进行实时数据计算、日志采集等场景</td>
+</tr>
+<tr>
+<td>topic 数量对吞吐量的影响</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">topic 可以达到几百&#x2F;几千的级别，吞吐量会有较小幅度的下降，这是 RocketMQ 的一大优势，在同等机器下，可以支撑大量的 topic</td>
+<td align="center">topic 从几十到几百个时候，吞吐量会大幅度下降，在同等机器下，Kafka 尽量保证 topic 数量不要过多，如果要支撑大规模的 topic，需要增加更多的机器资源</td>
+</tr>
+<tr>
+<td>时效性</td>
+<td align="center">ms 级</td>
+<td align="center">微秒级，延迟最低</td>
+<td align="center">ms 级</td>
+<td align="center">ms 级</td>
+</tr>
+<tr>
+<td>可用性</td>
+<td align="center">高，基于主从架构实现高可用</td>
+<td align="center">同 ActiveMQ</td>
+<td align="center">非常高，分布式架构</td>
+<td align="center">非常高，分布式，一个数据多个副本，少数机器宕机，不会丢失数据，不会导致不可用</td>
+</tr>
+<tr>
+<td>消息可靠性</td>
+<td align="center">有较低的概率丢失数据</td>
+<td align="center">基本不丢</td>
+<td align="center">经过参数优化配置，可以做到 0 丢失</td>
+<td align="center">同 RocketMQ</td>
+</tr>
+<tr>
+<td>功能支持</td>
+<td align="center">MQ 领域的功能极其完备</td>
+<td align="center">基于erlang 开发，并发能力很强，性能极好，延时很低</td>
+<td align="center">MQ 功能较为完善，还是分布式的，扩展性好</td>
+<td align="center">功能较为简单，主要支持简单的 MQ 功能，在大数据领域的实时计算以及日志采集被大规模使用</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>综上，各种对比之后，有如下建议：</p>
+</blockquote>
+<ol>
+<li>一般的业务系统要引入 MQ，最早大家都用 ActiveMQ，但是现在确实大家用的不多了，没经过大规模吞吐量场景的验证，社区也不是很活跃，所以大家还是算了吧，我个人不推荐用这个了；</li>
+<li>后来大家开始用 RabbitMQ，但是确实 erlang 语言阻止了大量的 Java 工程师去深入研究和掌控它，对公司而言，几乎处于不可控的状态，但是确实人家是开源的，比较稳定的支持，活跃度也高；</li>
+<li>不过现在确实越来越多的公司，会去用 RocketMQ，确实很不错（阿里出品），但社区可能有突然黄掉的风险，对自己公司技术实力有绝对自信的，推荐用 RocketMQ，否则回去老老实实用 RabbitMQ 吧，人家有活跃的开源社区，绝对不会黄。</li>
+<li>所以中小型公司，技术实力较为一般，技术挑战不是特别高，用 RabbitMQ 是不错的选择；大型公司，基础架构研发实力较强，用 RocketMQ 是很好的选择。</li>
+<li>如果是大数据领域的实时计算、日志采集等场景，用 Kafka 是业内标准的，绝对没问题，社区活跃度很高，绝对不会黄，何况几乎是全世界这个领域的事实性规范</li>
+</ol>
+<h4 id="如何保证消息队列的高可用"><a href="#如何保证消息队列的高可用" class="headerlink" title="如何保证消息队列的高可用"></a>如何保证消息队列的高可用</h4><h5 id="RabbitMQ-的高可用性"><a href="#RabbitMQ-的高可用性" class="headerlink" title="RabbitMQ 的高可用性"></a>RabbitMQ 的高可用性</h5><ul>
+<li>单机模式</li>
+<li>普通集群模式（无高可用性）<ul>
+<li>消费者每次随机连接一个实例，然后该实例从真正的数据节点拉取数据，有数据拉取的开销</li>
+<li>固定连接那个 queue 所在实例消费数据，导致单实例性能瓶颈</li>
+<li>不是分布式的</li>
+</ul>
+</li>
+<li>镜像集群模式（高可用性）<ul>
+<li>不是分布式的，每个节点都有这个queue的完整数据，如果queue的数据量很大，大到这个机器上的容量无法容纳就会有问题</li>
+</ul>
+</li>
+</ul>
+<h5 id="Kafka-的高可用架构"><a href="#Kafka-的高可用架构" class="headerlink" title="Kafka 的高可用架构"></a>Kafka 的高可用架构</h5><ul>
+<li>分布式集群模式<ul>
+<li>kafka 是由多个 broker 组成，每个 broker 是一个节点</li>
+<li>创建一个 topic，这个 topic 可以划分为多个 partition，每个 partition 可以存在于不同的 broker 上</li>
+<li>每个 partition 的数据都会同步到其它机器上，形成自己的多个 replica 副本</li>
+<li>所有 replica 会选举一个 leader 出来，那么生产和消费都跟这个 leader 打交道，然后其他 replica 就是 follower</li>
+<li>leader 会负责把数据同步到所有 follower 上去，读&#x2F;写的时候就直接读&#x2F;写 leader 上的数据即可</li>
+<li>如果某个 broker 宕机了并且 broker上面有某个 partition 的 leader，那么此时会从其他broker的 follower 中重新选举一个新的 leader 出来，大家继续读写那个新的 leader 即可</li>
+</ul>
+</li>
+</ul>
+<p>写数据的时候，生产者就写 leader，然后 leader 将数据落地写本地磁盘，接着其他 follower 自己主动从 leader 来 pull 数据。一旦所有 follower 同步好数据了，就会发送 ack 给 leader，leader 收到所有 follower 的 ack 之后，就会返回写成功的消息给生产者。（当然，这只是其中一种模式，还可以适当调整这个行为）</p>
+<p>消费的时候，只会从 leader 去读，但是只有当一个消息已经被所有 follower 都同步成功返回 ack 的时候，这个消息才会被消费者读到</p>
+<h4 id="如何解决消息的重复消费"><a href="#如何解决消息的重复消费" class="headerlink" title="如何解决消息的重复消费"></a>如何解决消息的重复消费</h4><p>主要结合业务来实现消息的幂等性</p>
+<ul>
+<li>数据的主键ID,不存在插入，存在则更新</li>
+<li>用redis给消息标记，存在则不处理</li>
+</ul>
+<h4 id="如何保证消息的可靠性（如何处理消息丢失问题）"><a href="#如何保证消息的可靠性（如何处理消息丢失问题）" class="headerlink" title="如何保证消息的可靠性（如何处理消息丢失问题）"></a>如何保证消息的可靠性（如何处理消息丢失问题）</h4><h5 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h5><ol>
+<li>写消息的过程中消息都没有到rabbitMq，或者消息到rabbitMq但是人家内部出错没有保存下来<ul>
+<li>事务模式 （同步）</li>
+<li>confirm模式（回调方法确认消息接收成功）（异步）</li>
+</ul>
+</li>
+<li>rabbitMq接收到消息之后暂存到自己的内存里，在消费之前出现故障、重启导致内存数据丢失<ul>
+<li>将消息持久化到磁盘上（同时持久化queue 和消息的持久化）</li>
+</ul>
+</li>
+<li>消费者消费到了消息，但是还没来及处理就挂掉了，rabbitMq以为这个消费者已经处理完了<ul>
+<li>将autoAck关闭，如果消费者没处理完就宕机了，此时rabbitMq没有收到你的ack消息，就会将这条消息重新分配给其他的消费者处理</li>
+</ul>
+</li>
+</ol>
+<h5 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h5><ol>
+<li>消费者消费到了消息，但是还没来及处理就挂掉了，kafak以为这个消费者已经处理完了<ul>
+<li>关闭自动提交offset，此时有重复消费的问题，自己保证幂等性</li>
+</ul>
+</li>
+<li>kafka 某个broker宕机，然后重新选举partition的leader，而之前的leader还没有来的及同步数据到follower中<ul>
+<li>topic的 <strong>replication.factor</strong> 参数的值必须大于1，即每个partition至少有2个副本</li>
+<li>kafka的服务端设置 min.insync.replicas 参数的值必须大于1，即要求一个leader至少感知到一个follower还跟自己保持联系</li>
+<li>在producer端设置 acks&#x3D;all，这个是要求每条数据必须写入所有replica之后，才能认为是写入成功</li>
+<li>在producer端设置 retries&#x3D;MAX(很大的一个值，无限重试的意思)，这个是要求一旦写入失败，重试写入的次数</li>
+</ul>
+</li>
+</ol>
+<h4 id="如何保证消息的顺序性"><a href="#如何保证消息的顺序性" class="headerlink" title="如何保证消息的顺序性"></a>如何保证消息的顺序性</h4><h5 id="RabbitMQ-1"><a href="#RabbitMQ-1" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h5><ol>
+<li>一个queue，多个consumer消费速度不一样，导致消费顺序不一致<ul>
+<li>拆分多个queue，每个queue对应一个consumer</li>
+<li>一个queue对应一个consumer，然后内部用内存队列做排列，然后再分发给不同的worker来处理</li>
+</ul>
+</li>
+</ol>
+<h5 id="Kafka-1"><a href="#Kafka-1" class="headerlink" title="Kafka"></a>Kafka</h5><ol>
+<li>一个topic,一个partition，一个consumer，内部多线程<ul>
+<li>内部单线程消费，根据唯一标识hash 写入N个内存queue，然后N个线程分别消费一个内存queue即可</li>
+</ul>
+</li>
+</ol>
+<h4 id="有几百万消息持续积压几个小时怎么处理？"><a href="#有几百万消息持续积压几个小时怎么处理？" class="headerlink" title="有几百万消息持续积压几个小时怎么处理？"></a>有几百万消息持续积压几个小时怎么处理？</h4><ol>
+<li>先修复consumer的问题，确保其恢复消费速度，然后将现有consumer都停掉</li>
+<li>新建一个topic，partition是原来的10倍，临时建立好原来10倍的queue数量</li>
+<li>然后写一个临时的分发数据的consumer程序，这个程序部署上去消费积压的数据，消耗之后不做耗时的处理，直接均匀的轮询写入建立好的10倍数量的queue</li>
+<li>接着临时征用10倍的机器来部署consumer，每一批consumer消费一个临时的queue的数据</li>
+<li>这种做法就相当于是临时将queue资源和consumer资源扩大10倍，以正常的10速度消费数据</li>
+<li>等快速消费完积压数据以后，恢复原来的部署架构，重新用原来的consumer机器来消费消息</li>
+</ol>
+<h4 id="如何解决消息队列的延时以及过期失效的问题？"><a href="#如何解决消息队列的延时以及过期失效的问题？" class="headerlink" title="如何解决消息队列的延时以及过期失效的问题？"></a>如何解决消息队列的延时以及过期失效的问题？</h4><p>假设你用的是rabbitMq，刚好你设置了过期时间TTL,如果消息在queue中积压超过一定的时间就会被rabbitMq给清理掉，这个数据就没了</p>
+<blockquote>
+<p>这个时候就需要些一个临时的程序把丢失的数据查出来，然后重新的插入到mq里面去，然后执行业务代码补全数据</p>
+</blockquote>
+<h4 id="消息队列满了以后怎么处理？-就是MQ积压的快挂掉了"><a href="#消息队列满了以后怎么处理？-就是MQ积压的快挂掉了" class="headerlink" title="消息队列满了以后怎么处理？ 就是MQ积压的快挂掉了"></a>消息队列满了以后怎么处理？ 就是MQ积压的快挂掉了</h4><ul>
+<li>数据不重要<ul>
+<li>临时写程序快速消费消息，消费一个丢弃一个，然后到了晚上再补数据</li>
+</ul>
+</li>
+<li>数据重要<ul>
+<li>临时写程序快速写入另外一个消息队列，然后再增加10倍queue、consumer来消费数据</li>
+</ul>
+</li>
+</ul>
+<h4 id="如果让你来开发一个消息中间件，你会如何设计架构"><a href="#如果让你来开发一个消息中间件，你会如何设计架构" class="headerlink" title="如果让你来开发一个消息中间件，你会如何设计架构"></a>如果让你来开发一个消息中间件，你会如何设计架构</h4><ul>
+<li><strong>首先这个mq要支持可伸缩性，即快速的扩容增加吞吐量和容量</strong><ul>
+<li>参考kafka的设计理念，broker-&gt;topic-&gt;partition</li>
+<li>每个partition在一个机器中就存放一部分数据</li>
+<li>需要扩容的时候，就给topic增加partition，然后做数据迁移，增加机器就可以存放更多的数据，提高吞吐量</li>
+</ul>
+</li>
+<li><strong>mq数据要落磁盘，避免重启丢、故障失数据</strong><ul>
+<li>顺序写，这样就没有磁盘随机读写的寻址开销，磁盘顺序读写的性能是很高的，这就是kafka的思路</li>
+</ul>
+</li>
+<li><strong>mq的可用性</strong><ul>
+<li>kafka高可用机制，多副本-&gt;leader &amp; follower -&gt;broker  挂了重新选举leader即可对外服务</li>
+</ul>
+</li>
+<li><strong>支持数据0丢失</strong><ul>
+<li>参考kafka 零丢失配置方案</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>专栏</category>
+      </categories>
+      <tags>
+        <tag>消息队列</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>面试100问</title>
+    <url>/2019/09/10/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h3 id="面试基础"><a href="#面试基础" class="headerlink" title="面试基础"></a>面试基础</h3><h4 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h4><ul>
+<li><p>要点：</p>
+<ul>
+<li>只能有一个实例 (构造器私有化)</li>
+<li>自行的创建实例 (该类的静态变量来保存这个唯一的实例)</li>
+<li>向整个系统提供这个实例  (直接暴露（饿汉式） | 用静态变量的get方法获取（懒汉式）)</li>
+</ul>
+</li>
+<li><p>饿汉式：直接创建对象（类加载的时候创建对象）、不存在线程安全问题</p>
+<ul>
+<li>直接实例化  (简洁直观)</li>
+<li>枚举式  (最简洁)</li>
+<li>静态代码块饿汉式 (适合复杂实例化)</li>
+</ul>
+</li>
+<li><p>懒汉式：延迟创建对象</p>
+<ul>
+<li>线程不安全  （单线程）</li>
+<li>线程安全  （多线程）</li>
+<li>静态内部类形式  （多线程）</li>
+<li>静态内部类不会随着外部类的加载和初始化而初始化，需要单独的加载和初始化</li>
+</ul>
+</li>
+</ul>
+<h4 id="成员方法、静态方法、代码块、静态代码块、父子类构造方法的执行顺序-类的初始化过程、实例的初始化过程、父子类"><a href="#成员方法、静态方法、代码块、静态代码块、父子类构造方法的执行顺序-类的初始化过程、实例的初始化过程、父子类" class="headerlink" title="成员方法、静态方法、代码块、静态代码块、父子类构造方法的执行顺序 (类的初始化过程、实例的初始化过程、父子类)"></a>成员方法、静态方法、代码块、静态代码块、父子类构造方法的执行顺序 (类的初始化过程、实例的初始化过程、父子类)</h4><ul>
+<li>类的初始化过程：<ul>
+<li>一个类要创建实例需要先加载并初始化该类<ul>
+<li>main方法所在的类需要先加载和初始化</li>
+</ul>
+</li>
+<li>一个子类要初始化需要先初始化父类</li>
+<li>一个类初始化就是执行 clinit() 方法<ul>
+<li>clinit() 方法由静态类变量显示赋值代码和静态代码块组成</li>
+<li>执行顺序是从上到下顺序执行</li>
+<li>clinit() 只会执行一次</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>实例的初始化过程<ul>
+<li>实例初始化就是执行 init() 方法<ul>
+<li>init() 方法可能重载有多个，有几个构造器就有几个 init() 方法</li>
+<li>init() 方法由非静态实例变量显示赋值代码、非静态代码块和对应的构造器组成</li>
+<li>非静态实例变量显示赋值代码和非静态代码块从上到下顺序执行，而对应构造器代码最后执行</li>
+<li>每次创建实例对象，调用对应的构造器，执行的就是对应的 init() 方法</li>
+<li>init() 方法的首行是super()或者super（实参列表），即对应父类的 init() 方法</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>方法的重写(Override)<ul>
+<li>重写的原理<ul>
+<li>非静态方法默认前面都会有一个this,this在 init() 方法中表示当前对象</li>
+</ul>
+</li>
+<li>那些方法不会被重写<ul>
+<li>final修饰的方法</li>
+<li>静态方法</li>
+<li>private等子类不可见方法</li>
+</ul>
+</li>
+<li>注意事项<ol>
+<li>方法重写时，必须存在继承关系</li>
+<li>方法重写时，方法名和形式参数必须一致。</li>
+<li>方法重写时，子类的权限修饰符需要大于或等于父类的权限修饰符。</li>
+<li>方法重写时，子类的返回值类型必须小于或等于父类的返回值类型</li>
+<li>方法重写时，子类的异常类型要小于等于父类的异常类型。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>方法的重载(Overload)<ul>
+<li>方法的名称</li>
+</ul>
+</li>
+</ul>
+<h3 id="Spring-常见问题"><a href="#Spring-常见问题" class="headerlink" title="Spring 常见问题"></a>Spring 常见问题</h3><h4 id="IOC-和-AOP"><a href="#IOC-和-AOP" class="headerlink" title="IOC 和 AOP"></a>IOC 和 AOP</h4><ul>
+<li><strong>IOC(控制反转)</strong> 是一种设计思想，将原本在程序中手动创建对象的控制权，交由给Spring框架来管理。IOC容器是Spring用来实现IOC的载体，<br>IOC容器实际上就是一个Map(key, value)，Map中存放的是各种对象</li>
+<li><strong>AOP(面向切面编程)</strong> 能够将那些与业务无关，却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来，<br>便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可扩展性和可维护性。使用AOP之后我们可以把一些通用功能抽象出来，<br>在需要用到的地方直接使用即可，这样可以大大简化代码量，提高了系统的扩展性</li>
+</ul>
+<h4 id="Spring-AOP-x2F-AspectJ-AOP-的区别"><a href="#Spring-AOP-x2F-AspectJ-AOP-的区别" class="headerlink" title="Spring AOP &#x2F; AspectJ AOP 的区别"></a>Spring AOP &#x2F; AspectJ AOP 的区别</h4><ol>
+<li>Spring AOP属于运行时增强，而AspectJ是编译时增强</li>
+<li>Spring AOP基于代理，而AspectJ基于字节码操作</li>
+<li>AspectJ相比于Spring AOP功能更加强大，但是Spring AOP相对来说更简单。如果切面比较少，那么两者性能差异不大。但是，当切面<br>太多的话，最好选择AspectJ，它比SpringAOP快很多</li>
+</ol>
+]]></content>
+      <categories>
+        <category>专栏</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+</search>

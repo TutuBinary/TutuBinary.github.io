@@ -1,0 +1,370 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>消息队列多连炮 | 小石头的博客</title><meta name="author" content="小石头"><meta name="copyright" content="小石头"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="为什么使用消息队列？ 解耦 异步 消峰  消息队列有什么优点和缺点？ 系统可用性降低 系统复杂性变高 一致性问题  kafka、activemq、rabbitmq、rocketmq 都有什么区别以及适合的场景？   特性 ActiveMQ RabbitMQ RocketMQ Kafka    单机吞吐量 万级 万级 10 万级，支撑高吞吐 10 万级，高吞吐，一般配合大数据类的系统来进行实时数据计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列多连炮">
+<meta property="og:url" content="http://tulei.love/2020/12/16/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/index.html">
+<meta property="og:site_name" content="小石头的博客">
+<meta property="og:description" content="为什么使用消息队列？ 解耦 异步 消峰  消息队列有什么优点和缺点？ 系统可用性降低 系统复杂性变高 一致性问题  kafka、activemq、rabbitmq、rocketmq 都有什么区别以及适合的场景？   特性 ActiveMQ RabbitMQ RocketMQ Kafka    单机吞吐量 万级 万级 10 万级，支撑高吞吐 10 万级，高吞吐，一般配合大数据类的系统来进行实时数据计">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-25T06:54:40.649Z">
+<meta property="article:author" content="小石头">
+<meta property="article:tag" content="消息队列">
+<meta name="twitter:card" content="summary"><link rel="shortcut icon" href="/img/logo.jpg"><link rel="canonical" href="http://tulei.love/2020/12/16/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":150},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '消息队列多连炮',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-25 14:54:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script async src="/css/custom/runtime.css"></script><link rel="stylesheet" href="/css/custom/font.css"><link rel="stylesheet" href="/css/custom/custom.css"  media="defer" onload="this.media='all'"><script async src="/js/custom/diytitle.js"></script><link rel="stylesheet" href="/css/custom/daohanglan.css"><link rel="stylesheet" href="/css/custom/iconfont.css"><svg aria-hidden="true" style="position:absolute; overflow:hidden; width:0; height:0"><symbol id="icon-sun" viewBox="0 0 1024 1024"><path d="M960 512l-128 128v192h-192l-128 128-128-128H192v-192l-128-128 128-128V192h192l128-128 128 128h192v192z" fill="#FFD878" p-id="8420"></path><path d="M736 512a224 224 0 1 0-448 0 224 224 0 1 0 448 0z" fill="#FFE4A9" p-id="8421"></path><path d="M512 109.248L626.752 224H800v173.248L914.752 512 800 626.752V800h-173.248L512 914.752 397.248 800H224v-173.248L109.248 512 224 397.248V224h173.248L512 109.248M512 64l-128 128H192v192l-128 128 128 128v192h192l128 128 128-128h192v-192l128-128-128-128V192h-192l-128-128z" fill="#4D5152" p-id="8422"></path><path d="M512 320c105.888 0 192 86.112 192 192s-86.112 192-192 192-192-86.112-192-192 86.112-192 192-192m0-32a224 224 0 1 0 0 448 224 224 0 0 0 0-448z" fill="#4D5152" p-id="8423"></path></symbol><symbol id="icon-moon" viewBox="0 0 1024 1024"><path d="M611.370667 167.082667a445.013333 445.013333 0 0 1-38.4 161.834666 477.824 477.824 0 0 1-244.736 244.394667 445.141333 445.141333 0 0 1-161.109334 38.058667 85.077333 85.077333 0 0 0-65.066666 135.722666A462.08 462.08 0 1 0 747.093333 102.058667a85.077333 85.077333 0 0 0-135.722666 65.024z" fill="#FFB531" p-id="11345"></path><path d="M329.728 274.133333l35.157333-35.157333a21.333333 21.333333 0 1 0-30.165333-30.165333l-35.157333 35.157333-35.114667-35.157333a21.333333 21.333333 0 0 0-30.165333 30.165333l35.114666 35.157333-35.114666 35.157334a21.333333 21.333333 0 1 0 30.165333 30.165333l35.114667-35.157333 35.157333 35.157333a21.333333 21.333333 0 1 0 30.165333-30.165333z" fill="#030835" p-id="11346"></path></symbol></svg><!-- hexo injector head_end start --><link rel="stylesheet" href="/css/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/logo.jpg" onerror="onerror=null;src='/img/404/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont   icon-lihe"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont   icon-boluo"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont   icon-shutiao1-copy"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw iconfont   icon-icon"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw iconfont   icon-ningmeng"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">小石头的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont   icon-lihe"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont   icon-boluo"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont   icon-shutiao1-copy"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw iconfont   icon-icon"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw iconfont   icon-ningmeng"></i><span> 关于</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center></div><div id="nav-right"></div><div id="search-button"><a class="site-page social-icon search"><i class="iconfont icon-icon1"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></nav><div id="post-info"><h1 class="post-title">消息队列多连炮</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-12-15T16:00:00.000Z" title="发表于 2020-12-16 00:00:00">2020-12-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-25T06:54:40.649Z" title="更新于 2022-10-25 14:54:40">2022-10-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%B8%93%E6%A0%8F/">专栏</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="消息队列多连炮"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="为什么使用消息队列？"><a href="#为什么使用消息队列？" class="headerlink" title="为什么使用消息队列？"></a>为什么使用消息队列？</h4><ul>
+<li>解耦</li>
+<li>异步</li>
+<li>消峰</li>
+</ul>
+<h4 id="消息队列有什么优点和缺点？"><a href="#消息队列有什么优点和缺点？" class="headerlink" title="消息队列有什么优点和缺点？"></a>消息队列有什么优点和缺点？</h4><ul>
+<li>系统可用性降低</li>
+<li>系统复杂性变高</li>
+<li>一致性问题</li>
+</ul>
+<h4 id="kafka、activemq、rabbitmq、rocketmq-都有什么区别以及适合的场景？"><a href="#kafka、activemq、rabbitmq、rocketmq-都有什么区别以及适合的场景？" class="headerlink" title="kafka、activemq、rabbitmq、rocketmq 都有什么区别以及适合的场景？"></a>kafka、activemq、rabbitmq、rocketmq 都有什么区别以及适合的场景？</h4><table>
+<thead>
+<tr>
+<th>特性</th>
+<th align="center">ActiveMQ</th>
+<th align="center">RabbitMQ</th>
+<th align="center">RocketMQ</th>
+<th align="center">Kafka</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单机吞吐量</td>
+<td align="center">万级</td>
+<td align="center">万级</td>
+<td align="center">10 万级，支撑高吞吐</td>
+<td align="center">10 万级，高吞吐，一般配合大数据类的系统来进行实时数据计算、日志采集等场景</td>
+</tr>
+<tr>
+<td>topic 数量对吞吐量的影响</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">topic 可以达到几百&#x2F;几千的级别，吞吐量会有较小幅度的下降，这是 RocketMQ 的一大优势，在同等机器下，可以支撑大量的 topic</td>
+<td align="center">topic 从几十到几百个时候，吞吐量会大幅度下降，在同等机器下，Kafka 尽量保证 topic 数量不要过多，如果要支撑大规模的 topic，需要增加更多的机器资源</td>
+</tr>
+<tr>
+<td>时效性</td>
+<td align="center">ms 级</td>
+<td align="center">微秒级，延迟最低</td>
+<td align="center">ms 级</td>
+<td align="center">ms 级</td>
+</tr>
+<tr>
+<td>可用性</td>
+<td align="center">高，基于主从架构实现高可用</td>
+<td align="center">同 ActiveMQ</td>
+<td align="center">非常高，分布式架构</td>
+<td align="center">非常高，分布式，一个数据多个副本，少数机器宕机，不会丢失数据，不会导致不可用</td>
+</tr>
+<tr>
+<td>消息可靠性</td>
+<td align="center">有较低的概率丢失数据</td>
+<td align="center">基本不丢</td>
+<td align="center">经过参数优化配置，可以做到 0 丢失</td>
+<td align="center">同 RocketMQ</td>
+</tr>
+<tr>
+<td>功能支持</td>
+<td align="center">MQ 领域的功能极其完备</td>
+<td align="center">基于erlang 开发，并发能力很强，性能极好，延时很低</td>
+<td align="center">MQ 功能较为完善，还是分布式的，扩展性好</td>
+<td align="center">功能较为简单，主要支持简单的 MQ 功能，在大数据领域的实时计算以及日志采集被大规模使用</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>综上，各种对比之后，有如下建议：</p>
+</blockquote>
+<ol>
+<li>一般的业务系统要引入 MQ，最早大家都用 ActiveMQ，但是现在确实大家用的不多了，没经过大规模吞吐量场景的验证，社区也不是很活跃，所以大家还是算了吧，我个人不推荐用这个了；</li>
+<li>后来大家开始用 RabbitMQ，但是确实 erlang 语言阻止了大量的 Java 工程师去深入研究和掌控它，对公司而言，几乎处于不可控的状态，但是确实人家是开源的，比较稳定的支持，活跃度也高；</li>
+<li>不过现在确实越来越多的公司，会去用 RocketMQ，确实很不错（阿里出品），但社区可能有突然黄掉的风险，对自己公司技术实力有绝对自信的，推荐用 RocketMQ，否则回去老老实实用 RabbitMQ 吧，人家有活跃的开源社区，绝对不会黄。</li>
+<li>所以中小型公司，技术实力较为一般，技术挑战不是特别高，用 RabbitMQ 是不错的选择；大型公司，基础架构研发实力较强，用 RocketMQ 是很好的选择。</li>
+<li>如果是大数据领域的实时计算、日志采集等场景，用 Kafka 是业内标准的，绝对没问题，社区活跃度很高，绝对不会黄，何况几乎是全世界这个领域的事实性规范</li>
+</ol>
+<h4 id="如何保证消息队列的高可用"><a href="#如何保证消息队列的高可用" class="headerlink" title="如何保证消息队列的高可用"></a>如何保证消息队列的高可用</h4><h5 id="RabbitMQ-的高可用性"><a href="#RabbitMQ-的高可用性" class="headerlink" title="RabbitMQ 的高可用性"></a>RabbitMQ 的高可用性</h5><ul>
+<li>单机模式</li>
+<li>普通集群模式（无高可用性）<ul>
+<li>消费者每次随机连接一个实例，然后该实例从真正的数据节点拉取数据，有数据拉取的开销</li>
+<li>固定连接那个 queue 所在实例消费数据，导致单实例性能瓶颈</li>
+<li>不是分布式的</li>
+</ul>
+</li>
+<li>镜像集群模式（高可用性）<ul>
+<li>不是分布式的，每个节点都有这个queue的完整数据，如果queue的数据量很大，大到这个机器上的容量无法容纳就会有问题</li>
+</ul>
+</li>
+</ul>
+<h5 id="Kafka-的高可用架构"><a href="#Kafka-的高可用架构" class="headerlink" title="Kafka 的高可用架构"></a>Kafka 的高可用架构</h5><ul>
+<li>分布式集群模式<ul>
+<li>kafka 是由多个 broker 组成，每个 broker 是一个节点</li>
+<li>创建一个 topic，这个 topic 可以划分为多个 partition，每个 partition 可以存在于不同的 broker 上</li>
+<li>每个 partition 的数据都会同步到其它机器上，形成自己的多个 replica 副本</li>
+<li>所有 replica 会选举一个 leader 出来，那么生产和消费都跟这个 leader 打交道，然后其他 replica 就是 follower</li>
+<li>leader 会负责把数据同步到所有 follower 上去，读&#x2F;写的时候就直接读&#x2F;写 leader 上的数据即可</li>
+<li>如果某个 broker 宕机了并且 broker上面有某个 partition 的 leader，那么此时会从其他broker的 follower 中重新选举一个新的 leader 出来，大家继续读写那个新的 leader 即可</li>
+</ul>
+</li>
+</ul>
+<p>写数据的时候，生产者就写 leader，然后 leader 将数据落地写本地磁盘，接着其他 follower 自己主动从 leader 来 pull 数据。一旦所有 follower 同步好数据了，就会发送 ack 给 leader，leader 收到所有 follower 的 ack 之后，就会返回写成功的消息给生产者。（当然，这只是其中一种模式，还可以适当调整这个行为）</p>
+<p>消费的时候，只会从 leader 去读，但是只有当一个消息已经被所有 follower 都同步成功返回 ack 的时候，这个消息才会被消费者读到</p>
+<h4 id="如何解决消息的重复消费"><a href="#如何解决消息的重复消费" class="headerlink" title="如何解决消息的重复消费"></a>如何解决消息的重复消费</h4><p>主要结合业务来实现消息的幂等性</p>
+<ul>
+<li>数据的主键ID,不存在插入，存在则更新</li>
+<li>用redis给消息标记，存在则不处理</li>
+</ul>
+<h4 id="如何保证消息的可靠性（如何处理消息丢失问题）"><a href="#如何保证消息的可靠性（如何处理消息丢失问题）" class="headerlink" title="如何保证消息的可靠性（如何处理消息丢失问题）"></a>如何保证消息的可靠性（如何处理消息丢失问题）</h4><h5 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h5><ol>
+<li>写消息的过程中消息都没有到rabbitMq，或者消息到rabbitMq但是人家内部出错没有保存下来<ul>
+<li>事务模式 （同步）</li>
+<li>confirm模式（回调方法确认消息接收成功）（异步）</li>
+</ul>
+</li>
+<li>rabbitMq接收到消息之后暂存到自己的内存里，在消费之前出现故障、重启导致内存数据丢失<ul>
+<li>将消息持久化到磁盘上（同时持久化queue 和消息的持久化）</li>
+</ul>
+</li>
+<li>消费者消费到了消息，但是还没来及处理就挂掉了，rabbitMq以为这个消费者已经处理完了<ul>
+<li>将autoAck关闭，如果消费者没处理完就宕机了，此时rabbitMq没有收到你的ack消息，就会将这条消息重新分配给其他的消费者处理</li>
+</ul>
+</li>
+</ol>
+<h5 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h5><ol>
+<li>消费者消费到了消息，但是还没来及处理就挂掉了，kafak以为这个消费者已经处理完了<ul>
+<li>关闭自动提交offset，此时有重复消费的问题，自己保证幂等性</li>
+</ul>
+</li>
+<li>kafka 某个broker宕机，然后重新选举partition的leader，而之前的leader还没有来的及同步数据到follower中<ul>
+<li>topic的 <strong>replication.factor</strong> 参数的值必须大于1，即每个partition至少有2个副本</li>
+<li>kafka的服务端设置 min.insync.replicas 参数的值必须大于1，即要求一个leader至少感知到一个follower还跟自己保持联系</li>
+<li>在producer端设置 acks&#x3D;all，这个是要求每条数据必须写入所有replica之后，才能认为是写入成功</li>
+<li>在producer端设置 retries&#x3D;MAX(很大的一个值，无限重试的意思)，这个是要求一旦写入失败，重试写入的次数</li>
+</ul>
+</li>
+</ol>
+<h4 id="如何保证消息的顺序性"><a href="#如何保证消息的顺序性" class="headerlink" title="如何保证消息的顺序性"></a>如何保证消息的顺序性</h4><h5 id="RabbitMQ-1"><a href="#RabbitMQ-1" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h5><ol>
+<li>一个queue，多个consumer消费速度不一样，导致消费顺序不一致<ul>
+<li>拆分多个queue，每个queue对应一个consumer</li>
+<li>一个queue对应一个consumer，然后内部用内存队列做排列，然后再分发给不同的worker来处理</li>
+</ul>
+</li>
+</ol>
+<h5 id="Kafka-1"><a href="#Kafka-1" class="headerlink" title="Kafka"></a>Kafka</h5><ol>
+<li>一个topic,一个partition，一个consumer，内部多线程<ul>
+<li>内部单线程消费，根据唯一标识hash 写入N个内存queue，然后N个线程分别消费一个内存queue即可</li>
+</ul>
+</li>
+</ol>
+<h4 id="有几百万消息持续积压几个小时怎么处理？"><a href="#有几百万消息持续积压几个小时怎么处理？" class="headerlink" title="有几百万消息持续积压几个小时怎么处理？"></a>有几百万消息持续积压几个小时怎么处理？</h4><ol>
+<li>先修复consumer的问题，确保其恢复消费速度，然后将现有consumer都停掉</li>
+<li>新建一个topic，partition是原来的10倍，临时建立好原来10倍的queue数量</li>
+<li>然后写一个临时的分发数据的consumer程序，这个程序部署上去消费积压的数据，消耗之后不做耗时的处理，直接均匀的轮询写入建立好的10倍数量的queue</li>
+<li>接着临时征用10倍的机器来部署consumer，每一批consumer消费一个临时的queue的数据</li>
+<li>这种做法就相当于是临时将queue资源和consumer资源扩大10倍，以正常的10速度消费数据</li>
+<li>等快速消费完积压数据以后，恢复原来的部署架构，重新用原来的consumer机器来消费消息</li>
+</ol>
+<h4 id="如何解决消息队列的延时以及过期失效的问题？"><a href="#如何解决消息队列的延时以及过期失效的问题？" class="headerlink" title="如何解决消息队列的延时以及过期失效的问题？"></a>如何解决消息队列的延时以及过期失效的问题？</h4><p>假设你用的是rabbitMq，刚好你设置了过期时间TTL,如果消息在queue中积压超过一定的时间就会被rabbitMq给清理掉，这个数据就没了</p>
+<blockquote>
+<p>这个时候就需要些一个临时的程序把丢失的数据查出来，然后重新的插入到mq里面去，然后执行业务代码补全数据</p>
+</blockquote>
+<h4 id="消息队列满了以后怎么处理？-就是MQ积压的快挂掉了"><a href="#消息队列满了以后怎么处理？-就是MQ积压的快挂掉了" class="headerlink" title="消息队列满了以后怎么处理？ 就是MQ积压的快挂掉了"></a>消息队列满了以后怎么处理？ 就是MQ积压的快挂掉了</h4><ul>
+<li>数据不重要<ul>
+<li>临时写程序快速消费消息，消费一个丢弃一个，然后到了晚上再补数据</li>
+</ul>
+</li>
+<li>数据重要<ul>
+<li>临时写程序快速写入另外一个消息队列，然后再增加10倍queue、consumer来消费数据</li>
+</ul>
+</li>
+</ul>
+<h4 id="如果让你来开发一个消息中间件，你会如何设计架构"><a href="#如果让你来开发一个消息中间件，你会如何设计架构" class="headerlink" title="如果让你来开发一个消息中间件，你会如何设计架构"></a>如果让你来开发一个消息中间件，你会如何设计架构</h4><ul>
+<li><strong>首先这个mq要支持可伸缩性，即快速的扩容增加吞吐量和容量</strong><ul>
+<li>参考kafka的设计理念，broker-&gt;topic-&gt;partition</li>
+<li>每个partition在一个机器中就存放一部分数据</li>
+<li>需要扩容的时候，就给topic增加partition，然后做数据迁移，增加机器就可以存放更多的数据，提高吞吐量</li>
+</ul>
+</li>
+<li><strong>mq数据要落磁盘，避免重启丢、故障失数据</strong><ul>
+<li>顺序写，这样就没有磁盘随机读写的寻址开销，磁盘顺序读写的性能是很高的，这就是kafka的思路</li>
+</ul>
+</li>
+<li><strong>mq的可用性</strong><ul>
+<li>kafka高可用机制，多副本-&gt;leader &amp; follower -&gt;broker  挂了重新选举leader即可对外服务</li>
+</ul>
+</li>
+<li><strong>支持数据0丢失</strong><ul>
+<li>参考kafka 零丢失配置方案</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://tulei.love">小石头</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://tulei.love/2020/12/16/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">http://tulei.love/2020/12/16/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://tulei.love" target="_blank">小石头的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/12/28/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"><img class="prev-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">搜索引擎多连炮</div></div></a></div><div class="next-post pull-right"><a href="/2019/09/10/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%B8%B8%E7%94%A8%E6%A6%82%E5%BF%B5/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">常用概念</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/logo.jpg" onerror="this.onerror=null;this.src='/img/404/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">小石头</div><div class="author-info__description">挫折经历的太少，才会觉得鸡毛蒜皮都是烦恼</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/stone" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">为什么使用消息队列？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E7%82%B9%E5%92%8C%E7%BC%BA%E7%82%B9%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">消息队列有什么优点和缺点？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#kafka%E3%80%81activemq%E3%80%81rabbitmq%E3%80%81rocketmq-%E9%83%BD%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%E4%BB%A5%E5%8F%8A%E9%80%82%E5%90%88%E7%9A%84%E5%9C%BA%E6%99%AF%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">kafka、activemq、rabbitmq、rocketmq 都有什么区别以及适合的场景？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">如何保证消息队列的高可用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#RabbitMQ-%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-number">4.1.</span> <span class="toc-text">RabbitMQ 的高可用性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Kafka-%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8%E6%9E%B6%E6%9E%84"><span class="toc-number">4.2.</span> <span class="toc-text">Kafka 的高可用架构</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%B6%88%E6%81%AF%E7%9A%84%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="toc-number">5.</span> <span class="toc-text">如何解决消息的重复消费</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7%EF%BC%88%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E6%B6%88%E6%81%AF%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">如何保证消息的可靠性（如何处理消息丢失问题）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#RabbitMQ"><span class="toc-number">6.1.</span> <span class="toc-text">RabbitMQ</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Kafka"><span class="toc-number">6.2.</span> <span class="toc-text">Kafka</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%80%A7"><span class="toc-number">7.</span> <span class="toc-text">如何保证消息的顺序性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#RabbitMQ-1"><span class="toc-number">7.1.</span> <span class="toc-text">RabbitMQ</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Kafka-1"><span class="toc-number">7.2.</span> <span class="toc-text">Kafka</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E5%87%A0%E7%99%BE%E4%B8%87%E6%B6%88%E6%81%AF%E6%8C%81%E7%BB%AD%E7%A7%AF%E5%8E%8B%E5%87%A0%E4%B8%AA%E5%B0%8F%E6%97%B6%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86%EF%BC%9F"><span class="toc-number">8.</span> <span class="toc-text">有几百万消息持续积压几个小时怎么处理？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%BB%B6%E6%97%B6%E4%BB%A5%E5%8F%8A%E8%BF%87%E6%9C%9F%E5%A4%B1%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">如何解决消息队列的延时以及过期失效的问题？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%BB%A1%E4%BA%86%E4%BB%A5%E5%90%8E%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86%EF%BC%9F-%E5%B0%B1%E6%98%AFMQ%E7%A7%AF%E5%8E%8B%E7%9A%84%E5%BF%AB%E6%8C%82%E6%8E%89%E4%BA%86"><span class="toc-number">10.</span> <span class="toc-text">消息队列满了以后怎么处理？ 就是MQ积压的快挂掉了</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E8%AE%A9%E4%BD%A0%E6%9D%A5%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6%EF%BC%8C%E4%BD%A0%E4%BC%9A%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84"><span class="toc-number">11.</span> <span class="toc-text">如果让你来开发一个消息中间件，你会如何设计架构</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/10/24/hello-world/" title="Hello World"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2022/10/24/hello-world/" title="Hello World">Hello World</a><time datetime="2022-10-24T02:10:26.249Z" title="发表于 2022-10-24 10:10:26">2022-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/22/test-my-site/" title="test_my_site"><img src="/img/logo.jpg" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="test_my_site"/></a><div class="content"><a class="title" href="/2022/10/22/test-my-site/" title="test_my_site">test_my_site</a><time datetime="2022-10-22T03:22:02.000Z" title="发表于 2022-10-22 11:22:02">2022-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/" title="分布式"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="分布式"/></a><div class="content"><a class="title" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E5%88%86%E5%B8%83%E5%BC%8F/" title="分布式">分布式</a><time datetime="2021-01-04T16:00:00.000Z" title="发表于 2021-01-05 00:00:00">2021-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E7%BC%93%E5%AD%98/" title="缓存"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="缓存"/></a><div class="content"><a class="title" href="/2021/01/05/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E7%BC%93%E5%AD%98/" title="缓存">缓存</a><time datetime="2021-01-04T16:00:00.000Z" title="发表于 2021-01-05 00:00:00">2021-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/28/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" title="搜索引擎多连炮"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="搜索引擎多连炮"/></a><div class="content"><a class="title" href="/2020/12/28/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" title="搜索引擎多连炮">搜索引擎多连炮</a><time datetime="2020-12-27T16:00:00.000Z" title="发表于 2020-12-28 00:00:00">2020-12-28</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><div id="footer-wrap"><div class="copyright">&copy;2022 By 小石头</div><div class="footer_custom_text">欢迎来到我的博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><a class="icon-V hidden" onclick="switchNightMode()" title="浅色和深色模式转换"><svg width="25" height="25" viewBox="0 0 1024 1024"><use id="modeicon" xlink:href="#icon-moon"></use></svg></a><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script type="text/javascript" src="/js/custom/jquery.min.js"></script><script src="/js/custom/mouse_snow.min.js"></script><script src="/js/custom/sun_moon.js" async></script><script src="/js/custom/runtime.js" async></script><script src="/js/custom/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><div id="ghbdages" style="overflow:hidden;max-height:60px;height:auto;text-align:center;margin-top:10px"><div class="swiper-wrapper"><div class="swiper-slide"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" title="博客框架为Hexo_v5.4.0"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" title="主题版本Butterfly_v4.5.0"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a></div><div class="swiper-slide"><a class="github-badge" target="_blank" href="https://github.com/stone39035605" style="margin-inline:5px" title="本站项目由Github托管"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></div></div></div><style>a.github-badge:hover:before {display:none}</style>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="/js/runtime.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-footer-beautify/lib/swiperbdage_init.min.js"></script><!-- hexo injector body_end end --></body></html>
