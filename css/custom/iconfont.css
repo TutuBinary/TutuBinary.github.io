@@ -1,0 +1,53 @@
+@font-face {
+    font-family: "iconfont"; /* Project id 3731543 */
+    /* Color fonts */
+    src: 
+         url('/font/iconfont.woff2?t=1666793426244') format('woff2'),
+         url('/font/iconfont.woff?t=1666793426244') format('woff'),
+         url('/font/iconfont.ttf?t=1666793426244') format('truetype');
+  }
+  
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 24px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-boluo:before {
+    content: "\e605";
+  }
+  
+  .icon-hetao:before {
+    content: "\e937";
+  }
+  
+  .icon-icon:before {
+    content: "\e63a";
+  }
+  
+  .icon-ningmeng:before {
+    content: "\e61e";
+  }
+  
+  .icon-fries:before {
+    content: "\e635";
+  }
+  
+  .icon-shutiao1:before {
+    content: "\e623";
+  }
+  
+  .icon-lihe:before {
+    content: "\e62f";
+  }
+  
+  .icon-icon1:before {
+    content: "\e63e";
+  }
+  
+  .icon-shutiao1-copy:before {
+    content: "\eb2e";
+  }
+  

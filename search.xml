@@ -1,0 +1,1903 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>f1c100s linux 启动编译</title>
+    <url>/2024/01/25/2.Soc/1.f1c100s_linux/</url>
+    <content><![CDATA[<h3 id="F1C100S-linux-启动编译流程-tf-x2F-spi-flash"><a href="#F1C100S-linux-启动编译流程-tf-x2F-spi-flash" class="headerlink" title="F1C100S linux 启动编译流程 (tf &#x2F; spi flash)"></a>F1C100S linux 启动编译流程 (tf &#x2F; spi flash)</h3><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>最近项目上再次使用FC100s跑linux，顺带详细记录一下编译整个linux的步骤，以作记录备份。</p>
+<p>由于TF卡和SPI FLASH启动在某些方面不一样，在有区别的时候会进行特殊说明</p>
+<p><strong>整体思路：</strong></p>
+<ul>
+<li>安装工具链</li>
+<li>编译 uboot</li>
+<li>编译 kernel</li>
+<li>编译 buildroot</li>
+<li>制作镜像</li>
+</ul>
+<hr>
+<h4 id="安装工具链"><a href="#安装工具链" class="headerlink" title="安装工具链"></a>安装工具链</h4><h5 id="工具链下载地址"><a href="#工具链下载地址" class="headerlink" title="工具链下载地址"></a>工具链下载地址</h5><blockquote>
+<p><a href="http://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/arm-linux-gnueabi/">http://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/arm-linux-gnueabi/</a></p>
+</blockquote>
+<h5 id="工具链"><a href="#工具链" class="headerlink" title="工具链"></a>工具链</h5><blockquote>
+<p>gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabi.tar</p>
+</blockquote>
+<h5 id="安装工具链-1"><a href="#安装工具链-1" class="headerlink" title="安装工具链"></a>安装工具链</h5><ul>
+<li>解压 tar 文件 :  tar -xvf xxxxx.tar</li>
+<li>修改环境变量，指定交叉工具链的位置：  vim &#x2F;etc&#x2F;profile</li>
+<li>使环境变量生效：   source &#x2F;etc&#x2F;profile</li>
+<li>测试交叉编译工具：  arm-linux-gnueabi-gcc -v</li>
+</ul>
+<hr>
+<h4 id="编译-uboot"><a href="#编译-uboot" class="headerlink" title="编译 uboot"></a>编译 uboot</h4><h5 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h5><blockquote>
+<p>git clone <a href="https://github.com/Lichee-Pi/u-boot.git">https://github.com/Lichee-Pi/u-boot.git</a> -b nano-v2018.01</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：</span><br><span class="line"> 1.建议下载单独分支，这样下载速度会快一些</span><br><span class="line"> 2.github下载可能会很慢，可以使用：https://hub.fgit.cf/ 加速</span><br></pre></td></tr></table></figure>
+
+<h5 id=""><a href="#" class="headerlink" title=""></a></h5><ul>
+<li>TF卡启动配置:</li>
+</ul>
+<blockquote>
+<p>make ARCH&#x3D;arm CROSS_COMPILE&#x3D;arm-linux-gnueabi- licheepi_nano_defconfig</p>
+</blockquote>
+<ul>
+<li>FLASH 卡启动配置:</li>
+</ul>
+<blockquote>
+<p>make ARCH&#x3D;arm CROSS_COMPILE&#x3D;arm-linux-gnueabi- licheepi_nano_spiflash_defconfig</p>
+</blockquote>
+<ul>
+<li>编译：</li>
+</ul>
+<blockquote>
+<p>make ARCH&#x3D;arm CROSS_COMPILE&#x3D;arm-linux-gnueabi- -j32</p>
+</blockquote>
+<ul>
+<li>如果编译出错：</li>
+</ul>
+<blockquote>
+<p>sudo apt-get install swig</p>
+</blockquote>
+<blockquote>
+<p>sudo apt-get install python-dev</p>
+</blockquote>
+<ul>
+<li>编译成功后会在根目录下生产烧录文件</li>
+</ul>
+<blockquote>
+<p>u-boot-sunxi-with-spl.bin</p>
+</blockquote>
+<hr>
+<h4 id="编译-kernel"><a href="#编译-kernel" class="headerlink" title="编译 kernel"></a>编译 kernel</h4><h5 id="源码下载-1"><a href="#源码下载-1" class="headerlink" title="源码下载"></a>源码下载</h5><blockquote>
+<p>git clone <a href="https://hub.fgit.cf/Lichee-Pi/linux.git">https://hub.fgit.cf/Lichee-Pi/linux.git</a> -b nano-5.2-flash</p>
+</blockquote>
+<ul>
+<li><p><input checked="" disabled="" type="checkbox"> 
+建议TF卡和FLASH 都选择这个分支，这个分支包含FLASH驱动</p>
+</li>
+<li><p>环境</p>
+</li>
+</ul>
+<blockquote>
+<p>sudo apt-get install libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf</p>
+</blockquote>
+<ul>
+<li>配置</li>
+</ul>
+<blockquote>
+<p>make ARCH&#x3D;arm licheepi_nano_defconfig</p>
+</blockquote>
+<ul>
+<li>编译</li>
+</ul>
+<blockquote>
+<p>make ARCH&#x3D;arm CROSS_COMPILE&#x3D;arm-linux-gnueabi- -j32</p>
+</blockquote>
+<ul>
+<li>生成文件位置</li>
+</ul>
+<blockquote>
+<p>arch&#x2F;arm&#x2F;boot&#x2F; 目录下的 zImage</p>
+</blockquote>
+<blockquote>
+<p>arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F; 目录下的 suniv-f1c100s-licheepi-nano.dtb</p>
+</blockquote>
+<h4 id="编译buildroot"><a href="#编译buildroot" class="headerlink" title="编译buildroot"></a>编译buildroot</h4><h5 id="源码下载-2"><a href="#源码下载-2" class="headerlink" title="源码下载"></a>源码下载</h5><blockquote>
+<p><a href="https://buildroot.org/downloads/buildroot-2022.02.tar.gz">https://buildroot.org/downloads/buildroot-2022.02.tar.gz</a></p>
+</blockquote>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 注意</li>
+</ul>
+<blockquote>
+<p>为了方便这里使用buildroot来制作rootfs，这里有个坑。这里如果使用linaro等组织提供的现成的交叉编译工具链来编译buildroot项目生成rootfs，在使用时系统启动过程中可能会出现 Kernel panic - not syncing: Attempted to kill init! exitcode&#x3D;0x0000000b ，而使用buildroot自己生成的编译工具链就不会出现这个问题了。</p>
+</blockquote>
+<ul>
+<li>配置</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Target options  -&gt;</span><br><span class="line">    Target Architecture (ARM (little endian))</span><br><span class="line">    Target Architecture Variant (arm926t) </span><br><span class="line">    Floating point strategy (Soft float) </span><br><span class="line"></span><br><span class="line">Toolchain -&gt;</span><br><span class="line">    Toolchain type (Buildroot toolchain)</span><br><span class="line">    C library (glibc) </span><br><span class="line">    Kernel Headers (Linux 4.19.x kernel headers)</span><br><span class="line">    Enable C++ support </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 注意：</li>
+</ul>
+<blockquote>
+<p>内核头文件根据内核版本去选择，向下选择最高的版本</p>
+</blockquote>
+<ul>
+<li>编译</li>
+</ul>
+<blockquote>
+<p>make -j32</p>
+</blockquote>
+<ul>
+<li>生成文件位置</li>
+</ul>
+<blockquote>
+<p>编译器：  buildroot-2023.11&#x2F;output&#x2F;host&#x2F;arm-buildroot-linux-gnueabi</p>
+</blockquote>
+<blockquote>
+<p>文件系统： buildroot-2023.11&#x2F;output&#x2F;images</p>
+</blockquote>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 注意</li>
+</ul>
+<blockquote>
+<p>应用层代码需要使用 buildroot 自带的编译器编译，如果需要编译 APP代码，请将 buildroot 生成的编译添加到环境变量中</p>
+</blockquote>
+<hr>
+<h4 id="制作-TF-镜像"><a href="#制作-TF-镜像" class="headerlink" title="制作 TF 镜像"></a>制作 TF 镜像</h4><h5 id="TF卡镜像"><a href="#TF卡镜像" class="headerlink" title="TF卡镜像"></a>TF卡镜像</h5><ul>
+<li>将 TF 分为两个分区</li>
+</ul>
+<blockquote>
+<p>第一个分区 <strong>FAT格式</strong>  100M，用来存放 <strong>内核和设备树</strong><br>第二个分区 <strong>ext4格式</strong> 可以将剩余空间都分配给它， 用来存放根文件系统</p>
+</blockquote>
+<ul>
+<li>烧录</li>
+</ul>
+<blockquote>
+<p>将 uboot 烧录到 TF卡 8K位置处， </p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo dd if=u-boot-sunxi-with-spl.bin of=/dev/sdb bs=1024 seek=8</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>将kernel和dtb放到TF卡的第一个分区的根目录下</p>
+</blockquote>
+<blockquote>
+<p>将rootfs.tar解压到第二个分区下, 每次操作TF记得 sync 一下，不然启动可能会出粗</p>
+</blockquote>
+<blockquote>
+<p>修改 uboot 环境变量 </p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">setenv bootcmd &#x27;load mmc 0:1 0x80000000 zImage; load mmc 0:1 0x80C00000 suniv-f1c100s-licheepi-nano.dtb; bootz 0x80000000 - 0x80C00000&#x27;</span><br><span class="line"></span><br><span class="line">setenv bootargs &#x27;console=tty0 console=ttyS0,115200 panic=5 rootwait root=/dev/mmcblk0p2 rw&#x27;</span><br><span class="line"></span><br><span class="line">saveenv</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="制作-FLASH-镜像"><a href="#制作-FLASH-镜像" class="headerlink" title="制作 FLASH 镜像"></a>制作 FLASH 镜像</h4><p>flash 烧录可以参考以下链接：</p>
+<blockquote>
+<p><a href="https://whycan.com/t_7558.html">https://whycan.com/t_7558.html</a></p>
+</blockquote>
+<h5 id="分区说明"><a href="#分区说明" class="headerlink" title="分区说明"></a>分区说明</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">分区序号         分区大小              分区作用	     地址空间及分区名</span><br><span class="line">mtd0	        1MB (0x100000)        spl+uboot	     0x0000000-0x0100000 : “uboot”</span><br><span class="line">mtd1	        64KB (0x10000)        dtb文件        0x0100000-0x0110000 : “dtb”</span><br><span class="line">mtd2	        4MB (0x400000)        linux内核	     0x0110000-0x0510000 : “kernel”</span><br><span class="line">mtd3	        剩余 (0xAF0000)       根文件系统     0x0510000-0x1000000 : “rootfs”</span><br></pre></td></tr></table></figure>
+
+<h5 id="FALSH-烧录工具"><a href="#FALSH-烧录工具" class="headerlink" title="FALSH 烧录工具"></a>FALSH 烧录工具</h5><ul>
+<li>源码</li>
+</ul>
+<blockquote>
+<p><a href="https://github.com/Icenowy/sunxi-tools">https://github.com/Icenowy/sunxi-tools</a>  -b f1c100s  克隆对应的 f1c100s分支</p>
+</blockquote>
+<ul>
+<li>编译和安装</li>
+</ul>
+<blockquote>
+<p>make &amp;&amp; sudo make install</p>
+</blockquote>
+<ul>
+<li>烧录</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo sunxi-fel -p spiflash-write 0 ./u-boot/u-boot-sunxi-with-spl.bin   </span><br><span class="line">sudo sunxi-fel -p spiflash-write 0x0100000 ./linux/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dtb</span><br><span class="line">sudo sunxi-fel -p spiflash-write 0x0110000 ./linux/arch/arm/boot/zImage </span><br><span class="line">sudo sunxi-fel -p spiflash-write 0x0510000 ./buildroot-2017.08/output/images/rootfs.tar</span><br></pre></td></tr></table></figure>
+
+
+<p><code>也可以把文件系统放在TF卡, 以上文件系统放到FLASH上没有试过， 可以试试下面参数</code></p>
+<blockquote>
+<p>修改 uboot 环境变量 </p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">setenv bootcmd &#x27;sf probe 0 50000000; sf read 0x80C00000 0x100000 0x4000; sf read 0x80008000 0x110000 0x400000;bootz 0x80008000 - 0x80C00000;&#x27;</span><br><span class="line"></span><br><span class="line">setenv bootargs &#x27;console=tty0 console=ttyS0,115200 panic=5 rootwait root=/dev/mmcblk0p2 rw&#x27;</span><br><span class="line"></span><br><span class="line">saveenv</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>芯片资料</category>
+        <category>f1c100s</category>
+      </categories>
+      <tags>
+        <tag>芯片资料</tag>
+        <tag>f1c100s</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>收集字体</title>
+    <url>/2024/01/26/4.tool/1.font/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这里主要收集一些免费字体网站</p>
+<ul>
+<li>免费字体识别、字体转换、字体下载</li>
+</ul>
+<blockquote>
+<p><a href="https://fontmeme.com/zh/">https://fontmeme.com/zh/</a></p>
+</blockquote>
+<ul>
+<li>ASCII码字体生成器</li>
+</ul>
+<blockquote>
+<p><a href="http://www.figlet.org/">http://www.figlet.org/</a></p>
+</blockquote>
+<ul>
+<li>google font</li>
+</ul>
+<blockquote>
+<p><a href="https://fonts.google.com/">https://fonts.google.com/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+        <category>字体</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>字体</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>免费 mp3 下载网站</title>
+    <url>/2024/01/26/4.tool/3.mp3/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://tools.liumingye.cn/music/?page=searchPage#/">https://tools.liumingye.cn/music/?page=searchPage#/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+        <category>字体</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>字体</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>免费的简历制作神器</title>
+    <url>/2024/01/26/4.tool/2.resume/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://codecv.top/">https://codecv.top/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+        <category>字体</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>字体</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>micor-ecc 适用于8bit/32bit/64bit处理器的小型ECDH和ECDSA实现</title>
+    <url>/2024/01/24/1.Software/2.encryption/1.micro-ecc/</url>
+    <content><![CDATA[<h3 id="micro-ecc-适用于MCU的ECC算法库"><a href="#micro-ecc-适用于MCU的ECC算法库" class="headerlink" title="micro-ecc [适用于MCU的ECC算法库]"></a>micro-ecc [适用于MCU的ECC算法库]</h3><p>适用于 8 位、32 位和 64 位处理器的小型且快速的 ECDH 和 ECDSA 实现。</p>
+<blockquote>
+<p>nano-ecc是micro-ecc的分支，两者相比，nano-ecc针对Arduino适配，但没有汇编级优化，而micro-ecc针对乘法在ARM处理器中的实现做了汇编级优化。配合M0&#x2F;M4处理器，可以更快实施ECC算法：ECDH&#x2F;ECDSA。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://github.com/kmackay/micro-ecc</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://github.com/iSECPartners/nano-ecc</span><br></pre></td></tr></table></figure>
+
+<h4 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h4><p>ECDSA是用于数字签名，是ECC与DSA的结合，整个签名过程与DSA类似，所不一样的是签名中采取的算法为ECC，最后签名出来的值也是分为r,s。而ECC（全称Elliptic Curves Cryptography）是一种椭圆曲线密码编码学。</p>
+<p>ECDH每次用一个固定的DH key，导致不能向前保密（forward secrecy），所以一般都是用ECDHE（ephemeral）或其他版本的ECDH算法。ECDH则是基于ECC的DH（ Diffie-Hellman）密钥交换算法。</p>
+<p>ECC与RSA 相比，有以下的优点：</p>
+<ul>
+<li>相同密钥长度下，安全性能更高，如160位ECC已经与1024位RSA、DSA有相同的安全强度。</li>
+<li>计算量小，处理速度快，在私钥的处理速度上（解密和签名），ECC远 比RSA、DSA快得多。</li>
+<li>存储空间占用小 ECC的密钥尺寸和系统参数与RSA、DSA相比要小得多， 所以占用的存储空间小得多。</li>
+<li>带宽要求低使得ECC具有广泛得应用前景。</li>
+</ul>
+<p>在 ECDHE 密钥交换中，服务端使用证书私钥对相关信息进行签名，如果浏览器能用证书公钥验证签名，就说明服务端确实拥有对应私钥，从而完成了服务端认证。密钥交换和服务端认证是完全分开的。</p>
+<p>可用于 ECDHE 数字签名的算法主要有 RSA 和 ECDSA，也就是目前密钥交换 + 签名有三种主流选择：</p>
+<ul>
+<li>RSA 密钥交换（无需签名）</li>
+<li>ECDHE 密钥交换、RSA 签名</li>
+<li>ECDHE 密钥交换、ECDSA 签名；</li>
+</ul>
+<h4 id="移植说明"><a href="#移植说明" class="headerlink" title="移植说明"></a>移植说明</h4><ul>
+<li>注意移植随机数生成器，在文件: <code>platform-specific.inc</code></li>
+<li>移植时注意平台定义，该库基于各个平台都做了一些优化，默认会自动选择平台，在 <code>uECC.h</code> 文件下定义 <code>#define uECC_PLATFORM uECC_arch_other</code>, 其中 <strong>uECC_arch_other</strong> 根据平台自己去适配</li>
+</ul>
+<h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h4><blockquote>
+<p>注意测试代码需要使用 <code>sha256</code> 算法， 请参考其他 <code>sha256</code> 算法章节</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;uECC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;sha256.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">out_hex_string</span><span class="params">(<span class="type">char</span> *info, <span class="type">uint8_t</span> *buf, <span class="type">uint32_t</span> size)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s : \r\n&quot;</span>, info);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%02x &quot;</span>, buf[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ECDSA256_BYTES				(32)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ECDSA256_PRIVATE_KEY_SIZE	(ECDSA256_BYTES)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ECDSA256_PUBLIC_KEY_SIZE	(ECDSA256_BYTES * 2)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ECDSA256_SIGNATURE_SIZE		(ECDSA256_BYTES * 2)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> ret;</span><br><span class="line">    <span class="type">int</span> i, c;</span><br><span class="line">    <span class="type">int</span> num_curves = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">uint8_t</span> public_key[ECDSA256_PUBLIC_KEY_SIZE];</span><br><span class="line">    <span class="type">uint8_t</span> private_key[ECDSA256_PRIVATE_KEY_SIZE];</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> use_data[<span class="number">10</span>] = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    <span class="type">uint8_t</span> sha256[SHA256_DIGEST_SIZE];</span><br><span class="line">    <span class="type">uint8_t</span> signature[ECDSA256_SIGNATURE_SIZE];</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">uECC_Curve_t</span> * <span class="title">curves</span>[5];</span></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> uECC_SUPPORTS_secp160r1</span></span><br><span class="line">        curves[num_curves++] = uECC_secp160r1();</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> uECC_SUPPORTS_secp192r1</span></span><br><span class="line">        curves[num_curves++] = uECC_secp192r1();</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> uECC_SUPPORTS_secp224r1</span></span><br><span class="line">        curves[num_curves++] = uECC_secp224r1();</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> uECC_SUPPORTS_secp256r1</span></span><br><span class="line">        curves[num_curves++] = uECC_secp256r1();</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> uECC_SUPPORTS_secp256k1</span></span><br><span class="line">        curves[num_curves++] = uECC_secp256k1();</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    sha256_hash(use_data, <span class="built_in">strlen</span>(use_data), sha256);</span><br><span class="line">    out_hex_string(<span class="string">&quot;sha256&quot;</span>,        sha256,    <span class="keyword">sizeof</span>(sha256));</span><br><span class="line"></span><br><span class="line">    <span class="type">uint32_t</span> test_cnt = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; num_curves; ++c) &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">            fflush(<span class="built_in">stdout</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!uECC_make_key(public_key, private_key, curves[c])) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;uECC_make_key() failed\n&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            out_hex_string(<span class="string">&quot;private_key&quot;</span>,   private_key,    uECC_curve_private_key_size(curves[c]));</span><br><span class="line">            out_hex_string(<span class="string">&quot;public_key&quot;</span>,    public_key,     uECC_curve_public_key_size(curves[c]));</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (!uECC_sign(private_key, sha256, <span class="keyword">sizeof</span>(sha256), signature, curves[c])) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;uECC_sign() failed\n&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            out_hex_string(<span class="string">&quot;signature&quot;</span>,     signature,     ECDSA256_SIGNATURE_SIZE);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!uECC_verify(public_key, sha256, <span class="keyword">sizeof</span>(sha256), signature, curves[c])) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;uECC_verify() failed\n&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;uECC %d, test OK&quot;</span>, c);</span><br><span class="line"></span><br><span class="line">            test_cnt++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>加密算法</category>
+      </categories>
+      <tags>
+        <tag>公私钥</tag>
+        <tag>加解密</tag>
+        <tag>算法</tag>
+        <tag>ECDH</tag>
+        <tag>ECDSA</tag>
+        <tag>微型算法库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sha256 算法</title>
+    <url>/2024/01/24/1.Software/2.encryption/2.sha256/</url>
+    <content><![CDATA[<h3 id="sha256-算法"><a href="#sha256-算法" class="headerlink" title="sha256 算法"></a>sha256 算法</h3><hr>
+<p>sha256是一种密码散列函数，说白了它就是一个哈希函数。对于任意长度的消息，SHA256都会产生一个256bit长度的散列值，称为消息摘要，可以用一个长度为64的十六进制字符串表示。sha256是SHA-2下细分出的一种算法。SHA-2下又可再分为六个不同的算法标准，包括了：SHA-224、SHA-256、SHA-384、SHA-512、SHA-512&#x2F;224、SHA-512&#x2F;256</p>
+<p>在线测试网站 : <a href="https://tool.oschina.net/encrypt?type=2">https://tool.oschina.net/encrypt?type=2</a></p>
+<h4 id="sha256的安全性如何？"><a href="#sha256的安全性如何？" class="headerlink" title="sha256的安全性如何？"></a>sha256的安全性如何？</h4><p>sha256非常安全，因为获得相同哈希值的唯一方法是输入相同的文件或字符串。即使是一个小的调整也会完全改变输出。这就是sha256如此安全的原因。 举例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：Bye1</span><br><span class="line">得到的结果：</span><br><span class="line">741a03a10f3de6b2eb81985d06b70f549e762d2e9a1895c5156ffc5e10ffde33</span><br><span class="line"></span><br><span class="line">输入：bye1</span><br><span class="line">得到的结果：</span><br><span class="line">d828103bd4740f22982794b6bd394839dd73f894280a631ba7e3e7e38a42c2e8</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="sha256算法是否可逆"><a href="#sha256算法是否可逆" class="headerlink" title="sha256算法是否可逆"></a>sha256算法是否可逆</h4><p>因为sha256是一个确定的单向哈希函数，因此sha256是不可逆的。也就是说，它是个数学函数，接受任意大小的输入，但返回固定大小的输出，就像文件或字符串的数字指纹。它是确定性的，因为相同的输入总是产生相同的输出。</p>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><blockquote>
+<p><a href="https://github.com/xboot/xboot/blob/master/developments/mkz/sha256.c">https://github.com/xboot/xboot/blob/master/developments/mkz/sha256.c</a><br><a href="https://github.com/xboot/xboot/blob/master/src/include/sha256.h">https://github.com/xboot/xboot/blob/master/src/include/sha256.h</a></p>
+</blockquote>
+<h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;sha256.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">out_hex_string</span><span class="params">(<span class="type">char</span> *info, <span class="type">uint8_t</span> *buf, <span class="type">uint32_t</span> size)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s : \r\n&quot;</span>, info);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%02x &quot;</span>, buf[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">char</span> use_data[<span class="number">10</span>] = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    <span class="type">uint8_t</span> sha256[SHA256_DIGEST_SIZE];</span><br><span class="line"></span><br><span class="line">    sha256_hash(use_data, <span class="built_in">strlen</span>(use_data), sha256);</span><br><span class="line">    out_hex_string(<span class="string">&quot;sha256&quot;</span>,        sha256,    <span class="keyword">sizeof</span>(sha256));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>加密算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>微型算法库</tag>
+        <tag>sha256</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数字签名，加密方案</title>
+    <url>/2024/01/25/1.Software/2.encryption/3.digital_encryption/</url>
+    <content><![CDATA[<h3 id="什么是数字签名和数字证书"><a href="#什么是数字签名和数字证书" class="headerlink" title="什么是数字签名和数字证书"></a>什么是数字签名和数字证书</h3><h4 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h4><p>如果你能非常清晰的回答出以下问题，可以不用看这篇文章了：</p>
+<ul>
+<li>非对称加密中公私钥都可以加密，那么什么时候用公钥加密，什么时候用私钥“加密” ？</li>
+<li>什么是数字签名，数字签名的作用是什么？</li>
+<li>为什么要对数据的摘要进行签名，而不是直接计算原始数据的数字签名？</li>
+<li>什么是数字证书，数字证书解决了什么问题？</li>
+</ul>
+<p>这篇文章，主要围绕 <strong>数字签名</strong> 和 <strong>数字证书</strong> 的原理以及它们的作用展开。</p>
+<p>争取做到让不具备任何密码学基础知识的同学都能听懂，所以在这里需要先对齐一些加密相关的概念 。</p>
+<h4 id="什么是加密"><a href="#什么是加密" class="headerlink" title="什么是加密"></a>什么是加密</h4><p>加密就是 <strong>对明文数据按某种特殊算法进行处理，使其成为不可读的一段代码，通常称为“密文“</strong> ， 密文通过”密钥“解密后还原出原来的明文，通过这样的途径可以达到保护数据不被非法人窃取、阅读的目的。</p>
+<p>定义简单吧？那来看个题，考虑以下哪些属于加密方法：</p>
+<ul>
+<li>AES</li>
+<li>RSA</li>
+<li>MD5</li>
+<li>BASE64</li>
+<li>SM4</li>
+</ul>
+<p>这几种都是日常开发中常用的数据编码技术，但是只有 AES、RSA、SM4 才能算是加密方法。</p>
+<p>为什么呢？ <strong>一个区分的简单方法就是看编码后的数据是否还能还原，能还原的是加密。</strong></p>
+<p>MD5 实际上是对数据进行有损压缩，无论数据有多长，1KB、1Mb 还是 1G，都会生成固定 128 位的散列值，并且 MD5 理论上是不可能对编码后的数据进行还原的，即不可逆。</p>
+<p>MD5 因为其具有不可逆性、单向恒定性（相同的数据多次计算值不变）被广泛应用于文件完整性验证、口令加密以及接下来会讲到的数字签名中。</p>
+<p>至于 BASE64 是否算做加密方法，仁者见仁。在这里不下结论，因为 BASE64 编码不需要密钥，且编码后的字符串任何人都可以解码出原串，所以一般不认为是加密方法。BASE64 常用来做转码，把二进制字节序列转化为 ASCII 字符序列。</p>
+<h4 id="加密算法的分类"><a href="#加密算法的分类" class="headerlink" title="加密算法的分类"></a>加密算法的分类</h4><p>加密算法按照加解密使用的密钥是否相同，可分为：</p>
+<ul>
+<li>对称加密（Symmetric Cryptography）</li>
+<li>非对称加密（Asymmetric Cryptography）</li>
+</ul>
+<p><strong>1. 对称加密</strong></p>
+<p>对称加密是指加密和解密时使用同一个密钥。</p>
+<p><img src="/img/img_digital_encryption/1.webp"></p>
+<p><strong>2. 非对称加密</strong></p>
+<p>非对称加密是指加密和解密使用不同的密钥，这两个密钥分别叫做 <strong>「公钥」、「私钥」。</strong></p>
+<p>公钥是可以公开给所有人的，而私钥需要自己保密的。</p>
+<p>公钥加密的数据只能用私钥解密：</p>
+<p><img src="/img/img_digital_encryption/2.webp"></p>
+<p>同理，私钥“加密”的数据只能用公钥“解密”：</p>
+<p><img src="/img/img_digital_encryption/3.webp"></p>
+<p>大家注意到没，我对 <strong>私钥“加密”</strong> 这里打了引号，为什么呢？</p>
+<p>因为私钥不是用来加密的，准确的说法应该是 <strong>「私钥签名，公钥验签」</strong>。<br>这个问题很多同学都存在误解，认为公私钥都可以用于加密。<br>实际上不是的，至于为什么，后面讲完签名我会解释的。</p>
+<h4 id="故事开始"><a href="#故事开始" class="headerlink" title="故事开始"></a>故事开始</h4><p>为了讲这个故事，小北请来了密码学中常用的学术情侣，Alice 和 Bob，以及窃听者代表 Eve。<br>我们从 Alice、Bob 约会的故事展开，来讲讲其中暗藏着哪些危机，又是如何一步步化解的。</p>
+<h5 id="1-第一回合"><a href="#1-第一回合" class="headerlink" title="1 第一回合"></a>1 第一回合</h5><hr>
+<p>九月，一个夜黑风高的晚上，Bob 想约 Alice 出来玩，于是给 Alice 发了一封邮件：</p>
+<p><img src="/img/img_digital_encryption/4.webp"></p>
+<p>但我们都知道网络是不可信的，并且由于消息在网络中是明文传输的，所以黑客可以轻易的截获、篡改甚至冒充 Bob。</p>
+<p>来，我们看看黑客 Eve 是怎么干的：</p>
+<p><img src="/img/img_digital_encryption/5.webp"></p>
+<p>瞧，Eve 轻易的拿到了邮件内容 <strong>（窃听）</strong>，并且修改了邮件内容 <strong>（篡改）</strong> ，甚至说他可以随时冒充 Bob 给 Alice 发送邮件 <strong>（伪装）。</strong></p>
+<p>如果上图中 Eve 伪造的内容被 Alice 接收到了，那么后果可想而知。</p>
+<p>现实世界中，我们每天都在通过网络进行聊天、转账、浏览不存在网站。</p>
+<p>如果都是这样明文传输数据，显然毫无安全感。</p>
+<h5 id="2-第二回合"><a href="#2-第二回合" class="headerlink" title="2 第二回合"></a>2 第二回合</h5><hr>
+<p>既然我们不能明文传输，那么 Bob 和 Alice 提前商量好密钥，使用对称加密对邮件内容加密不就好了~</p>
+<p><img src="/img/img_digital_encryption/6.webp"></p>
+<p>现在 Bob 发送的邮件都使用和 Alice 提前商量好的密钥加密后再传输。</p>
+<p>由于没有密钥，Eve 就算截获到数据也无法获取邮件的内容，也没法篡改和冒充 Bob。</p>
+<p>因为篡改后的数据必须使用密钥再次加密 Alice 才能正确解密。</p>
+<p>那么只要 Bob 和 Alice 能够保证 密钥不泄露，整个通信就是安全的。</p>
+<p>如果密钥泄露，被中间人截获，那么就等同于明文通信。</p>
+<p>所以我们不能把安全性寄托在人上面。</p>
+<p>并且这里也存在一个问题，如果两个人不能线下见面， 如何在网上安全的交换密钥呢？</p>
+<p>这似乎是无解的，因为  <strong>交换密钥的时候我们必须明文通信，不然对方根本看不懂。但是明文交换即意味着可能泄露。</strong></p>
+<p>但是别忘了我们的密码学工具箱里还有一个好东西— 「非对称加密」。</p>
+<p>Bob 和 Alice 各自生成一对公私钥，因为公钥本来就是公开的，即可以被任何人获取，所以可以通过网络明文交换公钥。</p>
+<p>然后使用公钥加密邮件内容后发送给对方，接收者使用自己的私钥即可解密。完美~</p>
+<h5 id="3-第三回合"><a href="#3-第三回合" class="headerlink" title="3 第三回合"></a>3 第三回合</h5><hr>
+<p>来看看，在非对称加密体系下，Bob 如何给 Alice 发消息的。</p>
+<p>首先 Alice 需要先生成一对公私钥，私钥只能 Alice 自己知道，公钥是可以让任何人都知道的，因此可将公钥直接发送给 Bob，就算被截获也无所谓。</p>
+<p><img src="/img/img_digital_encryption/7.webp"></p>
+<p>Bob 使用 Alice 的公钥加密邮件内容，加密后的内容只能由 Alice 的私钥解密，所以就算 Eve 截获也是徒劳。</p>
+<p>反之，如果 Alice 想给 Bob 回信，就需要用 Bob 的公钥加密后发送。</p>
+<p>这就解决了密钥交换问题，也保证了邮件内容不会泄露。也就是说现在可以 <strong>防窃听。</strong></p>
+<h5 id="4-如何证明-Bob-是-Bob"><a href="#4-如何证明-Bob-是-Bob" class="headerlink" title="4 如何证明 Bob 是 Bob"></a>4 如何证明 Bob 是 Bob</h5><hr>
+<p>不知道你注意到没有，这里也存在另外一个问题：</p>
+<p><strong>Eve 也可以使用 Alice 的公钥冒充 Bob 给 Alice 发邮件啊，因为 Alice 的公钥本来就是公开的，任何人都可以获得。</strong></p>
+<p>由于 Eve 也可以获得 Alice 公钥，所以没法防止 Eve <strong>伪造</strong> 和 <strong>篡改</strong> ，并且对于 Alice 而言，她无法分辨出邮件到底是 Eve 发的还是 Bob。</p>
+<p>所以这个问题的本质就是 <strong>「Alice 如何确认邮件来自于 Bob」。</strong></p>
+<p>那么在生活中，我们如何做这件事呢？</p>
+<p>那就是让 Bob 在纸上 <strong>签名</strong> 并且按 <strong>手印</strong> ，因为指纹和字迹是 Bob 独有的，其它人很难伪造。</p>
+<p>所以我们需要在计算机中引入类似的机制：</p>
+<p><strong>即只有 Bob 自己能够产生的独一无二的标志，并且其它人能够验证这个标志确实是属于 Bob的。</strong></p>
+<p>这就是我们今天要讲的主题— <strong>「数字签名」。</strong></p>
+<p>还记得什么是 Bob 独有的吗？</p>
+<p>对，就是 Bob 自己的私钥，Bob 用自己的私钥对邮件内容计算一个「签名」，将「签名」和邮件内容一起发送出去，接受者 Alice 可以使用 Bob 的公钥验证这个签名是否正确，这就叫「验签」。</p>
+<p>如果不是 Bob 的私钥计算的签名，那么 Alice 用 Bob 公钥验签将会出错。</p>
+<p><img src="/img/img_digital_encryption/8.webp"></p>
+<p>可以看到， Eve 试图使用自己的私钥计算签名然后发送给 Alice， 但是 Alice 使用 Bob的公钥进行验签时将会出错！</p>
+<p>那么 Eve 可能篡改内容并冒充 Bob 的签名吗？不可能！因为内容发生改变时，对应的签名也需要重新计算，而签名的生成依赖于私钥，只要 Bob 的私钥不泄露，签名就不会被冒充。</p>
+<p>啊啥？你说万一私钥泄露了怎么办？那就当我没说……</p>
+<p>所以使用数字签名，我们能够鉴别消息的发送者，也就是说黑客无法伪装发送者进行发送数据，也无法篡改。</p>
+<blockquote>
+<p> <strong>注意：</strong></p>
+<p>可以看出我们这里数据是明文传输的，存在窃听风险。但是我们为了阐述数字签名机制是如何运转的，故意将保证信息机密性的机制省略了。</p>
+<p>如果想要保证数据的机密性，我们常见的做法是，通信双方通过非对称加密安全交换对称加密的密钥，后续通信过程的数据都使用对称加密保证数据机密性。</p>
+<p>并且「签名」的作用本身也不是用来保证数据的机密性，而是用于验证数据来源的防止数据被篡改的，也就是确认发送者的身份。</p>
+</blockquote>
+<p>一般而言，我们不会直接对数据本身直接计算数字签名，为什么呢？</p>
+<p>因为数字签名属于非对称加密，非对称加密依赖于复杂的数学运算，包括大数乘法、大数模等等，耗时比较久。</p>
+<p>如果数据量大的时候计算数字签名将会比较耗时，所以一般做法是先将原数据进行 Hash 运算，得到的 Hash 值就叫做「摘要」。</p>
+<p>「摘要」就像人的指纹一样，可以代表一个人，只要内容发生了改变，计算出来的摘要也应该变化。</p>
+<p>「摘要」最好是不可逆转的，一般使用开头提到的 MD5 作为 Hash 函数，MD5 输出的结果固定位 128 位。</p>
+<blockquote>
+<p><strong>为什么「摘要」最好是不可逆转的？</strong></p>
+<p>因为既然 Alice 可以用 Bob 公钥解开签名，那么理论上其它人，比如 Eve 也可以使用 Bob 公钥解开签名拿到数据。</p>
+<p>所以我们最好对数据的「摘要」进行签名，这样，Eve 就算解开签名，拿到的也是「摘要」，如果摘要是不可逆转的，也就是无法从摘要反推出原文，也就达到了保密的作用。</p>
+<p>发送者使用私钥对「摘要」计算数字签名。那么接收者如何验证呢？</p>
+</blockquote>
+<p><img src="/img/img_digital_encryption/9.webp"></p>
+<p>接受者 Alice 收到后，取下数字签名，同时用 Bob 的公钥解密，得到「摘要1」， <strong>证明确实是 Bob 发的。</strong></p>
+<p>( 画外音：如果使用 Bob 的公钥验证签名出错，那么签名一定不是 Bob 的私钥生成的）</p>
+<p>再对邮件内容使用相同的散列函数计算「摘要2」，与上面得到的「摘要1」进行对比， <strong>两者一致就说明信息未被篡改。</strong></p>
+<p>这样两步分证明发送者身份和保证数据未被篡改。</p>
+<h5 id="5-这就够了吗？"><a href="#5-这就够了吗？" class="headerlink" title="5 这就够了吗？"></a>5 这就够了吗？</h5><hr>
+<p>Bob 和 Alice 现在可以依赖于对称加密进行保密通信，也可以依赖于数字签名验证消息是否是对方发送的。</p>
+<p><strong>但是这一切的根基是建立在 Alice 持有的公钥确实是 Bob的，反之亦然。</strong></p>
+<p>什么意思呢？</p>
+<p>试想， <strong>Eve 如果将自己的公钥冒充 Bob 发送给 Alice，然后 Alice 保存了下来，那以后凡是 Bob 发送的消息，反而会验证签名失败，被当做冒充者。</strong></p>
+<p>那你可能会问，为什么 Eve 可以将自己的公钥发送给 Alice，而 Alice 毫不知情呢？</p>
+<p><img src="/img/img_digital_encryption/10.webp"></p>
+<p>看！我们又回到了最初的起点，只不过这次被篡改的是公钥，之前是消息本身。</p>
+<p>因为 Bob 的公钥是直接通过网络发送给 Alice的，所以 Eve 才可以在这一步做手脚，进行篡改，将自己的公钥冒充 Bob 发送给 Alice，也就是发送公钥这一步没有做到：</p>
+<p>防篡改<br>防冒充<br>防篡改怎么和防冒充怎么实现的呢？</p>
+<p>我们前面讲了，就是靠数字签名！ 但是数字签名需要接受者持有发送者公钥，才能进行验签。</p>
+<p><strong>而我们现在处理的是分发公钥这一步，所以…….死锁了。这像是先有鸡还是先有蛋的问题</strong></p>
+<p>现在的问题就是「Bob 无法证明它自己是 Bob」。</p>
+<p>这个是不是似曾相识，以前去办事的时候经常被要求出具「我妈是我妈」这类证明。但是我们自己说“我妈就是我妈”，人家根本不会信呀，需要一个可信第三方出具证明，比如派出所。</p>
+<p>那么「Alice 如何才能确认 Bob 发送给自己的公钥确实是 Bob 的，而没有被篡改？」</p>
+<p>在只有 Alice 和 Bob 两人的情况下是没法验证的。</p>
+<p>所以，我们这里也需要一个第三方帮 Bob证明 「Bob 的公钥就是 Bob 的公钥」，有点绕口令那感觉了~</p>
+<h5 id="6-数字证书"><a href="#6-数字证书" class="headerlink" title="6 数字证书"></a>6 数字证书</h5><hr>
+<p>为了解决这个问题，就引入了「数字证书」，什么叫数字证书呢？</p>
+<blockquote>
+<p><strong>百度百科：</strong></p>
+<p>数字证书是指在互联网通讯中标志通讯各方身份信息的一个数字认证，人们可以在网上用它来识别对方的身份。</p>
+</blockquote>
+<p>因此数字证书又称为数字标识。数字证书对网络用户在交流中的信息和数据等以加密或解密的形式保证了信息和数据的完整性和安全性。</p>
+<p>看了这个描述，是不是感觉还是云里雾里，还是我用大白话来说吧~</p>
+<p>只要你理解了前面的数字签名，就能理解这里的数字证书，因为我把数字证书叫做「公钥的数字签名」。</p>
+<p>为什么呢？我们引入数字证书的目的是为了保证公钥不被篡改，即使被篡改了也能识别出来。</p>
+<p>而防篡改的方法就是数字签名，但是这个签名不能我们自己做，原因说过了，因为我们的公钥还没分发出去，别人无法验证。</p>
+<p>所以只能找可信的第三方来帮我们签名，即证书颁布机构（CA），CA 会将：证书的颁布机构、有效期、公钥、持有者(subject)等信息用 CA 的私钥进行签名。</p>
+<p>并且将签名结果和这些信息放在一起，这就叫做「数字证书」。</p>
+<p>这样，Bob 就可以去 CA 申请一个证书，然后将自己的证书发给 Alice，那么 Alice 如何验证这个证书确实是 Bob的呢？</p>
+<p>当然是使用 CA 的公钥进行验签。</p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>CA 的公钥也是需要使用证书来分发的，所以 Alice 的电脑必须安装 CA 的证书，证书里包含了 CA 的公钥。</p>
+</blockquote>
+<p>收到 Bob 发过来的数字证书后，Alice 使用 CA 的公钥进行验证，验证通过即证明这确实是 Bob 证书，也就可以使用证书中包含的 Bob 的公钥，按照之前讨论的流程进行通信。</p>
+<p>那么 Eve 是否可以在中途篡改 Bob 的证书呢？</p>
+<p>答案是不行，因为证书的信息使用 CA 的私钥进行签名，只要 Eve 修改了任何一个 Bit 都会导致最后签名验证不通过。</p>
+<p>那 Eve 可不可以修改证书信息后自己重新计算一次证书的数字签名呢？</p>
+<p>也不行，因为证书的数字签名计算依赖于 CA 的私钥，Eve 是拿不到 CA 的私钥的。</p>
+<p>如果拿到了，说明什么？整个世界都是不可信的。</p>
+<h5 id="7-数字证书长啥样"><a href="#7-数字证书长啥样" class="headerlink" title="7 数字证书长啥样"></a>7 数字证书长啥样</h5><hr>
+<p>这是我电脑中的自带的证书：</p>
+<p><img src="/img/img_digital_encryption/11.webp"></p>
+<p>可以看到，包含了证书持有人的公钥和证书的签名。</p>
+<p>另外，证书颁发机构是有层级关系的，下级 CA 的证书是需要由上级 CA 签名的。</p>
+<p>换句话说一定存在根证书颁发机构，那么他们的证书是由谁签名的呢？</p>
+<p>答案是自签，自己给自己认证。</p>
+<p>这是我电脑中的一个自签的根证书颁发机构：</p>
+<p><img src="/img/img_digital_encryption/12.webp"></p>
+<p><strong>为什么根证书可以自签，谁来保证安全？</strong></p>
+<p>你把钱存在银行，你会担心吗？我们基于对国家的信任，才信任银行，这就是信任链的基础！我们思考问题应该是分层的，如果不认可一个统一的基础，一直套娃下去，那么问题就无解。</p>
+<p>那还有个问题，如何保证根证书的可靠性？<br>这是操作系统和浏览器预装的，由微软、苹果等操作系统厂商来选择根证书。</p>
+<p><strong>8 证书不可信？</strong></p>
+<hr>
+<p>那么什么情况下浏览器会提示 “证书不可信” 呢？</p>
+<p>根据我们上面的分析，下面是可能的原因：</p>
+<ul>
+<li><p>证书不是权威 CA 颁发<br>有些企业为了贪图便宜使用盗版的证书，没有经过 CA 认证。也就是无法使用浏览器内置 CA 公钥进行验证。</p>
+</li>
+<li><p>证书过期<br>上面说了，证书里有一项就是有效期，一般就是一年或者两年的时间。如果证书过期，那么浏览器就会提示“证书不可信”</p>
+</li>
+<li><p>证书部署错误<br>可能是服务器证书部署出错，比如证书与域名不匹配，因为证书里有一项是持有人信息的。</p>
+</li>
+</ul>
+<p>好了，饶了一大圈，Bob 终于可以安全的向 Alice 发出前往红树林的邀请了~</p>
+<h4 id="QA：现在我们来回答文章开头提出的一些问题"><a href="#QA：现在我们来回答文章开头提出的一些问题" class="headerlink" title="QA：现在我们来回答文章开头提出的一些问题"></a>QA：现在我们来回答文章开头提出的一些问题</h4><blockquote>
+<p>非对称加密中公私钥都可以加密，那么什么时候用公钥加密，什么时候用私钥“加密” ？</p>
+</blockquote>
+<ul>
+<li>加密场景，那么肯定希望只有我才能解密，别人只能加密。即公钥加密，私钥解密。</li>
+<li>签名场景，既然是签名，就希望只能我才能签名，别人只能验证。即私钥签名，公钥验签</li>
+</ul>
+<blockquote>
+<p>什么是数字签名，数字签名的作用是什么？</p>
+</blockquote>
+<ul>
+<li>数字签名就是使用私钥对数据摘要进行签名，并附带和数据一起发送。</li>
+<li>可以起到防篡改、防伪装、防否认的作用。</li>
+</ul>
+<blockquote>
+<p>为什么要对数据的摘要进行签名，而不是直接计算原始数据的数字签名？</p>
+</blockquote>
+<ul>
+<li>数据可能比较大，签名是使用非对称加密算法，比较耗时</li>
+<li>防止第三方使用公钥解开签名后，拿到原始数据</li>
+</ul>
+<blockquote>
+<p>什么是数字证书，数字证书存在解决了什么问题？</p>
+</blockquote>
+<ul>
+<li>数字证书就是由 CA 机构使用自己私钥，对证书申请者的公钥进行签名认证。</li>
+<li>数字证书解决了如何安全分发公钥的问题，也奠定了信任链的基础。</li>
+</ul>
+<blockquote>
+<p>本文参考链接： <a href="https://segmentfault.com/a/1190000024523772">https://segmentfault.com/a/1190000024523772</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>加密算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>数字签名</tag>
+        <tag>固件机密</tag>
+        <tag>加密方案</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数字签名，加密方案</title>
+    <url>/2024/01/24/1.Software/2.encryption/3.digital_signature/</url>
+    <content><![CDATA[<h3 id="什么是数字签名和数字证书"><a href="#什么是数字签名和数字证书" class="headerlink" title="什么是数字签名和数字证书"></a>什么是数字签名和数字证书</h3><h4 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h4><p>如果你能非常清晰的回答出以下问题，可以不用看这篇文章了：</p>
+<ul>
+<li>非对称加密中公私钥都可以加密，那么什么时候用公钥加密，什么时候用私钥“加密” ？</li>
+<li>什么是数字签名，数字签名的作用是什么？</li>
+<li>为什么要对数据的摘要进行签名，而不是直接计算原始数据的数字签名？</li>
+<li>什么是数字证书，数字证书解决了什么问题？</li>
+</ul>
+<p>这篇文章，主要围绕 <strong>数字签名</strong> 和 <strong>数字证书</strong> 的原理以及它们的作用展开。</p>
+<p>争取做到让不具备任何密码学基础知识的同学都能听懂，所以在这里需要先对齐一些加密相关的概念 。</p>
+<h4 id="什么是加密"><a href="#什么是加密" class="headerlink" title="什么是加密"></a>什么是加密</h4><p>加密就是 <strong>对明文数据按某种特殊算法进行处理，使其成为不可读的一段代码，通常称为“密文“</strong> ， 密文通过”密钥“解密后还原出原来的明文，通过这样的途径可以达到保护数据不被非法人窃取、阅读的目的。</p>
+<p>定义简单吧？那来看个题，考虑以下哪些属于加密方法：</p>
+<ul>
+<li>AES</li>
+<li>RSA</li>
+<li>MD5</li>
+<li>BASE64</li>
+<li>SM4</li>
+</ul>
+<p>这几种都是日常开发中常用的数据编码技术，但是只有 AES、RSA、SM4 才能算是加密方法。</p>
+<p>为什么呢？ <strong>一个区分的简单方法就是看编码后的数据是否还能还原，能还原的是加密。</strong></p>
+<p>MD5 实际上是对数据进行有损压缩，无论数据有多长，1KB、1Mb 还是 1G，都会生成固定 128 位的散列值，并且 MD5 理论上是不可能对编码后的数据进行还原的，即不可逆。</p>
+<p>MD5 因为其具有不可逆性、单向恒定性（相同的数据多次计算值不变）被广泛应用于文件完整性验证、口令加密以及接下来会讲到的数字签名中。</p>
+<p>至于 BASE64 是否算做加密方法，仁者见仁。在这里不下结论，因为 BASE64 编码不需要密钥，且编码后的字符串任何人都可以解码出原串，所以一般不认为是加密方法。BASE64 常用来做转码，把二进制字节序列转化为 ASCII 字符序列。</p>
+<h4 id="加密算法的分类"><a href="#加密算法的分类" class="headerlink" title="加密算法的分类"></a>加密算法的分类</h4><p>加密算法按照加解密使用的密钥是否相同，可分为：</p>
+<ul>
+<li>对称加密（Symmetric Cryptography）</li>
+<li>非对称加密（Asymmetric Cryptography）</li>
+</ul>
+<p><strong>1. 对称加密</strong></p>
+<p>对称加密是指加密和解密时使用同一个密钥。</p>
+<p><img src="/img/img_digital_encryption/1.webp"></p>
+<p><strong>2. 非对称加密</strong></p>
+<p>非对称加密是指加密和解密使用不同的密钥，这两个密钥分别叫做 <strong>「公钥」、「私钥」。</strong></p>
+<p>公钥是可以公开给所有人的，而私钥需要自己保密的。</p>
+<p>公钥加密的数据只能用私钥解密：</p>
+<p><img src="/img/img_digital_encryption/2.webp"></p>
+<p>同理，私钥“加密”的数据只能用公钥“解密”：</p>
+<p><img src="/img/img_digital_encryption/3.webp"></p>
+<p>大家注意到没，我对 <strong>私钥“加密”</strong> 这里打了引号，为什么呢？</p>
+<p>因为私钥不是用来加密的，准确的说法应该是 <strong>「私钥签名，公钥验签」</strong>。<br>这个问题很多同学都存在误解，认为公私钥都可以用于加密。<br>实际上不是的，至于为什么，后面讲完签名我会解释的。</p>
+<h4 id="故事开始"><a href="#故事开始" class="headerlink" title="故事开始"></a>故事开始</h4><p>为了讲这个故事，小北请来了密码学中常用的学术情侣，Alice 和 Bob，以及窃听者代表 Eve。<br>我们从 Alice、Bob 约会的故事展开，来讲讲其中暗藏着哪些危机，又是如何一步步化解的。</p>
+<h5 id="1-第一回合"><a href="#1-第一回合" class="headerlink" title="1 第一回合"></a>1 第一回合</h5><hr>
+<p>九月，一个夜黑风高的晚上，Bob 想约 Alice 出来玩，于是给 Alice 发了一封邮件：</p>
+<p><img src="/img/img_digital_encryption/4.webp"></p>
+<p>但我们都知道网络是不可信的，并且由于消息在网络中是明文传输的，所以黑客可以轻易的截获、篡改甚至冒充 Bob。</p>
+<p>来，我们看看黑客 Eve 是怎么干的：</p>
+<p><img src="/img/img_digital_encryption/5.webp"></p>
+<p>瞧，Eve 轻易的拿到了邮件内容 <strong>（窃听）</strong>，并且修改了邮件内容 <strong>（篡改）</strong> ，甚至说他可以随时冒充 Bob 给 Alice 发送邮件 <strong>（伪装）。</strong></p>
+<p>如果上图中 Eve 伪造的内容被 Alice 接收到了，那么后果可想而知。</p>
+<p>现实世界中，我们每天都在通过网络进行聊天、转账、浏览不存在网站。</p>
+<p>如果都是这样明文传输数据，显然毫无安全感。</p>
+<h5 id="2-第二回合"><a href="#2-第二回合" class="headerlink" title="2 第二回合"></a>2 第二回合</h5><hr>
+<p>既然我们不能明文传输，那么 Bob 和 Alice 提前商量好密钥，使用对称加密对邮件内容加密不就好了~</p>
+<p><img src="/img/img_digital_encryption/6.webp"></p>
+<p>现在 Bob 发送的邮件都使用和 Alice 提前商量好的密钥加密后再传输。</p>
+<p>由于没有密钥，Eve 就算截获到数据也无法获取邮件的内容，也没法篡改和冒充 Bob。</p>
+<p>因为篡改后的数据必须使用密钥再次加密 Alice 才能正确解密。</p>
+<p>那么只要 Bob 和 Alice 能够保证 密钥不泄露，整个通信就是安全的。</p>
+<p>如果密钥泄露，被中间人截获，那么就等同于明文通信。</p>
+<p>所以我们不能把安全性寄托在人上面。</p>
+<p>并且这里也存在一个问题，如果两个人不能线下见面， 如何在网上安全的交换密钥呢？</p>
+<p>这似乎是无解的，因为  <strong>交换密钥的时候我们必须明文通信，不然对方根本看不懂。但是明文交换即意味着可能泄露。</strong></p>
+<p>但是别忘了我们的密码学工具箱里还有一个好东西— 「非对称加密」。</p>
+<p>Bob 和 Alice 各自生成一对公私钥，因为公钥本来就是公开的，即可以被任何人获取，所以可以通过网络明文交换公钥。</p>
+<p>然后使用公钥加密邮件内容后发送给对方，接收者使用自己的私钥即可解密。完美~</p>
+<h5 id="3-第三回合"><a href="#3-第三回合" class="headerlink" title="3 第三回合"></a>3 第三回合</h5><hr>
+<p>来看看，在非对称加密体系下，Bob 如何给 Alice 发消息的。</p>
+<p>首先 Alice 需要先生成一对公私钥，私钥只能 Alice 自己知道，公钥是可以让任何人都知道的，因此可将公钥直接发送给 Bob，就算被截获也无所谓。</p>
+<p><img src="/img/img_digital_encryption/7.webp"></p>
+<p>Bob 使用 Alice 的公钥加密邮件内容，加密后的内容只能由 Alice 的私钥解密，所以就算 Eve 截获也是徒劳。</p>
+<p>反之，如果 Alice 想给 Bob 回信，就需要用 Bob 的公钥加密后发送。</p>
+<p>这就解决了密钥交换问题，也保证了邮件内容不会泄露。也就是说现在可以 <strong>防窃听。</strong></p>
+<h5 id="4-如何证明-Bob-是-Bob"><a href="#4-如何证明-Bob-是-Bob" class="headerlink" title="4 如何证明 Bob 是 Bob"></a>4 如何证明 Bob 是 Bob</h5><hr>
+<p>不知道你注意到没有，这里也存在另外一个问题：</p>
+<p><strong>Eve 也可以使用 Alice 的公钥冒充 Bob 给 Alice 发邮件啊，因为 Alice 的公钥本来就是公开的，任何人都可以获得。</strong></p>
+<p>由于 Eve 也可以获得 Alice 公钥，所以没法防止 Eve <strong>伪造</strong> 和 <strong>篡改</strong> ，并且对于 Alice 而言，她无法分辨出邮件到底是 Eve 发的还是 Bob。</p>
+<p>所以这个问题的本质就是 <strong>「Alice 如何确认邮件来自于 Bob」。</strong></p>
+<p>那么在生活中，我们如何做这件事呢？</p>
+<p>那就是让 Bob 在纸上 <strong>签名</strong> 并且按 <strong>手印</strong> ，因为指纹和字迹是 Bob 独有的，其它人很难伪造。</p>
+<p>所以我们需要在计算机中引入类似的机制：</p>
+<p><strong>即只有 Bob 自己能够产生的独一无二的标志，并且其它人能够验证这个标志确实是属于 Bob的。</strong></p>
+<p>这就是我们今天要讲的主题— <strong>「数字签名」。</strong></p>
+<p>还记得什么是 Bob 独有的吗？</p>
+<p>对，就是 Bob 自己的私钥，Bob 用自己的私钥对邮件内容计算一个「签名」，将「签名」和邮件内容一起发送出去，接受者 Alice 可以使用 Bob 的公钥验证这个签名是否正确，这就叫「验签」。</p>
+<p>如果不是 Bob 的私钥计算的签名，那么 Alice 用 Bob 公钥验签将会出错。</p>
+<p><img src="/img/img_digital_encryption/8.webp"></p>
+<p>可以看到， Eve 试图使用自己的私钥计算签名然后发送给 Alice， 但是 Alice 使用 Bob的公钥进行验签时将会出错！</p>
+<p>那么 Eve 可能篡改内容并冒充 Bob 的签名吗？不可能！因为内容发生改变时，对应的签名也需要重新计算，而签名的生成依赖于私钥，只要 Bob 的私钥不泄露，签名就不会被冒充。</p>
+<p>啊啥？你说万一私钥泄露了怎么办？那就当我没说……</p>
+<p>所以使用数字签名，我们能够鉴别消息的发送者，也就是说黑客无法伪装发送者进行发送数据，也无法篡改。</p>
+<blockquote>
+<p> <strong>注意：</strong></p>
+<p>可以看出我们这里数据是明文传输的，存在窃听风险。但是我们为了阐述数字签名机制是如何运转的，故意将保证信息机密性的机制省略了。</p>
+<p>如果想要保证数据的机密性，我们常见的做法是，通信双方通过非对称加密安全交换对称加密的密钥，后续通信过程的数据都使用对称加密保证数据机密性。</p>
+<p>并且「签名」的作用本身也不是用来保证数据的机密性，而是用于验证数据来源的防止数据被篡改的，也就是确认发送者的身份。</p>
+</blockquote>
+<p>一般而言，我们不会直接对数据本身直接计算数字签名，为什么呢？</p>
+<p>因为数字签名属于非对称加密，非对称加密依赖于复杂的数学运算，包括大数乘法、大数模等等，耗时比较久。</p>
+<p>如果数据量大的时候计算数字签名将会比较耗时，所以一般做法是先将原数据进行 Hash 运算，得到的 Hash 值就叫做「摘要」。</p>
+<p>「摘要」就像人的指纹一样，可以代表一个人，只要内容发生了改变，计算出来的摘要也应该变化。</p>
+<p>「摘要」最好是不可逆转的，一般使用开头提到的 MD5 作为 Hash 函数，MD5 输出的结果固定位 128 位。</p>
+<blockquote>
+<p><strong>为什么「摘要」最好是不可逆转的？</strong></p>
+<p>因为既然 Alice 可以用 Bob 公钥解开签名，那么理论上其它人，比如 Eve 也可以使用 Bob 公钥解开签名拿到数据。</p>
+<p>所以我们最好对数据的「摘要」进行签名，这样，Eve 就算解开签名，拿到的也是「摘要」，如果摘要是不可逆转的，也就是无法从摘要反推出原文，也就达到了保密的作用。</p>
+<p>发送者使用私钥对「摘要」计算数字签名。那么接收者如何验证呢？</p>
+</blockquote>
+<p><img src="/img/img_digital_encryption/9.webp"></p>
+<p>接受者 Alice 收到后，取下数字签名，同时用 Bob 的公钥解密，得到「摘要1」， <strong>证明确实是 Bob 发的。</strong></p>
+<p>( 画外音：如果使用 Bob 的公钥验证签名出错，那么签名一定不是 Bob 的私钥生成的）</p>
+<p>再对邮件内容使用相同的散列函数计算「摘要2」，与上面得到的「摘要1」进行对比， <strong>两者一致就说明信息未被篡改。</strong></p>
+<p>这样两步分证明发送者身份和保证数据未被篡改。</p>
+<h5 id="5-这就够了吗？"><a href="#5-这就够了吗？" class="headerlink" title="5 这就够了吗？"></a>5 这就够了吗？</h5><hr>
+<p>Bob 和 Alice 现在可以依赖于对称加密进行保密通信，也可以依赖于数字签名验证消息是否是对方发送的。</p>
+<p><strong>但是这一切的根基是建立在 Alice 持有的公钥确实是 Bob的，反之亦然。</strong></p>
+<p>什么意思呢？</p>
+<p>试想， <strong>Eve 如果将自己的公钥冒充 Bob 发送给 Alice，然后 Alice 保存了下来，那以后凡是 Bob 发送的消息，反而会验证签名失败，被当做冒充者。</strong></p>
+<p>那你可能会问，为什么 Eve 可以将自己的公钥发送给 Alice，而 Alice 毫不知情呢？</p>
+<p><img src="/img/img_digital_encryption/10.webp"></p>
+<p>看！我们又回到了最初的起点，只不过这次被篡改的是公钥，之前是消息本身。</p>
+<p>因为 Bob 的公钥是直接通过网络发送给 Alice的，所以 Eve 才可以在这一步做手脚，进行篡改，将自己的公钥冒充 Bob 发送给 Alice，也就是发送公钥这一步没有做到：</p>
+<p>防篡改<br>防冒充<br>防篡改怎么和防冒充怎么实现的呢？</p>
+<p>我们前面讲了，就是靠数字签名！ 但是数字签名需要接受者持有发送者公钥，才能进行验签。</p>
+<p><strong>而我们现在处理的是分发公钥这一步，所以…….死锁了。这像是先有鸡还是先有蛋的问题</strong></p>
+<p>现在的问题就是「Bob 无法证明它自己是 Bob」。</p>
+<p>这个是不是似曾相识，以前去办事的时候经常被要求出具「我妈是我妈」这类证明。但是我们自己说“我妈就是我妈”，人家根本不会信呀，需要一个可信第三方出具证明，比如派出所。</p>
+<p>那么「Alice 如何才能确认 Bob 发送给自己的公钥确实是 Bob 的，而没有被篡改？」</p>
+<p>在只有 Alice 和 Bob 两人的情况下是没法验证的。</p>
+<p>所以，我们这里也需要一个第三方帮 Bob证明 「Bob 的公钥就是 Bob 的公钥」，有点绕口令那感觉了~</p>
+<h5 id="6-数字证书"><a href="#6-数字证书" class="headerlink" title="6 数字证书"></a>6 数字证书</h5><hr>
+<p>为了解决这个问题，就引入了「数字证书」，什么叫数字证书呢？</p>
+<blockquote>
+<p><strong>百度百科：</strong></p>
+<p>数字证书是指在互联网通讯中标志通讯各方身份信息的一个数字认证，人们可以在网上用它来识别对方的身份。</p>
+</blockquote>
+<p>因此数字证书又称为数字标识。数字证书对网络用户在交流中的信息和数据等以加密或解密的形式保证了信息和数据的完整性和安全性。</p>
+<p>看了这个描述，是不是感觉还是云里雾里，还是我用大白话来说吧~</p>
+<p>只要你理解了前面的数字签名，就能理解这里的数字证书，因为我把数字证书叫做「公钥的数字签名」。</p>
+<p>为什么呢？我们引入数字证书的目的是为了保证公钥不被篡改，即使被篡改了也能识别出来。</p>
+<p>而防篡改的方法就是数字签名，但是这个签名不能我们自己做，原因说过了，因为我们的公钥还没分发出去，别人无法验证。</p>
+<p>所以只能找可信的第三方来帮我们签名，即证书颁布机构（CA），CA 会将：证书的颁布机构、有效期、公钥、持有者(subject)等信息用 CA 的私钥进行签名。</p>
+<p>并且将签名结果和这些信息放在一起，这就叫做「数字证书」。</p>
+<p>这样，Bob 就可以去 CA 申请一个证书，然后将自己的证书发给 Alice，那么 Alice 如何验证这个证书确实是 Bob的呢？</p>
+<p>当然是使用 CA 的公钥进行验签。</p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>CA 的公钥也是需要使用证书来分发的，所以 Alice 的电脑必须安装 CA 的证书，证书里包含了 CA 的公钥。</p>
+</blockquote>
+<p>收到 Bob 发过来的数字证书后，Alice 使用 CA 的公钥进行验证，验证通过即证明这确实是 Bob 证书，也就可以使用证书中包含的 Bob 的公钥，按照之前讨论的流程进行通信。</p>
+<p>那么 Eve 是否可以在中途篡改 Bob 的证书呢？</p>
+<p>答案是不行，因为证书的信息使用 CA 的私钥进行签名，只要 Eve 修改了任何一个 Bit 都会导致最后签名验证不通过。</p>
+<p>那 Eve 可不可以修改证书信息后自己重新计算一次证书的数字签名呢？</p>
+<p>也不行，因为证书的数字签名计算依赖于 CA 的私钥，Eve 是拿不到 CA 的私钥的。</p>
+<p>如果拿到了，说明什么？整个世界都是不可信的。</p>
+<h5 id="7-数字证书长啥样"><a href="#7-数字证书长啥样" class="headerlink" title="7 数字证书长啥样"></a>7 数字证书长啥样</h5><hr>
+<p>这是我电脑中的自带的证书：</p>
+<p><img src="/img/img_digital_encryption/11.webp"></p>
+<p>可以看到，包含了证书持有人的公钥和证书的签名。</p>
+<p>另外，证书颁发机构是有层级关系的，下级 CA 的证书是需要由上级 CA 签名的。</p>
+<p>换句话说一定存在根证书颁发机构，那么他们的证书是由谁签名的呢？</p>
+<p>答案是自签，自己给自己认证。</p>
+<p>这是我电脑中的一个自签的根证书颁发机构：</p>
+<p><img src="/img/img_digital_encryption/12.webp"></p>
+<p><strong>为什么根证书可以自签，谁来保证安全？</strong></p>
+<p>你把钱存在银行，你会担心吗？我们基于对国家的信任，才信任银行，这就是信任链的基础！我们思考问题应该是分层的，如果不认可一个统一的基础，一直套娃下去，那么问题就无解。</p>
+<p>那还有个问题，如何保证根证书的可靠性？<br>这是操作系统和浏览器预装的，由微软、苹果等操作系统厂商来选择根证书。</p>
+<p><strong>8 证书不可信？</strong></p>
+<hr>
+<p>那么什么情况下浏览器会提示 “证书不可信” 呢？</p>
+<p>根据我们上面的分析，下面是可能的原因：</p>
+<ul>
+<li><p>证书不是权威 CA 颁发<br>有些企业为了贪图便宜使用盗版的证书，没有经过 CA 认证。也就是无法使用浏览器内置 CA 公钥进行验证。</p>
+</li>
+<li><p>证书过期<br>上面说了，证书里有一项就是有效期，一般就是一年或者两年的时间。如果证书过期，那么浏览器就会提示“证书不可信”</p>
+</li>
+<li><p>证书部署错误<br>可能是服务器证书部署出错，比如证书与域名不匹配，因为证书里有一项是持有人信息的。</p>
+</li>
+</ul>
+<p>好了，饶了一大圈，Bob 终于可以安全的向 Alice 发出前往红树林的邀请了~</p>
+<h4 id="QA：现在我们来回答文章开头提出的一些问题"><a href="#QA：现在我们来回答文章开头提出的一些问题" class="headerlink" title="QA：现在我们来回答文章开头提出的一些问题"></a>QA：现在我们来回答文章开头提出的一些问题</h4><blockquote>
+<p>非对称加密中公私钥都可以加密，那么什么时候用公钥加密，什么时候用私钥“加密” ？</p>
+</blockquote>
+<ul>
+<li>加密场景，那么肯定希望只有我才能解密，别人只能加密。即公钥加密，私钥解密。</li>
+<li>签名场景，既然是签名，就希望只能我才能签名，别人只能验证。即私钥签名，公钥验签</li>
+</ul>
+<blockquote>
+<p>什么是数字签名，数字签名的作用是什么？</p>
+</blockquote>
+<ul>
+<li>数字签名就是使用私钥对数据摘要进行签名，并附带和数据一起发送。</li>
+<li>可以起到防篡改、防伪装、防否认的作用。</li>
+</ul>
+<blockquote>
+<p>为什么要对数据的摘要进行签名，而不是直接计算原始数据的数字签名？</p>
+</blockquote>
+<ul>
+<li>数据可能比较大，签名是使用非对称加密算法，比较耗时</li>
+<li>防止第三方使用公钥解开签名后，拿到原始数据</li>
+</ul>
+<blockquote>
+<p>什么是数字证书，数字证书存在解决了什么问题？</p>
+</blockquote>
+<ul>
+<li>数字证书就是由 CA 机构使用自己私钥，对证书申请者的公钥进行签名认证。</li>
+<li>数字证书解决了如何安全分发公钥的问题，也奠定了信任链的基础。</li>
+</ul>
+<blockquote>
+<p>本文参考链接： <a href="https://segmentfault.com/a/1190000024523772">https://segmentfault.com/a/1190000024523772</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>加密算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>数字签名</tag>
+        <tag>固件机密</tag>
+        <tag>加密方案</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>固件加密</title>
+    <url>/2024/01/24/1.Software/2.encryption/4.Firmware_encryption/</url>
+    <content><![CDATA[<h3 id="F1C100S-linux-启动编译流程-tf-x2F-spi-flash"><a href="#F1C100S-linux-启动编译流程-tf-x2F-spi-flash" class="headerlink" title="F1C100S linux 启动编译流程 (tf &#x2F; spi flash)"></a>F1C100S linux 启动编译流程 (tf &#x2F; spi flash)</h3><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>最近项目上再次使用FC100s跑linux，顺带详细记录一下编译整个linux的步骤，以作记录备份。</p>
+<p>由于TF卡和SPI FLASH启动在某些方面不一样，在有区别的时候会进行特殊说明</p>
+<p><strong>整体思路：</strong></p>
+<ul>
+<li>安装工具链</li>
+<li>编译 uboot</li>
+<li>编译 kernel</li>
+<li>编译 buildroot</li>
+<li>制作镜像</li>
+</ul>
+<h4 id="安装工具链"><a href="#安装工具链" class="headerlink" title="安装工具链"></a>安装工具链</h4><hr>
+<h5 id="工具链下载地址"><a href="#工具链下载地址" class="headerlink" title="工具链下载地址"></a>工具链下载地址</h5><blockquote>
+<p><a href="http://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/arm-linux-gnueabi/">http://releases.linaro.org/components/toolchain/binaries/7.2-2017.11/arm-linux-gnueabi/</a></p>
+</blockquote>
+<h5 id="工具链"><a href="#工具链" class="headerlink" title="工具链"></a>工具链</h5><blockquote>
+<p>gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabi.tar</p>
+</blockquote>
+<h5 id="安装工具链-1"><a href="#安装工具链-1" class="headerlink" title="安装工具链"></a>安装工具链</h5><ul>
+<li>解压 tar 文件 :  tar -xvf xxxxx.tar</li>
+<li>修改环境变量，指定交叉工具链的位置：  vim &#x2F;etc&#x2F;profile</li>
+<li>使环境变量生效：   source &#x2F;etc&#x2F;profile</li>
+<li>测试交叉编译工具：  arm-linux-gnueabi-gcc -v</li>
+</ul>
+<h4 id="编译-uboot"><a href="#编译-uboot" class="headerlink" title="编译 uboot"></a>编译 uboot</h4><hr>
+<h5 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h5><blockquote>
+<p>git clone <a href="https://github.com/Lichee-Pi/u-boot.git">https://github.com/Lichee-Pi/u-boot.git</a> -b nano-v2018.01</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意：</span><br><span class="line"> 1.建议下载单独分支，这样下载速度会快一些</span><br><span class="line"> 2.github下载可能会很慢，可以使用：https://hub.fgit.cf/ 加速</span><br></pre></td></tr></table></figure>
+
+<h5 id=""><a href="#" class="headerlink" title=""></a></h5><ul>
+<li>TF卡启动配置:</li>
+</ul>
+<blockquote>
+<p>make ARCH&#x3D;arm CROSS_COMPILE&#x3D;arm-linux-gnueabi- licheepi_nano_defconfig</p>
+</blockquote>
+<ul>
+<li>FLASH 卡启动配置:</li>
+</ul>
+<blockquote>
+<p>make ARCH&#x3D;arm CROSS_COMPILE&#x3D;arm-linux-gnueabi- licheepi_nano_spiflash_defconfig</p>
+</blockquote>
+<ul>
+<li>编译：</li>
+</ul>
+<blockquote>
+<p>make ARCH&#x3D;arm CROSS_COMPILE&#x3D;arm-linux-gnueabi- -j32</p>
+</blockquote>
+<ul>
+<li>如果编译出错：<blockquote>
+<p>sudo apt-get install swig</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>sudo apt-get install python-dev</p>
+</blockquote>
+<ul>
+<li>编译成功后会在根目录下生产烧录文件</li>
+</ul>
+<blockquote>
+<p>u-boot-sunxi-with-spl.bin</p>
+</blockquote>
+<h4 id="编译-kernel"><a href="#编译-kernel" class="headerlink" title="编译 kernel"></a>编译 kernel</h4><hr>
+<h5 id="源码下载-1"><a href="#源码下载-1" class="headerlink" title="源码下载"></a>源码下载</h5><blockquote>
+<p>git clone <a href="https://hub.fgit.cf/Lichee-Pi/linux.git">https://hub.fgit.cf/Lichee-Pi/linux.git</a> -b nano-5.2-flash</p>
+</blockquote>
+<ul>
+<li><p><input checked="" disabled="" type="checkbox"> 
+建议TF卡和FLASH 都选择这个分支，这个分支包含FLASH驱动</p>
+</li>
+<li><p>环境</p>
+</li>
+</ul>
+<blockquote>
+<p>sudo apt-get install libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf</p>
+</blockquote>
+<ul>
+<li>配置</li>
+</ul>
+<blockquote>
+<p>make ARCH&#x3D;arm licheepi_nano_defconfig</p>
+</blockquote>
+<ul>
+<li>编译</li>
+</ul>
+<blockquote>
+<p>make ARCH&#x3D;arm CROSS_COMPILE&#x3D;arm-linux-gnueabi- -j32</p>
+</blockquote>
+<ul>
+<li>生成文件位置</li>
+</ul>
+<blockquote>
+<p>arch&#x2F;arm&#x2F;boot&#x2F; 目录下的 zImage</p>
+</blockquote>
+<blockquote>
+<p>arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F; 目录下的 suniv-f1c100s-licheepi-nano.dtb</p>
+</blockquote>
+<h4 id="编译buildroot"><a href="#编译buildroot" class="headerlink" title="编译buildroot"></a>编译buildroot</h4><h5 id="源码下载-2"><a href="#源码下载-2" class="headerlink" title="源码下载"></a>源码下载</h5><blockquote>
+<p><a href="https://buildroot.org/downloads/buildroot-2022.02.tar.gz">https://buildroot.org/downloads/buildroot-2022.02.tar.gz</a></p>
+</blockquote>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 注意</li>
+</ul>
+<blockquote>
+<p>为了方便这里使用buildroot来制作rootfs，这里有个坑。这里如果使用linaro等组织提供的现成的交叉编译工具链来编译buildroot项目生成rootfs，在使用时系统启动过程中可能会出现 Kernel panic - not syncing: Attempted to kill init! exitcode&#x3D;0x0000000b ，而使用buildroot自己生成的编译工具链就不会出现这个问题了。</p>
+</blockquote>
+<ul>
+<li>配置</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Target options  -&gt;</span><br><span class="line">    Target Architecture (ARM (little endian))</span><br><span class="line">    Target Architecture Variant (arm926t) </span><br><span class="line">    Floating point strategy (Soft float) </span><br><span class="line"></span><br><span class="line">Toolchain -&gt;</span><br><span class="line">    Toolchain type (Buildroot toolchain)</span><br><span class="line">    C library (glibc) </span><br><span class="line">    Kernel Headers (Linux 4.19.x kernel headers)</span><br><span class="line">    Enable C++ support </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 注意：</li>
+</ul>
+<blockquote>
+<p>内核头文件根据内核版本去选择，向下选择最高的版本</p>
+</blockquote>
+<ul>
+<li>编译</li>
+</ul>
+<blockquote>
+<p>make -j32</p>
+</blockquote>
+<ul>
+<li>生成文件位置</li>
+</ul>
+<blockquote>
+<p>编译器：  buildroot-2023.11&#x2F;output&#x2F;host&#x2F;arm-buildroot-linux-gnueabi</p>
+</blockquote>
+<blockquote>
+<p>文件系统： buildroot-2023.11&#x2F;output&#x2F;images</p>
+</blockquote>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 注意</li>
+</ul>
+<blockquote>
+<p>应用层代码需要使用 buildroot 自带的编译器编译，如果需要编译 APP代码，请将 buildroot 生成的编译添加到环境变量中</p>
+</blockquote>
+<h4 id="制作镜像"><a href="#制作镜像" class="headerlink" title="制作镜像"></a>制作镜像</h4><h5 id="TF卡镜像"><a href="#TF卡镜像" class="headerlink" title="TF卡镜像"></a>TF卡镜像</h5><ul>
+<li>将 TF 分为两个分区</li>
+</ul>
+<blockquote>
+<p>第一个分区 <strong>FAT格式</strong>  100M，用来存放 <strong>内核和设备树</strong><br>第二个分区 <strong>ext4格式</strong> 可以将剩余空间都分配给它， 用来存放根文件系统</p>
+</blockquote>
+<ul>
+<li>烧录</li>
+</ul>
+<blockquote>
+<p>将 uboot 烧录到 TF卡 8K位置处， </p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo dd if=u-boot-sunxi-with-spl.bin of=/dev/sdb bs=1024 seek=8</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>将kernel和dtb放到TF卡的第一个分区的根目录下</p>
+</blockquote>
+<blockquote>
+<p>将rootfs.tar解压到第二个分区下, 每次操作TF记得 sync 一下，不然启动可能会出粗</p>
+</blockquote>
+<blockquote>
+<p>修改 uboot 环境变量 </p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">setenv bootcmd &#x27;load mmc 0:1 0x80000000 zImage; load mmc 0:1 0x80C00000 suniv-f1c100s-licheepi-nano.dtb; bootz 0x80000000 - 0x80C00000&#x27;</span><br><span class="line"></span><br><span class="line">setenv bootargs &#x27;console=tty0 console=ttyS0,115200 panic=5 rootwait root=/dev/mmcblk0p2 rw&#x27;</span><br><span class="line"></span><br><span class="line">saveenv</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="制作-FLASH-镜像"><a href="#制作-FLASH-镜像" class="headerlink" title="制作 FLASH 镜像"></a>制作 FLASH 镜像</h4><p>flash 烧录可以参考以下链接：</p>
+<blockquote>
+<p><a href="https://whycan.com/t_7558.html">https://whycan.com/t_7558.html</a></p>
+</blockquote>
+<h5 id="分区说明"><a href="#分区说明" class="headerlink" title="分区说明"></a>分区说明</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">分区序号         分区大小              分区作用	     地址空间及分区名</span><br><span class="line">mtd0	        1MB (0x100000)        spl+uboot	     0x0000000-0x0100000 : “uboot”</span><br><span class="line">mtd1	        64KB (0x10000)        dtb文件        0x0100000-0x0110000 : “dtb”</span><br><span class="line">mtd2	        4MB (0x400000)        linux内核	     0x0110000-0x0510000 : “kernel”</span><br><span class="line">mtd3	        剩余 (0xAF0000)       根文件系统     0x0510000-0x1000000 : “rootfs”</span><br></pre></td></tr></table></figure>
+
+<h5 id="FALSH-烧录工具"><a href="#FALSH-烧录工具" class="headerlink" title="FALSH 烧录工具"></a>FALSH 烧录工具</h5><ul>
+<li>源码</li>
+</ul>
+<blockquote>
+<p><a href="https://github.com/Icenowy/sunxi-tools">https://github.com/Icenowy/sunxi-tools</a>  -b f1c100s  克隆对应的 f1c100s分支</p>
+</blockquote>
+<ul>
+<li>编译和安装</li>
+</ul>
+<blockquote>
+<p>make &amp;&amp; sudo make install</p>
+</blockquote>
+<ul>
+<li>烧录</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo sunxi-fel -p spiflash-write 0 ./u-boot/u-boot-sunxi-with-spl.bin   </span><br><span class="line">sudo sunxi-fel -p spiflash-write 0x0100000 ./linux/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dtb</span><br><span class="line">sudo sunxi-fel -p spiflash-write 0x0110000 ./linux/arch/arm/boot/zImage </span><br><span class="line">sudo sunxi-fel -p spiflash-write 0x0510000 ./buildroot-2017.08/output/images/rootfs.tar</span><br></pre></td></tr></table></figure>
+
+
+<p><code>也可以把文件系统放在TF卡, 以上文件系统放到FLASH上没有试过， 可以试试下面参数</code></p>
+<blockquote>
+<p>修改 uboot 环境变量 </p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">setenv bootcmd &#x27;sf probe 0 50000000; sf read 0x80C00000 0x100000 0x4000; sf read 0x80008000 0x110000 0x400000;bootz 0x80008000 - 0x80C00000;&#x27;</span><br><span class="line"></span><br><span class="line">setenv bootargs &#x27;console=tty0 console=ttyS0,115200 panic=5 rootwait root=/dev/mmcblk0p2 rw&#x27;</span><br><span class="line"></span><br><span class="line">saveenv</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>加密算法</category>
+      </categories>
+      <tags>
+        <tag>芯片资料</tag>
+        <tag>f1c100s</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AT command 解析与处理</title>
+    <url>/2024/01/26/1.Software/3.components/1.at_command/</url>
+    <content><![CDATA[<h3 id="AT-command-解析小组件"><a href="#AT-command-解析小组件" class="headerlink" title="AT command 解析小组件"></a>AT command 解析小组件</h3><p>AT command 在处理MCU端非常难处理，笔者接触到很好的框架如下:</p>
+<ul>
+<li><p>rt thread 代码下的小组件功能, 解析AT指令思路很巧</p>
+<p>  在源码目录下： rt-thread&#x2F;components&#x2F;net&#x2F;at&#x2F;src</p>
+</li>
+</ul>
+<blockquote>
+<p><a href="https://github.com/RT-Thread/rt-thread">https://github.com/RT-Thread/rt-thread</a></p>
+</blockquote>
+<ul>
+<li>AT Command 代码库，将 AT 命令解析做了成了一个库的形式，可以借鉴参考</li>
+</ul>
+<blockquote>
+<p><a href="https://gitee.com/tutubinary/AT-Command">https://gitee.com/tutubinary/AT-Command</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>软件小组件</category>
+      </categories>
+      <tags>
+        <tag>参考代码</tag>
+        <tag>嵌入式</tag>
+        <tag>代码框架</tag>
+        <tag>软件组件</tag>
+        <tag>AT Command</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RGB565 与 RGB888的相互转换 (颜色补偿)</title>
+    <url>/2023/02/09/1.Software/1.color/1.rgb565-rgb888/</url>
+    <content><![CDATA[<p>RGB565 和 RGB888是两种不同的颜色表示方式，在计算机图形学和显示领域中被广泛使用。RGB565使用16位数据表示一种颜色，每个颜色通道（红色、绿色、蓝色）使用5位、6位和5位的数字分别表示，而RGB888则使用24位数据表示一种颜色，每个颜色通道都使用8位数字。相互转换时，需要对颜色值进行折算和补偿，以确保转换后的颜色与原始颜色尽可能接近。</p>
+<h3 id="RGB888-gt-RGB565"><a href="#RGB888-gt-RGB565" class="headerlink" title="RGB888 -&gt; RGB565"></a>RGB888 -&gt; RGB565</h3><pre><code>1.取RGB888中第一个字节的高5位作为转换后的RGB565的第二个字节的高5位
+2.取RGB888中第二个字节的高3位作为转换后的RGB565第二个字节的低3位
+3.取RGB888中第二个字节的第4--6位，作为转换后的RGB565第一个字节的高3位
+4.取RGB888中第二个字节的第三个字节的高5位作为转换后的RGB565第一个字节的低5位
+</code></pre>
+<h3 id="RGB565-gt-RGB888"><a href="#RGB565-gt-RGB888" class="headerlink" title="RGB565 -&gt; RGB888"></a>RGB565 -&gt; RGB888</h3><p>RGB565的存储方式为：<br>    R4 R3 R2 R1 R0 G5 G4 G3 G2 G1 G0 B4 B3 B2 B1 B0</p>
+<pre><code>1.取RGB565第一个字节中低5位作为RGB888的高5位
+2.取RGB565第二个字节中的低3位，将其左移5位，作为RGB888第二个字节的高5位
+3.取RGB565第一个字节的高3位将其右移3位，作为RGB888第二个字节的4--6位
+4.取RGB565第二个字节中的高5位作为RGB888第三个字节。
+</code></pre>
+<h3 id="量化压缩与量化补偿"><a href="#量化压缩与量化补偿" class="headerlink" title="量化压缩与量化补偿"></a>量化压缩与量化补偿</h3><p>细心地哥们一定会发现如果我们是低位往高位上转的话，就存在一些数据精度的丢失问题，在网上查了写资料，借鉴了一下别人的方法;所谓的量化补偿，讲一下量化压缩与量化补偿。<br>在进行色彩格式转换的时候，经常会遇到色彩量化位数的改变，比如说从 24bit RGB888 到 16bit RGB565 的色彩转换。所谓量化压缩与量化补偿都是我个人所提出的概念，现说明如下:</p>
+<p><strong>量化压缩</strong> ，举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">24bit RGB888 -&gt; 16bit RGB565 的转换</span><br><span class="line"></span><br><span class="line">24ibt RGB888 R7 R6 R5 R4 R3 R2 R1 R0 G7 G6 G5 G4 G3 G2 G1 G0 B7 B6 B5 B4 B3 B2 B1 B0</span><br><span class="line">16bit RGB656 R7 R6 R5 R4 R3 G7 G6 G5 G4 G3 G2 B7 B6 B5 B4 B3</span><br></pre></td></tr></table></figure>
+
+<p>量化位数从8bit到5bit或6bit，取原8bit的高位，量化上做了压缩，却损失了精度。</p>
+<p><strong>量化补偿</strong> ，举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">16bit RGB565 -&gt; 24bit RGB888 的转换</span><br><span class="line"></span><br><span class="line">16bit RGB656 R4 R3 R2 R1 R0 G5 G4 G3 G2 G1 G0 B4 B3 B2 B1 B0</span><br><span class="line">24ibt RGB888 R4 R3 R2 R1 R0 0 0 0 G5 G4 G3 G2 G1 G0 0 0 B4 B3 B2 B1 B0 0 0 0</span><br><span class="line">24ibt RGB888 R4 R3 R2 R1 R0 R2 R1 R0 G5 G4 G3 G2 G1 G0 G1 G0 B4 B3 B2 B1 B0 B2 B1 B0</span><br></pre></td></tr></table></figure>
+
+<pre><code>说明：第二行的 24bit RGB888 数据为转换后，未进行补偿的数据，在精度上会有损失
+第三行的 24bit RGB888 数据为经过量化补偿的数据，对低位做了量化补偿
+可以很容易的证明，这样的补偿方法是一种合理的线性补偿。补偿的原理很简单，大家仔细想一下就明白了，因此不再详细说明。
+</code></pre>
+<h3 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h3><p>量化压缩的方法：三个字取高位</p>
+<p>量化补偿的方法：<br>    1. 将原数据填充至高位<br>    2. 对于低位，用原始数据的低位进行补偿<br>    3. 如果仍然有未填充的位，继续使用原始数据的低位进行循环补偿</p>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>颜色</category>
+      </categories>
+      <tags>
+        <tag>颜色处理</tag>
+        <tag>图像处理</tag>
+        <tag>RGB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>简单的RGB转HSV代码</title>
+    <url>/2024/01/12/1.Software/1.color/2.rgb2hsv/</url>
+    <content><![CDATA[<h3 id="简单的RGB转HSV代码"><a href="#简单的RGB转HSV代码" class="headerlink" title="简单的RGB转HSV代码"></a>简单的RGB转HSV代码</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Copyright (c) 2014, Jan Winkler &lt;winkler@cs.uni-bremen.de&gt;</span></span><br><span class="line"><span class="comment">// All rights reserved.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Redistribution and use in source and binary forms, with or without</span></span><br><span class="line"><span class="comment">// modification, are permitted provided that the following conditions are met:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//     * Redistributions of source code must retain the above copyright</span></span><br><span class="line"><span class="comment">//       notice, this list of conditions and the following disclaimer.</span></span><br><span class="line"><span class="comment">//     * Redistributions in binary form must reproduce the above copyright</span></span><br><span class="line"><span class="comment">//       notice, this list of conditions and the following disclaimer in the</span></span><br><span class="line"><span class="comment">//       documentation and/or other materials provided with the distribution.</span></span><br><span class="line"><span class="comment">//     * Neither the name of Universität Bremen nor the names of its</span></span><br><span class="line"><span class="comment">//       contributors may be used to endorse or promote products derived from</span></span><br><span class="line"><span class="comment">//       this software without specific prior written permission.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span></span><br><span class="line"><span class="comment">// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span></span><br><span class="line"><span class="comment">// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span></span><br><span class="line"><span class="comment">// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE</span></span><br><span class="line"><span class="comment">// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span></span><br><span class="line"><span class="comment">// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span></span><br><span class="line"><span class="comment">// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span></span><br><span class="line"><span class="comment">// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span></span><br><span class="line"><span class="comment">// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span></span><br><span class="line"><span class="comment">// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span></span><br><span class="line"><span class="comment">// POSSIBILITY OF SUCH DAMAGE.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Author: Jan Winkler */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line">using namespace <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*! \brief Convert RGB to HSV color space</span></span><br><span class="line"><span class="comment">  </span></span><br><span class="line"><span class="comment">  Converts a given set of RGB values `r&#x27;, `g&#x27;, `b&#x27; into HSV</span></span><br><span class="line"><span class="comment">  coordinates. The input RGB values are in the range [0, 1], and the</span></span><br><span class="line"><span class="comment">  output HSV values are in the ranges h = [0, 360], and s, v = [0,</span></span><br><span class="line"><span class="comment">  1], respectively.</span></span><br><span class="line"><span class="comment">  </span></span><br><span class="line"><span class="comment">  \param fR Red component, used as input, range: [0, 1]</span></span><br><span class="line"><span class="comment">  \param fG Green component, used as input, range: [0, 1]</span></span><br><span class="line"><span class="comment">  \param fB Blue component, used as input, range: [0, 1]</span></span><br><span class="line"><span class="comment">  \param fH Hue component, used as output, range: [0, 360]</span></span><br><span class="line"><span class="comment">  \param fS Hue component, used as output, range: [0, 1]</span></span><br><span class="line"><span class="comment">  \param fV Hue component, used as output, range: [0, 1]</span></span><br><span class="line"><span class="comment">  </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">RGBtoHSV</span><span class="params">(<span class="type">float</span>&amp; fR, <span class="type">float</span>&amp; fG, <span class="type">float</span> fB, <span class="type">float</span>&amp; fH, <span class="type">float</span>&amp; fS, <span class="type">float</span>&amp; fV)</span> &#123;</span><br><span class="line">  <span class="type">float</span> fCMax = max(max(fR, fG), fB);</span><br><span class="line">  <span class="type">float</span> fCMin = min(min(fR, fG), fB);</span><br><span class="line">  <span class="type">float</span> fDelta = fCMax - fCMin;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span>(fDelta &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span>(fCMax == fR) &#123;</span><br><span class="line">      fH = <span class="number">60</span> * (<span class="built_in">fmod</span>(((fG - fB) / fDelta), <span class="number">6</span>));</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>(fCMax == fG) &#123;</span><br><span class="line">      fH = <span class="number">60</span> * (((fB - fR) / fDelta) + <span class="number">2</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>(fCMax == fB) &#123;</span><br><span class="line">      fH = <span class="number">60</span> * (((fR - fG) / fDelta) + <span class="number">4</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(fCMax &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      fS = fDelta / fCMax;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      fS = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    fV = fCMax;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    fH = <span class="number">0</span>;</span><br><span class="line">    fS = <span class="number">0</span>;</span><br><span class="line">    fV = fCMax;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span>(fH &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    fH = <span class="number">360</span> + fH;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*! \brief Convert HSV to RGB color space</span></span><br><span class="line"><span class="comment">  </span></span><br><span class="line"><span class="comment">  Converts a given set of HSV values `h&#x27;, `s&#x27;, `v&#x27; into RGB</span></span><br><span class="line"><span class="comment">  coordinates. The output RGB values are in the range [0, 1], and</span></span><br><span class="line"><span class="comment">  the input HSV values are in the ranges h = [0, 360], and s, v =</span></span><br><span class="line"><span class="comment">  [0, 1], respectively.</span></span><br><span class="line"><span class="comment">  </span></span><br><span class="line"><span class="comment">  \param fR Red component, used as output, range: [0, 1]</span></span><br><span class="line"><span class="comment">  \param fG Green component, used as output, range: [0, 1]</span></span><br><span class="line"><span class="comment">  \param fB Blue component, used as output, range: [0, 1]</span></span><br><span class="line"><span class="comment">  \param fH Hue component, used as input, range: [0, 360]</span></span><br><span class="line"><span class="comment">  \param fS Hue component, used as input, range: [0, 1]</span></span><br><span class="line"><span class="comment">  \param fV Hue component, used as input, range: [0, 1]</span></span><br><span class="line"><span class="comment">  </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">HSVtoRGB</span><span class="params">(<span class="type">float</span>&amp; fR, <span class="type">float</span>&amp; fG, <span class="type">float</span>&amp; fB, <span class="type">float</span>&amp; fH, <span class="type">float</span>&amp; fS, <span class="type">float</span>&amp; fV)</span> &#123;</span><br><span class="line">  <span class="type">float</span> fC = fV * fS; <span class="comment">// Chroma</span></span><br><span class="line">  <span class="type">float</span> fHPrime = <span class="built_in">fmod</span>(fH / <span class="number">60.0</span>, <span class="number">6</span>);</span><br><span class="line">  <span class="type">float</span> fX = fC * (<span class="number">1</span> - <span class="built_in">fabs</span>(<span class="built_in">fmod</span>(fHPrime, <span class="number">2</span>) - <span class="number">1</span>));</span><br><span class="line">  <span class="type">float</span> fM = fV - fC;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span>(<span class="number">0</span> &lt;= fHPrime &amp;&amp; fHPrime &lt; <span class="number">1</span>) &#123;</span><br><span class="line">    fR = fC;</span><br><span class="line">    fG = fX;</span><br><span class="line">    fB = <span class="number">0</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">1</span> &lt;= fHPrime &amp;&amp; fHPrime &lt; <span class="number">2</span>) &#123;</span><br><span class="line">    fR = fX;</span><br><span class="line">    fG = fC;</span><br><span class="line">    fB = <span class="number">0</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">2</span> &lt;= fHPrime &amp;&amp; fHPrime &lt; <span class="number">3</span>) &#123;</span><br><span class="line">    fR = <span class="number">0</span>;</span><br><span class="line">    fG = fC;</span><br><span class="line">    fB = fX;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">3</span> &lt;= fHPrime &amp;&amp; fHPrime &lt; <span class="number">4</span>) &#123;</span><br><span class="line">    fR = <span class="number">0</span>;</span><br><span class="line">    fG = fX;</span><br><span class="line">    fB = fC;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">4</span> &lt;= fHPrime &amp;&amp; fHPrime &lt; <span class="number">5</span>) &#123;</span><br><span class="line">    fR = fX;</span><br><span class="line">    fG = <span class="number">0</span>;</span><br><span class="line">    fB = fC;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">5</span> &lt;= fHPrime &amp;&amp; fHPrime &lt; <span class="number">6</span>) &#123;</span><br><span class="line">    fR = fC;</span><br><span class="line">    fG = <span class="number">0</span>;</span><br><span class="line">    fB = fX;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    fR = <span class="number">0</span>;</span><br><span class="line">    fG = <span class="number">0</span>;</span><br><span class="line">    fB = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  fR += fM;</span><br><span class="line">  fG += fM;</span><br><span class="line">  fB += fM;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> &#123;</span><br><span class="line">  <span class="type">float</span> fR = <span class="number">0</span>, fG = <span class="number">0</span>, fB = <span class="number">0</span>, fH = <span class="number">0</span>, fS = <span class="number">0</span>, fV = <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  fH = <span class="number">146.0</span>;</span><br><span class="line">  fS = <span class="number">0.19</span>;</span><br><span class="line">  fV = <span class="number">0.66</span>;</span><br><span class="line">  </span><br><span class="line">  HSVtoRGB(fR, fG, fB, fH, fS, fV);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*fR = 136.0;</span></span><br><span class="line"><span class="comment">    fG = 168.0;</span></span><br><span class="line"><span class="comment">    fB = 150.0;</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">    RGBtoHSV(fR, fG, fB, fH, fS, fV);*/</span></span><br><span class="line">  </span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;[RGB] &quot;</span></span><br><span class="line">       &lt;&lt; <span class="string">&quot;Float:   (&quot;</span> &lt;&lt; fR &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; fG &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; fB &lt;&lt; <span class="string">&quot;)&quot;</span> &lt;&lt; <span class="built_in">endl</span></span><br><span class="line">       &lt;&lt; <span class="string">&quot;      Integer: (&quot;</span> &lt;&lt; (<span class="number">255</span> * fR) &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; (<span class="number">255</span> * fG) &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; (<span class="number">255</span> * fB) &lt;&lt; <span class="string">&quot;)&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;[HSV] (&quot;</span> &lt;&lt; fH &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; fS &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; fV &lt;&lt; <span class="string">&quot;)&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> EXIT_SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>颜色</category>
+      </categories>
+      <tags>
+        <tag>颜色处理</tag>
+        <tag>图像处理</tag>
+        <tag>RGB</tag>
+        <tag>HSV</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DCDC的Layout终极奥义</title>
+    <url>/2024/01/26/3.Hardware/1.Power/1.dcdc_layout/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>很多DCDC芯片的手册都有对应的PCB Layout设计要求，有些还会提供一些Layout示意图，都是大同小异的。</p>
+<p>比如我随便列几点buck的设计要点：</p>
+<ul>
+<li>输入电容器和二极管在与IC相同的面，尽可能在IC最近处。</li>
+<li>电感靠近芯片的SW，输出电容靠近电感放置。</li>
+<li>反馈回路远离电感，SW和二极管等噪声源。</li>
+</ul>
+<p><span style="color:#EC87E4;">那你知道这些要点都是怎么来的吗？</span></p>
+<p>如果拿到一个具体的芯片，因为芯片管脚分布的问题， <strong>可能这些条件不能同时满足，那什么办？到底孰轻孰重？</strong></p>
+<p><span style="color:#00E6E4;">举个Buck的例子</span></p>
+<p>比如下面这个buck，它的管脚分布就不好。</p>
+<p>SW在IN和GND之间，如果按照要点，直接将输入滤波电容放到IN和GND旁边，那么SW的信号就出不来，而电感也要求放在芯片旁边，这就矛盾了。</p>
+<p><img src="/img/dcdc_layout/1.png"></p>
+<p>那我们看看这个芯片手册推荐的Layout</p>
+<p><img src="/img/dcdc_layout/2.png"></p>
+<p>芯片手册推荐的layout倒是都就近放置了，但是它的方法是SW在输入滤波电容底下走线， <strong>这是逗我吗？这在现实中能做到？</strong></p>
+<p>我们不能采用芯片手册推荐的这种方式，但事实是这种管脚分布的芯片多得是， <strong>那我们的Layout如何布局布线呢？</strong></p>
+<p>这个问题先不回答，我给大家说一个最根本的方法：</p>
+<p><span style="color:#00E6E4;">DCDC的Layout终极奥义——心中有环</span></p>
+<p><strong>“环”，指的是有大电流流过的闭合回路。我们只要控制好这个环，Layout基本就成功一大半了。</strong></p>
+<p>下面来看为什么</p>
+<p>以BUCK为例，BUCK电路存在两个状态，上管导通和下管（或者是二极管）导通，因此存在两个大的电流环路。</p>
+<p><img src="/img/dcdc_layout/3.png"></p>
+<p><span style="color:#EC87E4;">知道这两个环路有什么用呢？</span></p>
+<p><strong>我们要让这两个环路的面积越小越好，因为每一个电流环都可以看成是一个环路天线，会产生辐射，会引起EMI问题，也会干扰板上其它的电路，而辐射的大小与环路面积呈正比。</strong></p>
+<p>电流环所生成的高频磁场会在离开环路大约 0.16λ 以后逐渐转换为电磁场，由此形成的场强大约为：</p>
+<p><img src="/img/dcdc_layout/4.png"></p>
+<p>可以看到，辐射的大小与环路的面积，频率的平方，电流的大小呈正比。</p>
+<p>那我们是不是让这两个环路面积最小就可以了呢？</p>
+<p>确实是的，不过我认为了解这点还不够，突出不了重点。</p>
+<p>从拓扑图可以看出，这两个环路有公共的部分，一个环路包含另外一个环路，这导致那个大的环路的电流各个器件节点可能不一样，所以不好用那个公式计算。</p>
+<p>所以，我们需要变通下，怎么变通呢？</p>
+<p>辐射产生的原因，就是因为电流产生了磁场，电流是变化的，所以磁场也是变化的。电流环围绕的面积里面的磁通量会随电流动态变化而变化，磁场生电场，电场生磁场形成了电磁波。</p>
+<p>我们把那个大的电流环拆解为2个部分，如下图：</p>
+<p><img src="/img/dcdc_layout/5.png"></p>
+<p>整个大的环可以看成由输入环路和输出环路叠加。</p>
+<p>可能有点难以理解，因为输入环路根本就不是个实际的电流回路，它是本身存在的两个电流环路的差值。</p>
+<p>这其实只是个等效的方法而已，我们的目标是要知道总的大的回路里面的磁通量变化情况，这样等效之后就可以求了，我们可以分别求得输入环路和输出环路的磁通量情况。</p>
+<p>输入环路的等效电流就是输入电容Cin的电流</p>
+<p>输出环路的电路等效电流就是电感的电流</p>
+<p>它们都是只看交流，直流分量不管，直流的频率看成是0Hz，不会辐射电磁波。</p>
+<p>之前我们的《手撕Buck！Buck公式推导过程》已经分析了，输入环路电流（Cin）和输出环路电流（电感）分别如下：</p>
+<p><img src="/img/dcdc_layout/6.png"></p>
+<p>可以看到，在开关切换的时候，输入环路的电流是会突变的，也就是会有很大的di&#x2F;dt，那么输入环路的磁通量也是突变的（准确的说是变化速度很快），存在很多的高次谐波。</p>
+<p>从前面的公式我们知道，辐射强度与频率成正比，因此这些高次谐波更容易被辐射出去。</p>
+<p>输出环路的电流是三角波，是没有突变的，所以高次谐波辐射强度要小些。</p>
+<p><span style="color:#00E6E4;">信号强度对比</span></p>
+<p>这里可能有人会说了，三角波的频谱理论不也是无限的吗？也有很多高频分量啊，怎么辐射就小一些。</p>
+<p>确实，三角波的频谱是无限的，不过频率越高，幅度会越低的，也就是说高频分量能量少，那么辐射也就少了。</p>
+<p>关于这一点呢，我们简单做个仿真，看下电流的傅里叶变换fft就知道了。</p>
+<p>使用LTspice软件仿真，5V转1.8V的buck电路图如下：</p>
+<p><img src="/img/dcdc_layout/7.png"></p>
+<p>输入环路电流（输入电容电流）和输出环路电流（电感电流波形）如下：</p>
+<p><img src="/img/dcdc_layout/8.png"></p>
+<p>有了波形，我们看下fft（仿真软件很容易做到），看下频谱：</p>
+<p><img src="/img/dcdc_layout/9.png"></p>
+<p>可以看到，基频就是BUCK芯片LTC3307A的开关频率2Mhz，2Mhz两者的强度相差不是很大，就2-3个db左右，但是在10Mhz的时候，就已经相差20db了，频率越高，差得越多。</p>
+<p>也就是说，输入环路的高频谐波能量要比输出环路大得多，如果有经验的话，应该会知道，引起EMI超标的一般也就是高频超标，所以因为输入环路造成EMI的可能性更高。</p>
+<p>我这里费了一些功夫，其实就是为了说明：</p>
+<p><span style="color:#00E6E4;">BUCK的输入环路非常非常重要，环路面积一定一定要小</span></p>
+<p>另外一点需要注意，是环路面积小，不是走线短，这两者还是有区别的。有时走线短并不一定环路就小，我们的目标是环路的面积，而不是长度。</p>
+<p>我们布局走线尽量走成扁的那种形状。</p>
+<p><img src="/img/dcdc_layout/10.png"></p>
+<p>我们回到开头的那个DCDC芯片，输入环路指的什么呢？</p>
+<p>显然，这个芯片的开关管在芯片内部，所以输入环路就是芯片的IN管脚，与GND管脚，以及输入滤波电容形成的环路，那么除了芯片之外，器件就只有输入滤波电容了。</p>
+<p>所以最理想的layout就直接将输入滤波电容跨接到芯片的IN脚和GND管脚，从这一点上看，芯片手册推荐的layout与这一点是符合的，只是这样做了之后，SW出不来而已。</p>
+<p><img src="/img/dcdc_layout/11.png"></p>
+<p>这颗dcdc芯片给出的推荐layout确实是保证了输入环路最小。只不过它将SW信号走在了输入滤波电容下面，这个实际电路通常是行不通的，因为电容下面根本就走不了比较宽的线的。</p>
+<p><span style="color:#00E6E4;">那咋办呢？</span></p>
+<p>我估计会有人认为将输入滤波电容放置到PCB的背面，在Vin和GND管脚正下方放置滤波电容，通过过孔接过去，这样看起来环路也比较小。</p>
+<p>我的看法是，如果有其它更好的方式，那就不要这么做。</p>
+<p>因为过孔会存在寄生电感，加了过孔会增加这个环路的电感，导致发生LC振荡。直接的现象就是在SW处产生高振铃，这个高振铃意味着这个环路中，谐振频率的信号分量很强。</p>
+<p>也就是说尽管环路面积不大，天线效应不强，但是我的信号强度变大了呀，辐射不一定差。</p>
+<p>关于振铃，以前专门写过《BUCK的振铃实验与分析》，可以去看一看。</p>
+<p><span style="color:#00E6E4;">曾经的教训</span></p>
+<p>多年前，我曾经就遇到一个电源芯片的输入滤波电容放背面，通过过孔连接，结果搞得整个板子的噪声很大，而将滤波电容直接手动跨到Vin和GND上面，立马问题就没了。</p>
+<p>当时我还不懂，觉得不可思议，打孔的数量并不少，滤波电容也是在底部就近放置的，居然还有问题，几个孔威力这么大？</p>
+<p>后来还专门改板解决，直接将输入滤波电容与芯片同层，并在表层连接，问题就解决了。</p>
+<p>上面说了这么多，其实主要说的就是，BUCK电路，输入滤波电容的布局布线非常重要，是重中之重，是第一要考虑的。</p>
+<p>如果是异步Buck，那么就有一个外置的二极管，这个二极管构成了输入回路的一部分，那么它的位置，与输入滤波电容的重要性是同级别的，要放得离芯片的SW比较近，具体怎么摆，咱们看回路面积怎么小就知道了。</p>
+<p><span style="color:#00E6E4;">输出环路</span></p>
+<p>前面写了一堆，一直在强调输入环路，那输出环路不重要吗？</p>
+<p>当然不是，其实从前面的fft也能看到，输出环路也有高频分量，所以输出环路也要越小越好，只是它相对输入环路来说高频分量强度不高，在二者布局有矛盾的时候，当然是优先考虑输入环路。</p>
+<p><span style="color:#00E6E4;">我怎么画</span></p>
+<p>总而言之，如果是我，我会将开头提到的BUCK这样Layout：</p>
+<p><img src="/img/dcdc_layout/12.png"></p>
+<p><span style="color:#00E6E4;">Boost情况如何？</span></p>
+<p>上面这是buck的一个情况，那么boost是怎么样的呢？</p>
+<p>*输入回路是最重要的吗？优先需要考虑的是输入滤波电容吗？</p>
+<p>答案是NO*</p>
+<p>Boost也有两个环，是下图这样的</p>
+<p><img src="/img/dcdc_layout/13.png"></p>
+<p>跟buck一样，我们把它们分为两个部分，输入环路和输出环路，可以看到，输出环路是上面两个环路的差值。</p>
+<p><img src="/img/dcdc_layout/14.png"></p>
+<p>与buck不同的是，电感在输入环路，其电流波形是三脚波，而输出环路的电流就是二极管的电流，是有突变的。</p>
+<p>之前《手撕Boost！Boost公式推导及实验验证》也已经全面分析了这两个电流，波形如下：</p>
+<p><img src="/img/dcdc_layout/15.png"></p>
+<p>也就是说，boost最重要的是输出回路，类似于Buck的输入回路。我们需要首先保障的是boost的输出环路尽量小。</p>
+<p>具体实例就不举了。</p>
+<p><span style="color:#EC87E4;">Layout其它方面注意事项</span></p>
+<p>除了大的电流回路，还有FB，补偿电路这些，是小信号电路，所以他们要尽量远离前面大的电流回路，远离电感等。</p>
+<p>比如下面，就是左边比右边的好：</p>
+<p><img src="/img/dcdc_layout/16.png"></p>
+<p>另外需要注意，关于大的电流回路，我们要把GND地看进去，不要用这些走线分割了大电流的回流地GND路径。</p>
+<p>所以，你有的时候会看到，底层FB走线并不是最短的，而是绕了一下。</p>
+<p><span style="color:#00E6E4;">小结</span></p>
+<p>总的来说，DCDC的layout，我们要做到心中要有电流环。</p>
+<p>画板的时候，心里念叨一下，开关断开，电流咋咋咋流，开关导通，电流咋咋咋流。然后找到电流突变的那个环，那就是最重要的，得优先处理。</p>
+<p>这个原则，其实不仅仅适用于dcdc，其它类型的电源，或者是大功率电路，都是如此的。</p>
+<p>了解了这个原则，其实很多电路，都不用去细看芯片手册的pcb layout的注意事项了，它说的也就是这些东西，只不过是具体的措施而已。</p>
+<p>这种将关键环路做到最小，算是从根源上杜绝问题的产生，远比后期想不改板，然后七搞八搞要强。</p>
+]]></content>
+      <categories>
+        <category>硬件资料</category>
+        <category>电源</category>
+      </categories>
+      <tags>
+        <tag>硬件资料</tag>
+        <tag>dcdc</tag>
+        <tag>layout</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>嵌入式C代码参考仓库（包含各种常用库）</title>
+    <url>/2023/02/10/1.Software/0.Reference/1.Reference%20Code/</url>
+    <content><![CDATA[<h3 id="嵌入式C代码参考仓库（包含各种常用库）"><a href="#嵌入式C代码参考仓库（包含各种常用库）" class="headerlink" title="嵌入式C代码参考仓库（包含各种常用库）"></a>嵌入式C代码参考仓库（包含各种常用库）</h3><p>以下这些库提供了一系列常用的C语言库，可以用于解决在嵌入式系统开发中常见的问题。</p>
+<ul>
+<li>可以学习代码框架</li>
+<li>内置一些非常好的小组件，基本移植一下就能使用</li>
+<li>学习编程风格和规范</li>
+</ul>
+<blockquote>
+<p>linux kernel</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/torvalds/linux">https://github.com/torvalds/linux</a></li>
+</ul>
+<blockquote>
+<p>xboot</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/xboot/xboot">https://github.com/xboot/xboot</a></li>
+</ul>
+<blockquote>
+<p>VSF </p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/vsfteam/vsf">https://github.com/vsfteam/vsf</a></li>
+</ul>
+<blockquote>
+<p>RT-Thread</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/RT-Thread/rt-thread">https://github.com/RT-Thread/rt-thread</a></li>
+</ul>
+<blockquote>
+<p>合宙</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/openLuat">https://github.com/openLuat</a></li>
+<li><a href="https://github.com/openLuat/luatos-soc-2023">https://github.com/openLuat/luatos-soc-2023</a></li>
+</ul>
+<blockquote>
+<p>YiYi OS</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/evilbinary/YiYiYa">https://github.com/evilbinary/YiYiYa</a></li>
+</ul>
+<blockquote>
+<p>zephyr</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/zephyrproject-rtos/zephyr">https://github.com/zephyrproject-rtos/zephyr</a></li>
+</ul>
+<blockquote>
+<p>嵌入式资料汇总</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/TutuBinary/EmbedSummary">https://github.com/TutuBinary/EmbedSummary</a></li>
+</ul>
+<blockquote>
+<p>tbox (一个用c语言实现的跨平台开发库)</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/tboox/tbox">https://github.com/tboox/tbox</a></li>
+</ul>
+<blockquote>
+<p>embox (RTOS跑linux代码)</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/embox/embox">https://github.com/embox/embox</a></li>
+</ul>
+<blockquote>
+<p>腾讯os</p>
+</blockquote>
+<ul>
+<li><a href="https://atomgit.com/OpenAtomFoundation/TobudOS">https://atomgit.com/OpenAtomFoundation/TobudOS</a></li>
+</ul>
+<blockquote>
+<p>华为rtos</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/LiteOS/LiteOS">https://github.com/LiteOS/LiteOS</a></li>
+</ul>
+<blockquote>
+<p>alios things</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/alibaba/AliOS-Things">https://github.com/alibaba/AliOS-Things</a></li>
+</ul>
+<blockquote>
+<p>threadx</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/eclipse-threadx/threadx">https://github.com/eclipse-threadx/threadx</a></li>
+</ul>
+<blockquote>
+<p>mr-library</p>
+</blockquote>
+<p>MR 框架实现了类似 POSIX 接口标准的框架接口</p>
+<ul>
+<li><a href="https://github.com/TutuBinary/mr-library">https://github.com/TutuBinary/mr-library</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>参考资料</category>
+      </categories>
+      <tags>
+        <tag>参考代码</tag>
+        <tag>嵌入式</tag>
+        <tag>代码框架</tag>
+        <tag>软件组件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>各种插件连接器图示介绍网站</title>
+    <url>/2024/01/26/3.Hardware/2.Components/1.connector/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://connectorbook.com/">https://connectorbook.com/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>硬件资料</category>
+        <category>物料</category>
+      </categories>
+      <tags>
+        <tag>硬件资料</tag>
+        <tag>物料</tag>
+        <tag>连接器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>三电源切换电路</title>
+    <url>/2024/01/26/3.Hardware/1.Power/2.power_switch/</url>
+    <content><![CDATA[<p>双电源切换我们都很熟悉，也很常用，一般是一个外部电源加一个内部电池，外部电源优先级高于电池。<br>有电池，电池给系统供电，有外部电源，外部电源给系统供电，两者都有时，外部电源给系统供电，同时也给电池充电，外部电源意外断电，内部电池会续上。</p>
+<p>前段时间画了一个三电源切换电路，我们一起来看下：</p>
+<p><img src="/img/power_switch/1.png"></p>
+<p><span style="color:#EC87E4;">电路描述：</span></p>
+<ul>
+<li><p>Q1、Q2为NMOS，Q3、Q4和Q5为PMOS管，D1为二极管。</p>
+</li>
+<li><p>BAT1和BAT2为电池，BAT2的容量比BAT1大，VIN_5V为外部电源，VOUT为输出，给系统供电。</p>
+</li>
+<li><p>VOUT会从优先级高的电源取电，优先用外部电源，其次容量大的电池，最后才是容量较小的电池，优先级排序：VIN_5V &gt; BAT2 &gt; BAT1。</p>
+</li>
+</ul>
+<p><span style="color:#EC87E4;">工作原理：</span></p>
+<p>接下来，我们再看一下电路的工作原理。</p>
+<ul>
+<li><p>当只有BAT1时，Q2、Q3和Q5导通，VOUT从BAT1取电。</p>
+</li>
+<li><p>当只有BAT2时，Q1导通，Q2、Q3和Q5截止，Q4导通，VOUT从BAT2取电。</p>
+</li>
+<li><p>当只有VIN_5V时，VIN_5V通过二极管D1到VOUT，VOUT从VIN_5V取电。</p>
+</li>
+<li><p>当BAT2和BAT1同时存在，Q1导通，Q2、Q3和Q5截止，Q4导通，VOUT从BAT2取电。</p>
+</li>
+<li><p>当VIN_5V和BAT2同时存在，Q1导通，Q2、Q3和Q5截止；VIN_5V通过D1到VOUT，BAT2通过Q4的体二极管到VOUT，因为VIN_5V较大，VOUT从VIN_5V取电。</p>
+</li>
+<li><p>当VIN_5V和BAT1同时存在，Q2、Q3和Q5导通，BAT1到VOUT，VIN_5V通过二极管D1到VOUT，因为VIN_5V较大，VOUT从VIN_5V取电。</p>
+</li>
+<li><p>当BAT1、BAT2和VIN_5V同时存在，参考4&amp;5，VOUT从VIN_5V取电。</p>
+</li>
+</ul>
+<p>这个电路可以做到：三电源中任一电源存在，电路即可工作；两两电源存在，优先级高电源给系统供电，节省优先级低电源的电量；三电源同时存在，同时节省两路电池电量；两两电源或者三电源同时存在时，优先级高的电源断电，优先级低的电源会续上。</p>
+]]></content>
+      <categories>
+        <category>硬件资料</category>
+        <category>电源</category>
+      </categories>
+      <tags>
+        <tag>硬件资料</tag>
+        <tag>电源切换</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何简介而有有效的描述一个缺陷 Bug</title>
+    <url>/2024/01/26/1.Software/0.Reference/2.bug/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在日常工作中，软件和硬件工程师（Bug修复者）经常会碰到各种Bug，但很多时候我们的精力都浪费在了和测试人员（Bug提交者）反复沟通上，因为我们搞不懂测试人员想要表达啥？</p>
+<p>当你的软件或硬件出现不符合预期的问题时，我们希望它能够尽快修复，而不希望时间浪费在无效沟通上。</p>
+<p>作为软件或硬件开发者，我们以工作为荣，但就像开发的任何方面一样，沟通至关重要。描述出了什么问题可能有些困难，但如果你能在一开始提供一个详尽的问题描述，这会加快问题的解决。</p>
+<p>行业内对于如何描述Bug有各种思考，本文的三句话法是其中一种。下面的Bug模板用三句话来描述一个Bug：</p>
+<blockquote>
+<ol>
+<li>复现 Bug 的步骤</li>
+</ol>
+</blockquote>
+<ul>
+<li>步骤1</li>
+<li>步骤2</li>
+<li>…</li>
+</ul>
+<blockquote>
+<p>2.期望的结果</p>
+</blockquote>
+<blockquote>
+<p>3.实际的结果</p>
+</blockquote>
+<h4 id="复现步骤"><a href="#复现步骤" class="headerlink" title="复现步骤"></a>复现步骤</h4><p>说明你是如何遇到错误或问题的，即使对你来说似乎很明显（对别人不明显）。</p>
+<p><strong>为什么提供重现错误的步骤很重要？</strong></p>
+<ul>
+<li><p>重现错误通常比实际进行修复的代码更耗时；大约80%的工作是找出最初出了什么问题！清晰地重现步骤，意味着我们可以大大缩短这段时间。</p>
+</li>
+<li><p>对发生了什么问题有一个清晰的描述，也给我的测试人员后续验证Bug是否修复提供了步骤，利人利己！</p>
+</li>
+</ul>
+<p><strong>如何提供重现错误的步骤？</strong></p>
+<ul>
+<li><p>一步一步的描述你做的操作，说明你是如何发现问题的。包括诸如URL、登录的用户、浏览器和设备类型等细节。</p>
+</li>
+<li><p>不太好的例子：“登录并尝试查看您的产品。”</p>
+</li>
+<li><p>更好的例子：“登录并在Chrome中点击‘My Products’。”</p>
+</li>
+<li><p>最佳例子“登录并点击顶部导航栏中的‘My Products’选项卡。我使用的是Macbook Pro上的Chrome浏览器。”</p>
+</li>
+</ul>
+<h4 id="你期望发生什么？"><a href="#你期望发生什么？" class="headerlink" title="你期望发生什么？"></a>你期望发生什么？</h4><p>解释在按照第一部分中概述的步骤后，你期望发生什么。有时候测试人员在描述期望的结果时会觉得这很傻，但这是有必要的，请相信我！</p>
+<p><strong>为什么需要期望的结果？</strong></p>
+<ul>
+<li><p>很多时候，一个缺陷实际上并不是一个编程缺陷；也许这是一个被误解的规范，或者这个功能设计得很差，或者导致了意外的行为（例如，你期望在编辑产品描述后点击“保存”将带你进入产品页面，但实际上你返回到了首页）。</p>
+</li>
+<li><p>如果事实上并不是一个编程缺陷，这并不意味着这不是一个有效的缺陷报告！这只是意味着我们将以不同的方式解决这个问题，而我们能够快速进行分类，我们就能更快地修复它。</p>
+</li>
+</ul>
+<p><strong>如何描述期望结果？</strong></p>
+<ul>
+<li><p>使用简洁而有意义的语言：“我希望看到匹配我的搜索的所有用户列表”可能听起来已经足够了，但“当我搜索‘sam’时，我期望在用户列表中看到‘Brian Samson’，但没有看到”，后一个描述更好，因为程序员是人不是机器人。</p>
+</li>
+<li><p>写上你为什么需要期望的结果？目的是啥？</p>
+</li>
+<li><p>不太好的描述：“我希望在查看‘active’用户时看到Janet的资料。”</p>
+</li>
+<li><p>比较好的描述：“我希望在查看‘active’用户时看到Janet的资料，因为她已经完成培训，我期望她被视为‘active’。”</p>
+</li>
+<li><p>最好的描述：“我希望在查看‘active’用户时看到Janet的资料，因为作为已经完成培训的人，我期望她被认为是‘active’</p>
+</li>
+</ul>
+<h4 id="实际结果"><a href="#实际结果" class="headerlink" title="实际结果"></a>实际结果</h4><p><strong>为什么修复人员想要更多的细节？</strong></p>
+<ul>
+<li><p>在缺陷报告的第一部分，你描述了复现缺陷的步骤；在第二部分，你描述了你认为应该发生的情况；对于这最后一部分，我们想要了解实际发生的事情的具体细节：缺陷本身。</p>
+</li>
+<li><p>提供的细节越多，我们就能更好地确定缺陷的真实性质：是用户体验不清晰？是数据问题？用户错误？代码中的错误？我们能够快速进行错误分类，就能更快地进行修复。</p>
+</li>
+<li><p>这一部分还帮助修复者确定问题的范围，以及它是否特定于某个设备（如Android或iPhone）、浏览器（如Firefox或Chrome）或操作系统（如Windows或Mac）。</p>
+</li>
+</ul>
+<p><strong>如何简洁而有效的描述实际结果？</strong></p>
+<ul>
+<li><p>包括：屏幕截图、URL或URL（如果错误发生在网站上）、确切的错误消息或消息（如果有的话）、你使用的设备&#x2F;浏览器&#x2F;操作系统，甚至可能是一天中的时间或星期几。</p>
+</li>
+<li><p>尽可能具体和详细。你不太可能提供过多的信息，一般都是过少了。</p>
+</li>
+<li><p>不太好的例子：“当我点击‘create’时，什么都没发生。”</p>
+</li>
+<li><p>更好的例子：“当我点击‘create’时，它没有起作用，并显示了一个错误消息。”</p>
+</li>
+<li><p>最佳例子：“当我点击‘create’时，它重新加载到‘new account’页面，并在页面顶部以红色显示此错误‘error saving Entity#{User}：在第32行发生数据库连接故障’。我附上了显示错误的屏幕截图。”</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>缺陷报告模板如下：</p>
+<p><strong>重现步骤：</strong></p>
+<ul>
+<li><p>转到<a href="http://www.mywebsite.com./">www.mywebsite.com。</a></p>
+</li>
+<li><p>以管理员用户身份登录（我使用了 <a href="mailto:&#x6c;&#117;&#x7a;&#x5f;&#x67;&#x75;&#x7a;&#109;&#97;&#x6e;&#64;&#x65;&#x6d;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;">&#x6c;&#117;&#x7a;&#x5f;&#x67;&#x75;&#x7a;&#109;&#97;&#x6e;&#64;&#x65;&#x6d;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;</a>）。</p>
+</li>
+<li><p>在管理员侧边栏中点击“New Account”。</p>
+</li>
+<li><p>在用户电子邮件字段中填写“<a href="mailto:&#x6d;&#x61;&#x72;&#116;&#97;&#64;&#101;&#109;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#109;">&#x6d;&#x61;&#x72;&#116;&#97;&#64;&#101;&#109;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#109;</a>”。</p>
+</li>
+<li><p>点击“Create Account”按钮。</p>
+</li>
+</ul>
+<p><strong>期望结果：</strong></p>
+<ul>
+<li>我期望这会为 Marta 创建一个新账户，并将我重定向到账户页面，页面顶部显示成功创建她的账户的通知，因为她的电子邮件尚未与当前账户关联，因此应该是一个全新的账户。</li>
+</ul>
+<p><strong>实际结果：</strong></p>
+<ul>
+<li><p>相反，它重新加载了“New Account”页面，并在页面顶部以红色显示此错误：“Your account could not be created。”</p>
+</li>
+<li><p>我附上了显示错误的屏幕截图，我是在今天早上9点左右使用Macbook Pro上的Chrome浏览器。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>参考资料</category>
+      </categories>
+      <tags>
+        <tag>参考代码</tag>
+        <tag>嵌入式</tag>
+        <tag>描述bug</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一些通用的 Makefile 文件模板</title>
+    <url>/2024/01/26/1.Software/0.Reference/3.makefile_temp/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>对于Windows下开发，很多IDE都集成了编译器，如Visual Studio，提供了“一键编译”，编码完成后只需一个操作即可完成编译、链接、生成目标文件。</p>
+<p>Linux开发与Windows不同，Linux下一般用的的gcc&#x2F;g++编译器，如果是开发ARM下的Linux程序，还需用到arm-linux-gcc&#x2F;arm-linux-g++交叉编译器。</p>
+<p>Linux下也可以实现“一键编译”功能，此时需要一个编译脚本“Makefile”，Makefile可以手动编写，也可以借助自动化构建工具（如scons、CMake）生成。手动编写Makefile是Linux和Windows程序员的区别之一，一般地一个通用的Makefile能够适合大部分Linux项目程序。</p>
+<p>这里提供了三个 Makefile 模板</p>
+<h3 id="编译可执行文件Makefile"><a href="#编译可执行文件Makefile" class="headerlink" title="编译可执行文件Makefile"></a>编译可执行文件Makefile</h3><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">VERSION  =1.00</span><br><span class="line">CC   =gcc</span><br><span class="line">DEBUG   =-DUSE_DEBUG</span><br><span class="line">CFLAGS  =-Wall</span><br><span class="line">SOURCES   =<span class="variable">$(<span class="built_in">wildcard</span> ./source/*.c)</span></span><br><span class="line">INCLUDES   =-I./<span class="keyword">include</span></span><br><span class="line">LIB_NAMES  =-lfun_a -lfun_so</span><br><span class="line">LIB_PATH  =-L./lib</span><br><span class="line">OBJ   =<span class="variable">$(<span class="built_in">patsubst</span> %.c, %.o, <span class="variable">$(SOURCES)</span>)</span></span><br><span class="line">TARGET  =app</span><br><span class="line"></span><br><span class="line"><span class="comment">#links</span></span><br><span class="line"><span class="variable">$(TARGET)</span>:<span class="variable">$(OBJ)</span></span><br><span class="line"> @mkdir -p output</span><br><span class="line"> <span class="variable">$(CC)</span> <span class="variable">$(OBJ)</span> <span class="variable">$(LIB_PATH)</span> <span class="variable">$(LIB_NAMES)</span> -o output/<span class="variable">$(TARGET)</span><span class="variable">$(VERSION)</span></span><br><span class="line"> @rm -rf <span class="variable">$(OBJ)</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#compile</span></span><br><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line"> <span class="variable">$(CC)</span> <span class="variable">$(INCLUDES)</span> <span class="variable">$(DEBUG)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>:clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line"> @echo <span class="string">&quot;Remove linked and compiled files......&quot;</span></span><br><span class="line"> rm -rf <span class="variable">$(OBJ)</span> <span class="variable">$(TARGET)</span> output </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>【要点说明】</p>
+</blockquote>
+<ul>
+<li>程序版本</li>
+</ul>
+<p>开发调试过程可能产生多个程序版本，可以在目标文件后（前）增加版本号标识。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">VERSION = 1.00</span><br><span class="line"><span class="variable">$(CC)</span> <span class="variable">$(OBJ)</span> <span class="variable">$(LIB_PATH)</span> <span class="variable">$(LIB_NAMES)</span> -o output/<span class="variable">$(TARGET)</span><span class="variable">$(VERSION)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编译器选择</li>
+</ul>
+<p>Linux下为gcc&#x2F;g++；arm下为arm-linux-gcc；不同CPU厂商提供的定制交叉编译器名称可能不同，如Hisilicon“arm-hisiv300-linux-gcc”。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">CC = gcc</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>宏定义</li>
+</ul>
+<p>开发过程，特殊代码一般增加宏条件来选择是否编译，如调试打印输出代码。-D是标识，后面接着的是“宏”。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">DEBUG =-DUSE_DEBUG</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编译选项</li>
+</ul>
+<p>可以指定编译条件，如显示警告（-Wall），优化等级（-O）。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">CFLAGS =-Wall -O</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>源文件</li>
+</ul>
+<p>指定源文件目的路径，利用“wildcard”获取路径下所有依赖源文件。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">SOURCES =<span class="variable">$(<span class="built_in">wildcard</span> ./source/*.c)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>头文件</li>
+</ul>
+<p>包含依赖的头文件，包括源码文件和库文件的头文件。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">INCLUDES =-I./<span class="keyword">include</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>库文件名称</li>
+</ul>
+<p>指定库文件名称，库文件有固定格式，静态库为libxxx.a;动态库为libxxx.so，指定库文件名称只需写“xxx”部分，</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">LIB_NAMES =-lfun_a -lfun_so</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>库文件路径</li>
+</ul>
+<p>指定依赖库文件的存放路径。注意如果引用的是动态库，动态库也许拷贝到“&#x2F;lib”或者“&#x2F;usr&#x2F;lib”目录下，执行应用程序时，系统默认在该文件下索引动态库。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">LIB_PATH =-L./lib</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>目标文件</li>
+</ul>
+<p>调用“patsubst”将源文件（.c）编译为目标文件（.o）。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">OBJ =<span class="variable">$(<span class="built_in">patsubst</span> %.c, %.o, <span class="variable">$(SOURCES)</span>)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行文件</li>
+</ul>
+<p>执行文件名称</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">TARGET =app</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编译</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line"> <span class="variable">$(CC)</span> <span class="variable">$(INCLUDES)</span> <span class="variable">$(DEBUG)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>链接</li>
+</ul>
+<p>可创建一个“output”文件夹存放目标执行文件。链接完输出目标执行文件，可以删除编译产生的临时文件（.o）。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="variable">$(TARGET)</span>:<span class="variable">$(OBJ)</span></span><br><span class="line"> @mkdir -p output</span><br><span class="line"> <span class="variable">$(CC)</span> <span class="variable">$(OBJ)</span> <span class="variable">$(LIB_PATH)</span> <span class="variable">$(LIB_NAMES)</span> -o output/<span class="variable">$(TARGET)</span>.<span class="variable">$(VERSION)</span></span><br><span class="line"> @rm -rf <span class="variable">$(OBJ)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>清除编译信息</li>
+</ul>
+<p>执行“make clean”清除编译产生的临时文件。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>:clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line"> @echo <span class="string">&quot;Remove linked and compiled files......&quot;</span></span><br><span class="line"> rm -rf <span class="variable">$(OBJ)</span> <span class="variable">$(TARGET)</span> output </span><br></pre></td></tr></table></figure>
+
+<h3 id="编译静态库Makefile"><a href="#编译静态库Makefile" class="headerlink" title="编译静态库Makefile"></a>编译静态库Makefile</h3><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">VERSION     =</span><br><span class="line">CC          =gcc</span><br><span class="line">DEBUG   =</span><br><span class="line">CFLAGS  =-Wall</span><br><span class="line">AR   =ar</span><br><span class="line">ARFLAGS     =rv</span><br><span class="line">SOURCES   =<span class="variable">$(<span class="built_in">wildcard</span> *.c)</span></span><br><span class="line">INCLUDES    =-I.</span><br><span class="line">LIB_NAMES   =</span><br><span class="line">LIB_PATH  =</span><br><span class="line">OBJ         =<span class="variable">$(<span class="built_in">patsubst</span> %.c, %.o, <span class="variable">$(SOURCES)</span>)</span></span><br><span class="line">TARGET      =libfun_a</span><br><span class="line"></span><br><span class="line"><span class="comment">#link</span></span><br><span class="line"><span class="variable">$(TARGET)</span>:<span class="variable">$(OBJ)</span></span><br><span class="line"> @mkdir -p output</span><br><span class="line"> <span class="variable">$(AR)</span> <span class="variable">$(ARFLAGS)</span> output/<span class="variable">$(TARGET)</span><span class="variable">$(VERSION)</span>.a <span class="variable">$(OBJ)</span></span><br><span class="line"> @rm -rf <span class="variable">$(OBJ)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#compile</span></span><br><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line"> <span class="variable">$(CC)</span> <span class="variable">$(INCLUDES)</span> <span class="variable">$(DEBUG)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br><span class="line">  </span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>:clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line"> @echo <span class="string">&quot;Remove linked and compiled files......&quot;</span></span><br><span class="line"> rm -rf <span class="variable">$(OBJ)</span> <span class="variable">$(TARGET)</span> output </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>【要点说明】</p>
+</blockquote>
+<p>基本格式与“编译可执行Makefile”一致，不同点包括以下。</p>
+<ul>
+<li>使用到“ar”命令将目标文件（.o）链接成静态库文件（.a）。静态库文件固定命名格式为：libxxx.a。</li>
+</ul>
+<h3 id="编译动态库Makefile"><a href="#编译动态库Makefile" class="headerlink" title="编译动态库Makefile"></a>编译动态库Makefile</h3><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">VERSION   =</span><br><span class="line">CC        =gcc</span><br><span class="line">DEBUG     =</span><br><span class="line">CFLAGS    =-fPIC -shared </span><br><span class="line">LFLAGS   =-fPIC -shared </span><br><span class="line">SOURCES   =<span class="variable">$(<span class="built_in">wildcard</span> *.c)</span></span><br><span class="line">INCLUDES  =-I.</span><br><span class="line">LIB_NAMES =</span><br><span class="line">LIB_PATH  =</span><br><span class="line">OBJ       =<span class="variable">$(<span class="built_in">patsubst</span> %.c, %.o, <span class="variable">$(SOURCES)</span>)</span></span><br><span class="line">TARGET    =libfun_so</span><br><span class="line"></span><br><span class="line"><span class="comment">#link</span></span><br><span class="line"><span class="variable">$(TARGET)</span>:<span class="variable">$(OBJ)</span></span><br><span class="line"> @mkdir -p output</span><br><span class="line"> <span class="variable">$(CC)</span> <span class="variable">$(OBJ)</span> <span class="variable">$(LIB_PATH)</span> <span class="variable">$(LIB_NAMES)</span> <span class="variable">$(LFLAGS)</span> -o output/<span class="variable">$(TARGET)</span><span class="variable">$(VERSION)</span>.so</span><br><span class="line"> @rm -rf <span class="variable">$(OBJ)</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#compile</span></span><br><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line"> <span class="variable">$(CC)</span> <span class="variable">$(INCLUDES)</span> <span class="variable">$(DEBUG)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>:clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line"> @echo <span class="string">&quot;Remove linked and compiled files......&quot;</span></span><br><span class="line"> rm -rf <span class="variable">$(OBJ)</span> <span class="variable">$(TARGET)</span> output </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>【要点说明】</p>
+</blockquote>
+<p>基本格式与“编译可执行Makefile”一致，不同点包括以下。</p>
+<ul>
+<li>编译选项和链接选项增加“-fPIC -shared ”选项。动态库文件固定命名格式为libxxx.so。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>参考资料</category>
+      </categories>
+      <tags>
+        <tag>参考代码</tag>
+        <tag>嵌入式</tag>
+        <tag>Makefile</tag>
+        <tag>模板</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>几百行代码实现的C语言编译器</title>
+    <url>/2024/01/29/1.Software/3.components/2.c4_parse/</url>
+    <content><![CDATA[<h3 id="C4：4个函数实现的C语言编译器"><a href="#C4：4个函数实现的C语言编译器" class="headerlink" title="C4：4个函数实现的C语言编译器"></a>C4：4个函数实现的C语言编译器</h3><p>它是一个C语言编译器项目(地址在文末，或点击“阅读原文”直接跳转)，整个实现只有：</p>
+<ul>
+<li><p>一个C语言源码文件</p>
+</li>
+<li><p>528行C语言代码</p>
+</li>
+<li><p>4个函数</p>
+</li>
+</ul>
+<p>仅此而已。</p>
+<p>它简洁，却不简单。</p>
+<p><span style="color:#00E6E4;">它具备简单完整的词法分析、语法分析、语义检查、代码生成、运行时环境(即虚拟机)。</span></p>
+<p>与常见的C编译器不同的是，<span style="color:#00E6E4;">它把C语言源程序编译成字节码(bytecode)，然后在一个精简的虚拟机中执行。</span></p>
+<p>你以为这就完了？No！它令人称道之处远不止如此！</p>
+<h4 id="C4：可以自举的C语言编译器"><a href="#C4：可以自举的C语言编译器" class="headerlink" title="C4：可以自举的C语言编译器"></a>C4：可以自举的C语言编译器</h4><p>若只是精简，或许它还并不那么令人惊奇，毕竟网上有很多类似的编译器项目，其中不乏一些非常简单优雅，且非常出色的项目。</p>
+<p>然而，C4最惊艳的地方在于，<span style="color:#00E6E4;">虽然只有五百多行代码，它却实现了自举。</span></p>
+<p>所谓自举，简单来说，就是自己编译自己，这通常是用来衡量一个编译器功能是否完备的标准之一。</p>
+<h4 id="C4实现的C语言子集"><a href="#C4实现的C语言子集" class="headerlink" title="C4实现的C语言子集"></a>C4实现的C语言子集</h4><p>C4致力于用最少的代码，实现一个可以自举的C编译器。它仅由528行代码，4个函数组成。可想而知，它不可能完整的实现C语言标准定义的所有特性，它只实现了自举所需的C语言最小子集。</p>
+<blockquote>
+<p>数据类型</p>
+</blockquote>
+<ul>
+<li><p>char</p>
+</li>
+<li><p>int</p>
+</li>
+<li><p>指针</p>
+</li>
+<li><p>枚举（enum）</p>
+</li>
+<li><p>数组</p>
+</li>
+<li><p>字符串</p>
+</li>
+</ul>
+<p>不支持struct、typedef、union等数据类型。</p>
+<blockquote>
+<p>语句结构</p>
+</blockquote>
+<ul>
+<li><p>if-else控制语句</p>
+</li>
+<li><p>while循环语句</p>
+</li>
+<li><p>return语句</p>
+</li>
+<li><p>函数</p>
+</li>
+</ul>
+<p>不支持do-while、switch-case、for、continue、break、goto等语句结构。</p>
+<blockquote>
+<p>运算符</p>
+</blockquote>
+<p>它支持除+&#x3D;、%&#x3D;、&lt;&lt;&#x3D;、&amp;&#x3D;等符合运算符之外的几乎所有运算符。包括：</p>
+<ul>
+<li><p>算术运算符</p>
+</li>
+<li><p>关系运算符</p>
+</li>
+<li><p>逻辑运算符</p>
+</li>
+<li><p>位运算符</p>
+</li>
+<li><p>赋值运算符</p>
+</li>
+<li><p>杂项运算符（如三元运算符?:）</p>
+</li>
+</ul>
+<blockquote>
+<p>内建库函数</p>
+</blockquote>
+<p>C4编译器实现时用到了一些系统库函数，因此，为了实现自举，它也内建支持了几个库函数。包括：open、read、close、printf、malloc、free、memset、memcmp、exit</p>
+<p>需要注意的是，它不支持以#开头的预处理命令，如#include、#define、#if等。</p>
+<p>代码注释只支持”&#x2F;&#x2F;“开头的单行注释，不支持”&#x2F;* *&#x2F;“标记的多行注释形式。</p>
+<p>与传统的C语言编译器相比，C4在实现上有其独到之处。</p>
+<p>下面，先简单介绍一下传统编译器的实现过程。</p>
+<h4 id="典型编译器的实现"><a href="#典型编译器的实现" class="headerlink" title="典型编译器的实现"></a>典型编译器的实现</h4><p>典型的编译器的实现，一般都会有下面几个步骤：</p>
+<ul>
+<li><p>词法分析</p>
+</li>
+<li><p>语法分析</p>
+</li>
+<li><p>语义分析</p>
+</li>
+<li><p>中间代码生成</p>
+</li>
+<li><p>代码优化</p>
+</li>
+<li><p>机器代码生成</p>
+</li>
+</ul>
+<p>如GCC、Clang、Go等均是如此。</p>
+<p><img src="/img/c4_parse/1.png"></p>
+<p>每个阶段，会对代码进行一次或多次扫描。这里的”代码”，包括文本形式的源代码、语法树、中间代码等表示形式。</p>
+<p>典型的实现中，词法分析和语法分析通常会糅合在一起(当然也可以分开)，在语法分析时，调用词法分析器逐个取得token。因此，理论上讲，词法分析和语法分析阶段，只需要对源码扫描一遍即可(当然也有例外)，并生成语法树，或抽象语法树AST(Abstract Syntax Tree)。</p>
+<p>语义分析阶段，操作的主要对象就是这棵树，至少要对这棵树扫描一遍。有些实现中，在进行语义检查的同时也会直接生成中间代码。</p>
+<p>代码优化阶段，根据编译器优化的力度的不同，可能会对中间代码进行多次扫描。</p>
+<p>这里所谓的“扫描一遍”，在编译器术语中一般称为pass。对LLVM有了解的小伙伴应该知道，LLVM中每一种类型的优化都是一个pass，要应用多种优化技术，就需要有多个pass。</p>
+<h4 id="C4的独具特色之处"><a href="#C4的独具特色之处" class="headerlink" title="C4的独具特色之处"></a>C4的独具特色之处</h4><p>传统的C语言编译器，最终都把C语言源码编译成可执行文件(如ELF，PE等)，也就是二进制的机器码。</p>
+<p><span style="color:#00E6E4;">而C4则是把C语言源码先编译成其专门设计的字节码(bytecode)，然后直接在虚拟机中执行，类似Java，Lua等。</span></p>
+<p>C4设计了39个字节码指令，大部分与汇编指令类似，主要是内存访问指令，算术运算指令等。其中，为支持内建的库函数，还专门设计了9条特殊的库函数调用指令。</p>
+<p>它的虚拟机是典型的栈式虚拟机（早期的Lua也是栈式虚拟机，但最新的Lua 5.x采用寄存器虚拟机），其实现也是非常精简。</p>
+<p>此外，还支持简单的调试功能，比如可以使用-d命令，把生成的字节码dump出来。下图是hello.c的字节码：</p>
+<p><img src="/img/c4_parse/2.png"></p>
+<h4 id="对源码只扫描一遍"><a href="#对源码只扫描一遍" class="headerlink" title="对源码只扫描一遍"></a>对源码只扫描一遍</h4><p>与传统的编译器实现不同，C4把词法分析、语法分析、语义分析、代码生成这几个步骤巧妙的结合在一起，在把C语言源码编译成字节码的整个过程中，只扫描了一遍源码。</p>
+<p>Lua的解释器也是采用对源码扫描一遍的方式，因此，C4和Lua的性能都相当不错。</p>
+<h3 id="C4源码的可读性"><a href="#C4源码的可读性" class="headerlink" title="C4源码的可读性"></a>C4源码的可读性</h3><p>当年C4发布时，在外网一些知名社区引起不小的轰动，引发了诸多讨论。对于C4的实现，有人认为C4的实现非常简洁、易读，也有人认为C4的实现稍显晦涩。</p>
+<p>我个人观点，C4的实现确实非常简洁，毕竟只有4个函数，500多行代码。但是要想真正完全理解，需要有一定的编译原理基础知识，这也是理解C4唯一的门槛。</p>
+<p>比如C4的语法分析过程，就是典型的递归下降和算符优先算法相结合的实现方式。只要了解这些编译器的经典算法原理，C4的实现逻辑理解起来，还是比较轻松的。</p>
+<p>此外，C4为了追求以最少的代码实现自举，在实现上采用了一些技巧，对代码的可读性有一定影响。</p>
+<p>比如，我们前面提到，C4不支持struct类型。这也意味着C4的源码中不能使用struct类型。为此，它选择使用数组来模拟struct结构。这样乍看起来，可能会产生一些困惑。</p>
+<p>个人认为，C4的一个槽点，就是它变量的命名上，过于简洁。比如标记字节码的位置的变量用”e”表示，其实如果用”emit”的话，或许会清晰许多，也会更容易理解。</p>
+<p>除了C4的原生实现外，网上各路大神也开发了很多基于C4的衍生实现。比如有人给C4额外增加了80多行代码，却让C4支持了JIT，执行速度大大提升，在我机器上验证，执行速度提高了27倍！也有人对C4做了简单扩展，使得它可以直接产生真实的机器码，并最终生成ELF可执行文件。</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>现代的编译器项目，如GCC和Clang&#x2F;LLVM，实现逻辑非常复杂，代码规模巨大，一个人几乎不可能完全搞清楚。即便是网上备受推崇的精简实现TCC和LCC，它们的实现也相对比较复杂的，对于新手来说，也很难彻底研究清楚。</p>
+<p>个人认为，C4是非常适合新手研究的编译器项目之一，毕竟只有四个函数，500多行源码，且里面没有特别复杂难懂的算法。当然了，研究之前，最好具备一些编译器的基础知识，那样理解起来就会比较容易了。</p>
+<p>C4虽然精简，但要完全讲清楚，也不是一篇文章能够做到的。因此，本文只对C4简单介绍，并没有对C4的具体实现做过多探讨。感兴趣的朋友可以到github上面找到它，仔细研究一下，也可以私信我，感兴趣的人多的话，我可以更新几篇文章，详细讲解它的代码实现。</p>
+<h3 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h3><blockquote>
+<p><a href="https://github.com/TutuBinary/c4.git">https://github.com/TutuBinary/c4.git</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>软件小组件</category>
+      </categories>
+      <tags>
+        <tag>参考代码</tag>
+        <tag>嵌入式</tag>
+        <tag>软件组件</tag>
+        <tag>C 解析器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>库仑计统计电池电量</title>
+    <url>/2024/01/29/3.Hardware/1.Power/3.battery_capacity/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在设计电子产品时，经常会遇到电量指示的问题。很多带电池的产品，都需要有电量指示的功能，大多数人在设计电量指示时，都是通过采集电池的电压，然后显示电池电量。</p>
+<p>最常见的做法就是，用4颗LED做电量指示。4.1V - 4.2V满格，表示有100%的电，3.8V - 4.1V三格，表示还剩75%的电量，3.7V - 3.8V两格 ，表示还剩50%的电量，3.5V - 3.7V一格，表示还剩25%的电量。</p>
+<p>但是这种方法只是一种估算方法，不是很准确，而且很容易发生误测，比如电路中的负载突然变大，电池的电压就会一下被拉低很多，电量指示灯由满格一下子变成三格或者两格。</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>有什么方法可以解决以上电池电量指示不准确的问题呢？</p>
+<p><span style="color:#00E6E4;">可以采用库仑计的设计方案，让电池电量指示更准确。</span></p>
+<p>库仑计的原理，简单一点来说，就是通过实时采样电池回路流经的电流大小，电流是随时间变化的，然后通过把这个变化的电流和时间进行积分，就可以得到准确的电量。当充电时，电池从没电到充满电这段时间里，实时采集电池的充电电流，然后和时间进行积分算出电池容量。当电路工作时，电池对电路放电，实时采集电池的放电电流，然后和时间进行积分，得出用掉了多少电量，最后用电池的容量减去用掉的电量就是电池剩下的电量，这样操作，电量指示就会很准确了。</p>
+<h4 id="参考电路"><a href="#参考电路" class="headerlink" title="参考电路"></a>参考电路</h4><p><img src="/img/battery_capacity/1.jpg"></p>
+<p>如上面的参考电路所示，在电池的负极串一个采样电阻下地，再经过运算放大器放大给单片机的ADC采样，软件里经过积分等算法算出电量。</p>
+]]></content>
+      <categories>
+        <category>硬件资料</category>
+        <category>电源</category>
+      </categories>
+      <tags>
+        <tag>硬件资料</tag>
+        <tag>电池电量统计</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MCU动态加载函数的方法</title>
+    <url>/2024/01/29/1.Software/3.components/3.dynamic_loader/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>我们都听说过 <strong>静态库和动态库</strong> ， 静态库大家都应该比较清楚，在单片机开发的时候，也经常用到。</p>
+<p>动态库在 windows 和 linux 下很常见，例如: Windows中的dll，Linux中的so，可以将代码动态地从其他的存储介质，动态加载到RAM中</p>
+<p>而动态库在单片机领域就很少见了</p>
+<h4 id="第一种动态库方案"><a href="#第一种动态库方案" class="headerlink" title="第一种动态库方案"></a>第一种动态库方案</h4><blockquote>
+<p>参考链接 ： <a href="https://whycan.com/t_8607.html">https://whycan.com/t_8607.html</a></p>
+</blockquote>
+<p>最近尝试了一下wifi&#x2F;bt soc上，动态加载用户应用的方式。又学到很多没用的知识。</p>
+<blockquote>
+<p>基本需求</p>
+</blockquote>
+<ul>
+<li><p>应用需要方便编译，使用比较通用的格式</p>
+<p>  <span style="color:#00E6E4;">elf：还有谁？</span></p>
+</li>
+<li><p>应用代码部分最好不占用ram，XIP方式运行</p>
+<p>  <span style="color:#00E6E4;">elf: 呃呃呃，你再说一遍？</span></p>
+</li>
+<li><p>用户开发简单，和普通的c一样，甚至可以用其他语言，rust、go等等，反正能编译成elf就行</p>
+<p>  <span style="color:#00E6E4;">elf: smile</span></p>
+</li>
+<li><p>支持cortex-m等MCU芯片</p>
+<p>  <span style="color:#00E6E4;">cortex-m: 纳尼</span></p>
+</li>
+<li><p>全兼容，基于新版本编译的同样代码，可以在旧版中使用，反过来也一样</p>
+</li>
+</ul>
+<blockquote>
+<p>elf动态加载、地址无关、cortex-m</p>
+</blockquote>
+<ul>
+<li><p>gcc编译器使用-fPIC，产生的是got-based position independency。</p>
+<p>  科普：GOT，Global Offset Table，说白了就是一个存放变量和函数的地址数组，在ram中，用户可以在GOT里实现重定位<br>  优点：随便乱来，反正地址都是loader决定<br>  缺点：arm-none-eabi-gcc有BUG，产生基于R9寄存器的GOT代码的时候，PLT（不用明白，反正就是一些代码，用于调用一些内&#x2F;外部函数等等）里的代码访问GOT还是用PC+偏移，不是用R9寄存器。并且，已知这个BUG好几年前就有，ARM也不会去修复这个BUG。</p>
+</li>
+<li><p>clang&#x2F;iar编译器使用-fropi -frwpi，mdk估计也是这个，产生的是embedded position independency。</p>
+<p>  优点: 简单，R9只是指向data&#x2F;bss&#x2F;noinit的整块内存，不需要重定向</p>
+<p>  缺点: 由于没有重定向，所以无法访问外部函数，因为没有从定向操作，也不能对外提供API<br>  workaround: VSF黑科技，自己实现PLT（支持动态库）</p>
+</li>
+</ul>
+<blockquote>
+<p>最终方案</p>
+</blockquote>
+<ul>
+<li><p>使用clang编译器编译elf，ARM今后主力支持这个，反正也免费</p>
+</li>
+<li><p>VSF host程序下的配置：</p>
+<p> VSF_USE_LOADER                      使能加载器</p>
+<p> VSF_LOADER_USE_ELF               支持elf加载器</p>
+<p> VSF_LINUX_USE_APPLET            linux子系统，支持applet（高大上的说法，其实就只是编译出来的elf）</p>
+<p> VSF_LINUX_APPLET_USE_XXXX       linux下哪些头文件支持在applet里使用</p>
+</li>
+<li><p>VSF applet下的配置</p>
+<p>  直接用vsf.linux仓库下，applet&#x2F;vsf_usr_cfg.h: <a href="https://gitee.com/vsf-linux/vsf.linux/blob/main/applet/vsf_usr_cfg.h">https://gitee.com/vsf-linux/vsf.linux/blob/main/applet/vsf_usr_cfg.h</a></p>
+</li>
+<li><p>applet应用开发</p>
+<p>  头文件（包括C库头文件，位于simple_libc下）: <a href="https://gitee.com/vsfteam/vsf/tree/master/source/shell/sys/linux/include">https://gitee.com/vsfteam/vsf/tree/master/source/shell/sys/linux/include</a></p>
+<p>  直接使用linux的方式开发，如果再linux下可以用，按照applet目录下的编译命令，编译后就可以在vsf里使用。</p>
+<p>  使用方法，下载到AIC8800M的内部flash中，然后，vsf的linux里，运行loaderelf 0xXXXXXXXX（flash中的地址）。</p>
+</li>
+</ul>
+<p>上图</p>
+<p>![](&#x2F;img&#x2F;dynamic_loader&#x2F;1.png</p>
+<h4 id="第二种动态库方案"><a href="#第二种动态库方案" class="headerlink" title="第二种动态库方案"></a>第二种动态库方案</h4><blockquote>
+<p><a href="https://gitee.com/tutubinary/dynamic_loader">https://gitee.com/tutubinary/dynamic_loader</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>软件小组件</category>
+      </categories>
+      <tags>
+        <tag>参考代码</tag>
+        <tag>动态加载</tag>
+      </tags>
+  </entry>
+</search>
