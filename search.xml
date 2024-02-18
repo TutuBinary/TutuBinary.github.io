@@ -1669,140 +1669,6 @@
       </tags>
   </entry>
   <entry>
-    <title>几百行代码实现的C语言编译器</title>
-    <url>/2024/01/29/1.Software/3.components/2.c4_parse/</url>
-    <content><![CDATA[<h3 id="C4：4个函数实现的C语言编译器"><a href="#C4：4个函数实现的C语言编译器" class="headerlink" title="C4：4个函数实现的C语言编译器"></a>C4：4个函数实现的C语言编译器</h3><p>它是一个C语言编译器项目(地址在文末，或点击“阅读原文”直接跳转)，整个实现只有：</p>
-<ul>
-<li><p>一个C语言源码文件</p>
-</li>
-<li><p>528行C语言代码</p>
-</li>
-<li><p>4个函数</p>
-</li>
-</ul>
-<p>仅此而已。</p>
-<p>它简洁，却不简单。</p>
-<p><span style="color:#00E6E4;">它具备简单完整的词法分析、语法分析、语义检查、代码生成、运行时环境(即虚拟机)。</span></p>
-<p>与常见的C编译器不同的是，<span style="color:#00E6E4;">它把C语言源程序编译成字节码(bytecode)，然后在一个精简的虚拟机中执行。</span></p>
-<p>你以为这就完了？No！它令人称道之处远不止如此！</p>
-<h4 id="C4：可以自举的C语言编译器"><a href="#C4：可以自举的C语言编译器" class="headerlink" title="C4：可以自举的C语言编译器"></a>C4：可以自举的C语言编译器</h4><p>若只是精简，或许它还并不那么令人惊奇，毕竟网上有很多类似的编译器项目，其中不乏一些非常简单优雅，且非常出色的项目。</p>
-<p>然而，C4最惊艳的地方在于，<span style="color:#00E6E4;">虽然只有五百多行代码，它却实现了自举。</span></p>
-<p>所谓自举，简单来说，就是自己编译自己，这通常是用来衡量一个编译器功能是否完备的标准之一。</p>
-<h4 id="C4实现的C语言子集"><a href="#C4实现的C语言子集" class="headerlink" title="C4实现的C语言子集"></a>C4实现的C语言子集</h4><p>C4致力于用最少的代码，实现一个可以自举的C编译器。它仅由528行代码，4个函数组成。可想而知，它不可能完整的实现C语言标准定义的所有特性，它只实现了自举所需的C语言最小子集。</p>
-<blockquote>
-<p>数据类型</p>
-</blockquote>
-<ul>
-<li><p>char</p>
-</li>
-<li><p>int</p>
-</li>
-<li><p>指针</p>
-</li>
-<li><p>枚举（enum）</p>
-</li>
-<li><p>数组</p>
-</li>
-<li><p>字符串</p>
-</li>
-</ul>
-<p>不支持struct、typedef、union等数据类型。</p>
-<blockquote>
-<p>语句结构</p>
-</blockquote>
-<ul>
-<li><p>if-else控制语句</p>
-</li>
-<li><p>while循环语句</p>
-</li>
-<li><p>return语句</p>
-</li>
-<li><p>函数</p>
-</li>
-</ul>
-<p>不支持do-while、switch-case、for、continue、break、goto等语句结构。</p>
-<blockquote>
-<p>运算符</p>
-</blockquote>
-<p>它支持除+&#x3D;、%&#x3D;、&lt;&lt;&#x3D;、&amp;&#x3D;等符合运算符之外的几乎所有运算符。包括：</p>
-<ul>
-<li><p>算术运算符</p>
-</li>
-<li><p>关系运算符</p>
-</li>
-<li><p>逻辑运算符</p>
-</li>
-<li><p>位运算符</p>
-</li>
-<li><p>赋值运算符</p>
-</li>
-<li><p>杂项运算符（如三元运算符?:）</p>
-</li>
-</ul>
-<blockquote>
-<p>内建库函数</p>
-</blockquote>
-<p>C4编译器实现时用到了一些系统库函数，因此，为了实现自举，它也内建支持了几个库函数。包括：open、read、close、printf、malloc、free、memset、memcmp、exit</p>
-<p>需要注意的是，它不支持以#开头的预处理命令，如#include、#define、#if等。</p>
-<p>代码注释只支持”&#x2F;&#x2F;“开头的单行注释，不支持”&#x2F;* *&#x2F;“标记的多行注释形式。</p>
-<p>与传统的C语言编译器相比，C4在实现上有其独到之处。</p>
-<p>下面，先简单介绍一下传统编译器的实现过程。</p>
-<h4 id="典型编译器的实现"><a href="#典型编译器的实现" class="headerlink" title="典型编译器的实现"></a>典型编译器的实现</h4><p>典型的编译器的实现，一般都会有下面几个步骤：</p>
-<ul>
-<li><p>词法分析</p>
-</li>
-<li><p>语法分析</p>
-</li>
-<li><p>语义分析</p>
-</li>
-<li><p>中间代码生成</p>
-</li>
-<li><p>代码优化</p>
-</li>
-<li><p>机器代码生成</p>
-</li>
-</ul>
-<p>如GCC、Clang、Go等均是如此。</p>
-<p><img src="/img/c4_parse/1.png"></p>
-<p>每个阶段，会对代码进行一次或多次扫描。这里的”代码”，包括文本形式的源代码、语法树、中间代码等表示形式。</p>
-<p>典型的实现中，词法分析和语法分析通常会糅合在一起(当然也可以分开)，在语法分析时，调用词法分析器逐个取得token。因此，理论上讲，词法分析和语法分析阶段，只需要对源码扫描一遍即可(当然也有例外)，并生成语法树，或抽象语法树AST(Abstract Syntax Tree)。</p>
-<p>语义分析阶段，操作的主要对象就是这棵树，至少要对这棵树扫描一遍。有些实现中，在进行语义检查的同时也会直接生成中间代码。</p>
-<p>代码优化阶段，根据编译器优化的力度的不同，可能会对中间代码进行多次扫描。</p>
-<p>这里所谓的“扫描一遍”，在编译器术语中一般称为pass。对LLVM有了解的小伙伴应该知道，LLVM中每一种类型的优化都是一个pass，要应用多种优化技术，就需要有多个pass。</p>
-<h4 id="C4的独具特色之处"><a href="#C4的独具特色之处" class="headerlink" title="C4的独具特色之处"></a>C4的独具特色之处</h4><p>传统的C语言编译器，最终都把C语言源码编译成可执行文件(如ELF，PE等)，也就是二进制的机器码。</p>
-<p><span style="color:#00E6E4;">而C4则是把C语言源码先编译成其专门设计的字节码(bytecode)，然后直接在虚拟机中执行，类似Java，Lua等。</span></p>
-<p>C4设计了39个字节码指令，大部分与汇编指令类似，主要是内存访问指令，算术运算指令等。其中，为支持内建的库函数，还专门设计了9条特殊的库函数调用指令。</p>
-<p>它的虚拟机是典型的栈式虚拟机（早期的Lua也是栈式虚拟机，但最新的Lua 5.x采用寄存器虚拟机），其实现也是非常精简。</p>
-<p>此外，还支持简单的调试功能，比如可以使用-d命令，把生成的字节码dump出来。下图是hello.c的字节码：</p>
-<p><img src="/img/c4_parse/2.png"></p>
-<h4 id="对源码只扫描一遍"><a href="#对源码只扫描一遍" class="headerlink" title="对源码只扫描一遍"></a>对源码只扫描一遍</h4><p>与传统的编译器实现不同，C4把词法分析、语法分析、语义分析、代码生成这几个步骤巧妙的结合在一起，在把C语言源码编译成字节码的整个过程中，只扫描了一遍源码。</p>
-<p>Lua的解释器也是采用对源码扫描一遍的方式，因此，C4和Lua的性能都相当不错。</p>
-<h3 id="C4源码的可读性"><a href="#C4源码的可读性" class="headerlink" title="C4源码的可读性"></a>C4源码的可读性</h3><p>当年C4发布时，在外网一些知名社区引起不小的轰动，引发了诸多讨论。对于C4的实现，有人认为C4的实现非常简洁、易读，也有人认为C4的实现稍显晦涩。</p>
-<p>我个人观点，C4的实现确实非常简洁，毕竟只有4个函数，500多行代码。但是要想真正完全理解，需要有一定的编译原理基础知识，这也是理解C4唯一的门槛。</p>
-<p>比如C4的语法分析过程，就是典型的递归下降和算符优先算法相结合的实现方式。只要了解这些编译器的经典算法原理，C4的实现逻辑理解起来，还是比较轻松的。</p>
-<p>此外，C4为了追求以最少的代码实现自举，在实现上采用了一些技巧，对代码的可读性有一定影响。</p>
-<p>比如，我们前面提到，C4不支持struct类型。这也意味着C4的源码中不能使用struct类型。为此，它选择使用数组来模拟struct结构。这样乍看起来，可能会产生一些困惑。</p>
-<p>个人认为，C4的一个槽点，就是它变量的命名上，过于简洁。比如标记字节码的位置的变量用”e”表示，其实如果用”emit”的话，或许会清晰许多，也会更容易理解。</p>
-<p>除了C4的原生实现外，网上各路大神也开发了很多基于C4的衍生实现。比如有人给C4额外增加了80多行代码，却让C4支持了JIT，执行速度大大提升，在我机器上验证，执行速度提高了27倍！也有人对C4做了简单扩展，使得它可以直接产生真实的机器码，并最终生成ELF可执行文件。</p>
-<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>现代的编译器项目，如GCC和Clang&#x2F;LLVM，实现逻辑非常复杂，代码规模巨大，一个人几乎不可能完全搞清楚。即便是网上备受推崇的精简实现TCC和LCC，它们的实现也相对比较复杂的，对于新手来说，也很难彻底研究清楚。</p>
-<p>个人认为，C4是非常适合新手研究的编译器项目之一，毕竟只有四个函数，500多行源码，且里面没有特别复杂难懂的算法。当然了，研究之前，最好具备一些编译器的基础知识，那样理解起来就会比较容易了。</p>
-<p>C4虽然精简，但要完全讲清楚，也不是一篇文章能够做到的。因此，本文只对C4简单介绍，并没有对C4的具体实现做过多探讨。感兴趣的朋友可以到github上面找到它，仔细研究一下，也可以私信我，感兴趣的人多的话，我可以更新几篇文章，详细讲解它的代码实现。</p>
-<h3 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h3><blockquote>
-<p><a href="https://github.com/TutuBinary/c4.git">https://github.com/TutuBinary/c4.git</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>软件资料</category>
-        <category>软件小组件</category>
-      </categories>
-      <tags>
-        <tag>参考代码</tag>
-        <tag>嵌入式</tag>
-        <tag>软件组件</tag>
-        <tag>C 解析器</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>库仑计统计电池电量</title>
     <url>/2024/01/29/3.Hardware/1.Power/3.battery_capacity/</url>
     <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在设计电子产品时，经常会遇到电量指示的问题。很多带电池的产品，都需要有电量指示的功能，大多数人在设计电量指示时，都是通过采集电池的电压，然后显示电池电量。</p>
@@ -1886,7 +1752,7 @@
 </li>
 </ul>
 <p>上图</p>
-<p>![](&#x2F;img&#x2F;dynamic_loader&#x2F;1.png</p>
+<p><img src="/img/dynamic_loader/1.png"></p>
 <h4 id="第二种动态库方案"><a href="#第二种动态库方案" class="headerlink" title="第二种动态库方案"></a>第二种动态库方案</h4><blockquote>
 <p><a href="https://gitee.com/tutubinary/dynamic_loader">https://gitee.com/tutubinary/dynamic_loader</a></p>
 </blockquote>
@@ -1898,6 +1764,88 @@
       <tags>
         <tag>参考代码</tag>
         <tag>动态加载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>画图、绘图工具</title>
+    <url>/2024/01/29/4.tool/4.draw/</url>
+    <content><![CDATA[<h3 id="drawio"><a href="#drawio" class="headerlink" title="drawio"></a>drawio</h3><p>draw.io是一个在线作图网站，功能很多，思维导图、流程图、网络图等等，电路图也有。里面的很多图都可以设置成草图样式，挺酷炫的。</p>
+<blockquote>
+<p><a href="https://app.diagrams.net/">https://app.diagrams.net/</a></p>
+</blockquote>
+<h3 id="波形图绘制工具"><a href="#波形图绘制工具" class="headerlink" title="波形图绘制工具"></a>波形图绘制工具</h3><h4 id="WaveDrom"><a href="#WaveDrom" class="headerlink" title="WaveDrom"></a>WaveDrom</h4><p>WaveDrom 根据简单的文本描述绘制时序图或波形。他有在线版本和离线版本，可以从它的官网下载安装版本。</p>
+<blockquote>
+<p><a href="https://wavedrom.com/editor.html">https://wavedrom.com/editor.html</a></p>
+</blockquote>
+<h4 id="TimeGen"><a href="#TimeGen" class="headerlink" title="TimeGen"></a>TimeGen</h4><p>TimeGen是一款简单实用的画时序图工具，用户可以快速的通过该软件进行时序图的创建，软件具有矩形或圆形边缘的轮廓文本框，方便用户对各种模式的时序图进行制作，在构图时，用户可以一次性选择多个文本框，通过快捷键就能立即实现一键添加，在很大程度上提高了设计时间，同时您可以使用编辑工具移动文本框与您的鼠标，在添加文本时，用户可以自由设置每个文本框的属性字体样式、字体 大小和颜色，非常具有个性化</p>
+<blockquote>
+<p><a href="https://www.xfusionsoftware.com/">https://www.xfusionsoftware.com/</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+        <category>画图绘图</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>画图</tag>
+        <tag>绘图</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>脚本解析器</title>
+    <url>/2024/01/29/1.Software/3.components/2.script_parse/</url>
+    <content><![CDATA[<h3 id="C4：4个函数实现的C语言编译器"><a href="#C4：4个函数实现的C语言编译器" class="headerlink" title="C4：4个函数实现的C语言编译器"></a>C4：4个函数实现的C语言编译器</h3><p>它是一个C语言编译器项目，整个实现只有：</p>
+<ul>
+<li><p>一个C语言源码文件</p>
+</li>
+<li><p>528行C语言代码</p>
+</li>
+<li><p>4个函数</p>
+</li>
+</ul>
+<p>仅此而已。</p>
+<p>它简洁，却不简单。</p>
+<blockquote>
+<p><a href="https://github.com/TutuBinary/c4.git">https://github.com/TutuBinary/c4.git</a></p>
+</blockquote>
+<h3 id="QuickJS"><a href="#QuickJS" class="headerlink" title="QuickJS"></a>QuickJS</h3><p>QuickJS是一个小型并且可嵌入的Javascript引擎，它支持ES2020规范，包括模块，异步生成器和代理器。</p>
+<p>它可选支持数学扩展，例如大整数 (BigInt)，大浮点数 (BigFloat) 以及运算符重载。</p>
+<blockquote>
+<p><a href="https://github.com/TutuBinary/QuickJS">https://github.com/TutuBinary/QuickJS</a></p>
+</blockquote>
+<h3 id="Lua"><a href="#Lua" class="headerlink" title="Lua"></a>Lua</h3><p>Lua 是一种强大、高效、轻量级、可嵌入的脚本语言。它支持过程式编程、面向对象编程、函数式编程、数据驱动编程和数据描述。</p>
+<blockquote>
+<p><a href="https://www.lua.org/">https://www.lua.org/</a></p>
+</blockquote>
+<h3 id="panda"><a href="#panda" class="headerlink" title="panda"></a>panda</h3><p>panda是脚本语言解释器，它基于javascript，但裁剪了部分语法特性;</p>
+<p>panda是轻量级语言，它被设计用来作为嵌入式硬件的解释器;</p>
+<p>panda很容易学习。</p>
+<blockquote>
+<p><a href="https://github.com/TutuBinary/panda">https://github.com/TutuBinary/panda</a></p>
+</blockquote>
+<h3 id="Moddable-SDK"><a href="#Moddable-SDK" class="headerlink" title="Moddable SDK"></a>Moddable SDK</h3><p>Moddable SDK 是脚本语言解释器，它基于javascript</p>
+<blockquote>
+<p><a href="https://github.com/TutuBinary/moddable">https://github.com/TutuBinary/moddable</a></p>
+</blockquote>
+<h3 id="lpython"><a href="#lpython" class="headerlink" title="lpython"></a>lpython</h3><p>LPython 是一个Python 编译器</p>
+<blockquote>
+<p><a href="https://github.com/TutuBinary/lpython">https://github.com/TutuBinary/lpython</a></p>
+</blockquote>
+<h3 id="PikaPython"><a href="#PikaPython" class="headerlink" title="PikaPython"></a>PikaPython</h3><p>PikaPython 是一个完全重写的超轻量级 python 引擎，零依赖，零配置，可以在 Flash ≤ 64KB，RAM≤ 4KB 的平台下运行(如 stm32g030c8 和 stm32f103c8)，极易部署和扩展，具有大量的中文文档和视频资料。</p>
+<blockquote>
+<p><a href="https://github.com/TutuBinary/PikaPython">https://github.com/TutuBinary/PikaPython</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>软件小组件</category>
+      </categories>
+      <tags>
+        <tag>参考代码</tag>
+        <tag>嵌入式</tag>
+        <tag>软件组件</tag>
+        <tag>C解析器</tag>
       </tags>
   </entry>
 </search>
