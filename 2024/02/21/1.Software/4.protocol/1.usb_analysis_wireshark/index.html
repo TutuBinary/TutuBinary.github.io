@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>USB协议分析(wireshark抓包) | 小石头的博客</title><meta name="author" content="小石头 Tutubinary"><meta name="copyright" content="小石头 Tutubinary"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="​   本文将在windows下从wireshark抓包的角度对USB协议进行分析，可以同时参考以下内容进行学习： stm32f4USB项目开发详解 USB​	在抓包的过程中我的电脑上一共连接了3个usb设备，分别为一个键盘、一个无线鼠标接收器以及一个U盘 ​	下面是我的设备管理器的显示，由于电脑上除了我外连的三个usb设备之外还有电脑内的主机控制器和根集线器等设备，所以设备管理器显示有6个。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="USB协议分析(wireshark抓包)">
+<meta property="og:url" content="https://tutubinary.github.io/2024/02/21/1.Software/4.protocol/1.usb_analysis_wireshark/index.html">
+<meta property="og:site_name" content="小石头的博客">
+<meta property="og:description" content="​   本文将在windows下从wireshark抓包的角度对USB协议进行分析，可以同时参考以下内容进行学习： stm32f4USB项目开发详解 USB​	在抓包的过程中我的电脑上一共连接了3个usb设备，分别为一个键盘、一个无线鼠标接收器以及一个U盘 ​	下面是我的设备管理器的显示，由于电脑上除了我外连的三个usb设备之外还有电脑内的主机控制器和根集线器等设备，所以设备管理器显示有6个。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tutubinary.github.io/img/usb.jpg">
+<meta property="article:published_time" content="2024-02-21T06:19:59.280Z">
+<meta property="article:modified_time" content="2024-02-21T07:01:46.638Z">
+<meta property="article:author" content="小石头 Tutubinary">
+<meta property="article:tag" content="wireshark">
+<meta property="article:tag" content="usb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tutubinary.github.io/img/usb.jpg"><link rel="shortcut icon" href="/img/logo.jpg"><link rel="canonical" href="https://tutubinary.github.io/2024/02/21/1.Software/4.protocol/1.usb_analysis_wireshark/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":150},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'USB协议分析(wireshark抓包)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-21 15:01:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><script async src="/css/custom/runtime.css"></script><link rel="stylesheet" href="/css/custom/font.css"><link rel="stylesheet" href="/css/custom/custom.css"  media="defer" onload="this.media='all'"><script async src="/js/custom/diytitle.js"></script><link rel="stylesheet" href="/css/custom/daohanglan.css"><link rel="stylesheet" href="/css/custom/iconfont.css"><svg aria-hidden="true" style="position:absolute; overflow:hidden; width:0; height:0"><symbol id="icon-sun" viewBox="0 0 1024 1024"><path d="M960 512l-128 128v192h-192l-128 128-128-128H192v-192l-128-128 128-128V192h192l128-128 128 128h192v192z" fill="#FFD878" p-id="8420"></path><path d="M736 512a224 224 0 1 0-448 0 224 224 0 1 0 448 0z" fill="#FFE4A9" p-id="8421"></path><path d="M512 109.248L626.752 224H800v173.248L914.752 512 800 626.752V800h-173.248L512 914.752 397.248 800H224v-173.248L109.248 512 224 397.248V224h173.248L512 109.248M512 64l-128 128H192v192l-128 128 128 128v192h192l128 128 128-128h192v-192l128-128-128-128V192h-192l-128-128z" fill="#4D5152" p-id="8422"></path><path d="M512 320c105.888 0 192 86.112 192 192s-86.112 192-192 192-192-86.112-192-192 86.112-192 192-192m0-32a224 224 0 1 0 0 448 224 224 0 0 0 0-448z" fill="#4D5152" p-id="8423"></path></symbol><symbol id="icon-moon" viewBox="0 0 1024 1024"><path d="M611.370667 167.082667a445.013333 445.013333 0 0 1-38.4 161.834666 477.824 477.824 0 0 1-244.736 244.394667 445.141333 445.141333 0 0 1-161.109334 38.058667 85.077333 85.077333 0 0 0-65.066666 135.722666A462.08 462.08 0 1 0 747.093333 102.058667a85.077333 85.077333 0 0 0-135.722666 65.024z" fill="#FFB531" p-id="11345"></path><path d="M329.728 274.133333l35.157333-35.157333a21.333333 21.333333 0 1 0-30.165333-30.165333l-35.157333 35.157333-35.114667-35.157333a21.333333 21.333333 0 0 0-30.165333 30.165333l35.114666 35.157333-35.114666 35.157334a21.333333 21.333333 0 1 0 30.165333 30.165333l35.114667-35.157333 35.157333 35.157333a21.333333 21.333333 0 1 0 30.165333-30.165333z" fill="#030835" p-id="11346"></path></symbol></svg><!-- hexo injector head_end start --><link rel="stylesheet" href="/css/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/logo.jpg" onerror="onerror=null;src='/img/404/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont   icon-lihe"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw iconfont   icon-icon"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont   icon-boluo"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont   icon-shutiao1-copy"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw iconfont   icon-ningmeng"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/usb.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">小石头的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw iconfont   icon-lihe"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw iconfont   icon-icon"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw iconfont   icon-boluo"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw iconfont   icon-shutiao1-copy"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw iconfont   icon-ningmeng"></i><span> 关于</span></a></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center></div><div id="nav-right"></div><div id="search-button"><a class="site-page social-icon search"><i class="iconfont icon-icon1"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></nav><div id="post-info"><h1 class="post-title">USB协议分析(wireshark抓包)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-02-21T06:19:59.280Z" title="发表于 2024-02-21 14:19:59">2024-02-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-21T07:01:46.638Z" title="更新于 2024-02-21 15:01:46">2024-02-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%BD%AF%E4%BB%B6%E8%B5%84%E6%96%99/">软件资料</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%BD%AF%E4%BB%B6%E8%B5%84%E6%96%99/%E5%8D%8F%E8%AE%AE%E4%BB%8B%E7%BB%8D/">协议介绍</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="USB协议分析(wireshark抓包)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>​   本文将在windows下从wireshark抓包的角度对USB协议进行分析，可以同时参考以下内容进行学习： <a target="_blank" rel="noopener" href="https://www.cnblogs.com/shenLong1356/p/11287833.html#_label0_2">stm32f4USB项目开发详解</a></p>
+<h2 id="USB"><a href="#USB" class="headerlink" title="USB"></a>USB</h2><p>​	在抓包的过程中我的电脑上一共连接了3个usb设备，分别为一个键盘、一个无线鼠标接收器以及一个U盘</p>
+<p>​	下面是我的设备管理器的显示，由于电脑上除了我外连的三个usb设备之外还有电脑内的主机控制器和根集线器等设备，所以设备管理器显示有6个。</p>
+<p><img src="/img/usb/1.png"></p>
+<p>​	usb设备是三段地址描述， <strong>第一个是总线，第二个是设备地址，第三个是端口.</strong> 我们可以使用这种方式在wireshark内进行过滤</p>
+<p><img src="/img/usb/2.png"></p>
+<p>​	我们可以看到图中有一部分数据为 <code>USB URB</code> ， 那么什么是URB呢？根据microsoft的官方文档我们可以看到URB的定义。<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/usbcon/communicating-with-a-usb-device">相关网页</a></p>
+<blockquote>
+<p>​	通用串行总线 (USB) 客户端驱动程序无法直接与其设备通信。 相反，客户端驱动程序创建请求并将其提交到 USB 驱动程序堆栈进行处理。 在每个请求中，客户端驱动程序提供长度可变的数据结构，称为 <em>USB 请求块 (URB)</em> 。 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/ddi/usb/ns-usb-_urb"><strong>URB</strong></a>结构描述请求的详细信息，还包含有关已完成请求的状态的信息。 客户端驱动程序通过 URBs 执行所有设备特定的操作，包括数据传输。 在将 URB 提交到 USB  驱动程序堆栈之前，客户端驱动程序必须用该请求的相关信息对其进行初始化。 对于某些类型的请求，Microsoft 提供了 helper  例程和宏，用于分配 <strong>URB</strong> 结构并使用客户端驱动程序提供的详细信息填充 <strong>URB</strong> 结构的必要成员。</p>
+</blockquote>
+<h3 id="接入过程分析"><a href="#接入过程分析" class="headerlink" title="接入过程分析"></a>接入过程分析</h3><h4 id="获取设备描述符"><a href="#获取设备描述符" class="headerlink" title="获取设备描述符"></a>获取设备描述符</h4><p>​	我们以插入的键盘（地址为7）为例进行分析</p>
+<p>​	可以看到，主机首先向1.7.0发送了一个GetDescriptor请求，这里请求的是设备描述符。</p>
+<p><img src="/img/usb/3.png"></p>
+<p>​	之后我的键盘向主机返回了一个18字节的设备描述符，里面指明了usb版本为2.0，产品id为阿米洛的键盘，可能的配置数为1等等信息。</p>
+<p><img src="/img/usb/4.png"></p>
+<p>​	设备描述符结构如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">DEVICE_DESCRIPTOR_STRUCT</span> </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    BYTE bLength;           <span class="comment">//设备描述符的字节数大小，为0x12 </span></span><br><span class="line">    BYTE bDescriptorType;   <span class="comment">//描述符类型编号，为0x01 </span></span><br><span class="line">    WORD bcdUSB;            <span class="comment">//USB版本号 </span></span><br><span class="line">    BYTE bDeviceClass;      <span class="comment">//USB分配的设备类代码，0x01~0xfe为标准设备类，0xff为厂商自定义类型 </span></span><br><span class="line">   						  <span class="comment">//0x00不是在设备描述符中定义的，如HID </span></span><br><span class="line">    BYTE bDeviceSubClass;   <span class="comment">//usb分配的子类代码，同上，值由USB规定和分配的 </span></span><br><span class="line">    BYTE bDeviceProtocol;   <span class="comment">//USB分配的设备协议代码，同上 </span></span><br><span class="line">    BYTE bMaxPacketSize0;   <span class="comment">//端点0的最大包的大小 </span></span><br><span class="line">    WORD idVendor;          <span class="comment">//厂商编号 </span></span><br><span class="line">    WORD idProduct;         <span class="comment">//产品编号 </span></span><br><span class="line">    WORD bcdDevice;         <span class="comment">//设备出厂编号 </span></span><br><span class="line">    BYTE iManufacturer;     <span class="comment">//描述厂商字符串的索引 </span></span><br><span class="line">    BYTE iProduct;          <span class="comment">//描述产品字符串的索引 </span></span><br><span class="line">    BYTE iSerialNumber;     <span class="comment">//描述设备序列号字符串的索引 </span></span><br><span class="line">    BYTE bNumConfiguration; <span class="comment">//可能的配置数量 </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li><p>bLength : 描述符大小．固定为0x12．</p>
+</li>
+<li><p>bDescriptorType : 设备描述符类型．固定为0x01．</p>
+</li>
+<li><p>bcdUSB : USB 规范发布号．表示了本设备能适用于那种协议，如2.0&#x3D;0200，1.1&#x3D;0110等．</p>
+</li>
+<li><p>bDeviceClass : 类型代码（由USB指定）。当它的值是0时，表示所有接口在<a target="_blank" rel="noopener" href="https://www.usbzh.com/article/detail-67.html">配置描述符</a>里，并且所有接口是独立的。当它的值是1到FEH时，表示不同的接口关联的。当它的值是FFH时，它是厂商自己定义的．</p>
+</li>
+<li><p>bDeviceSubClass : 子类型代码（由USB分配）．如果bDeviceClass值是0，一定要设置为0．其它情况就跟据USB-IF组织定义的编码．</p>
+</li>
+<li><p>bDeviceProtocol : 协议代码（由USB分配）．如果使用USB-IF组织定义的协议，就需要设置这里的值，否则直接设置为0。如果厂商自己定义的可以设置为FFH．</p>
+<blockquote>
+<p>操作系统使用bDeviceClass、bDeviceSubClass和bDeviceProtocol来查找设备的类驱动程序。通常只有  bDeviceClass 设置在设备级别。大多数类规范选择在接口级别标识自己，因此将 bDeviceClass 设置为  0x00。这允许一个设备支持多个类，即USB复合设备。</p>
+</blockquote>
+</li>
+<li><p>bMaxPacketSize0 : 端点０最大分组大小（只有8,16,32,64有效）．</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.usbzh.com/article/detail-953.html">idVendor</a> : 供应商ID（由USB分配）．</p>
+</li>
+<li><p>idProduct : 产品ID（由厂商分配）．由供应商ID和产品ID，就可以让操作系统加载不同的驱动程序．</p>
+</li>
+<li><p>bcdDevice : 设备出产编码．由厂家自行设置．</p>
+</li>
+<li><p>iManufacturer : 厂商描述符字符串索引．索引到对应的<a target="_blank" rel="noopener" href="https://www.usbzh.com/article/detail-53.html">字符串描述符</a>． 为０则表示没有．</p>
+</li>
+<li><p>iProduct : :产品描述符字符串索引．同上．</p>
+</li>
+<li><p>iSerialNumber : 设备序列号字符串索引．同上．</p>
+</li>
+<li><p>bNumConfigurations : 可能的配置数．定义设备以当前速度支持的配置数量</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="获取配置描述符"><a href="#获取配置描述符" class="headerlink" title="获取配置描述符"></a>获取配置描述符</h4><p>​	这之后，主机又向1.7.0发出了获取描述符的请求，这次要获取的是配置描述符</p>
+<p><img src="/img/usb/5.png"></p>
+<p>​	配置描述符定义了设备的配置信息，一个设备可以有多个配置描述符，大部分的USB设备只有一个配置描这符</p>
+<p>​	读取配置描述符时，它会返回整个配置层次结构，其中包括所有相关的接口和<a target="_blank" rel="noopener" href="https://www.usbzh.com/article/detail-56.html">端点描述符</a>。wTotalLength字段反映配置描述符层次结构中的字节数</p>
+<p>​	配置描述符在USB设备的枚举过程中，需要获取两次：第一次只获取配置描这符的基本长度9字节，获取后从wTotalLength字节中解析出配置描述符的总长度，然后再次获取全部的描述符</p>
+<p>​	配置描述符结构如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">CONFIGURATION_DESCRIPTOR_STRUCT</span> </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    BYTE bLength;           <span class="comment">//配置描述符的字节数大小，固定为0x09</span></span><br><span class="line">    BYTE bDescriptorType;   <span class="comment">//描述符类型编号，为0x02 </span></span><br><span class="line">    WORD wTotalLength;     <span class="comment">//返回整个数据的长度．指此配置返回的配置描述符，接口描述符以及端点描述符的全部大小 </span></span><br><span class="line">    BYTE bNumInterface;     <span class="comment">//此配置所支持的接口数量 </span></span><br><span class="line">    BYTE bConfigurationVale;   <span class="comment">//Set_Configuration命令需要的参数值 </span></span><br><span class="line">    BYTE iConfiguration;       <span class="comment">//描述该配置的字符串的索引值 </span></span><br><span class="line">    BYTE bmAttribute;           <span class="comment">//供电模式的选择，Bit4-0保留，D7:总线供电，D6:自供电，D5:远程唤醒</span></span><br><span class="line">    BYTE MaxPower;             <span class="comment">//设备从总线提取的最大电流 </span></span><br><span class="line">&#125;CONFIGURATION_DESCRIPTOR_STRUCT</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>bLength : 描述符大小．固定为0x09．</li>
+<li>bDescriptorType : 配置描述符类型．固定为0x02．</li>
+<li>wTotalLength : 返回整个数据的长度．指此配置返回的配置描述符，<a target="_blank" rel="noopener" href="https://www.usbzh.com/article/detail-64.html">接口描述符</a>以及<a target="_blank" rel="noopener" href="https://www.usbzh.com/article/detail-56.html">端点描述符</a>的全部大小．</li>
+<li>bNumInterfaces : 配置所支持的接口数．指该配置配备的接口数量，也表示该配置下接口描述符数量．</li>
+<li>bConfigurationValue : 作为Set Configuration的一个参数选择配置值．</li>
+<li>iConfiguration : 用于描述该配置<a target="_blank" rel="noopener" href="https://www.usbzh.com/article/detail-53.html">字符串描述符</a>的索引．</li>
+<li>bmAttributes : 供电模式选择．Bit4-0保留，D7:总线供电，D6:自供电，D5:远程唤醒．</li>
+<li>MaxPower : 总线供电的USB设备的最大消耗电流．以2mA为单位．</li>
+<li>接口描述符：接口描述符说明了接口所提供的配置，一个配置所拥有的接口数量通过配置描述符的bNumInterfaces决定。</li>
+</ul>
+</blockquote>
+<p>​	可以看到，1.7.0先是向主机返回了9个字节的配置描述符，并在其中指明了总长度为91</p>
+<p><img src="/img/usb/6.png"></p>
+<p>​	而后主机又向设备发送了对配置描述符的请求，而这次1.7.0返回了91字节的全部配置描述符，里面包括了3个接口描述符，4个端点描述符和3个HID描述符，HID描述符附属的描述符的类型都是HID Report，4个端点为0-3，也就是说我们还有1.7.1-1.7.3可以进行交互，这里就不依次展开截图了</p>
+<p><img src="/img/usb/7.png"></p>
+<p><img src="/img/usb/8.png"></p>
+<p>​	后面还有一些无法解析的包以及三次获取字符串描述符：获取阿米洛自己的名字字符串的包，这里不详述</p>
+<p><img src="/img/usb/9.png"></p>
+<h2 id="USBHID"><a href="#USBHID" class="headerlink" title="USBHID"></a>USBHID</h2><p>​	因为我们的设备是键盘，是一种HID设备，所以在完成接入的准备后会有USBHID协议的部分，这里我们继续做分析</p>
+<p>​	首先主机向1.7.0发送了SET_IDLE请求，SET_IDLE请求会使HID设备相关的中断管道（端点）停止定时上报报告数据，直到有新的事件（有效数据）或直到的SET_IDLE时才继续上报报告数据。</p>
+<p>​	HID设备以中断的方向进行上报数据给方机，比如说USB鼠标键盘，当无操作时，设备无须上报给数据给主机。不过USB设备的中断其实是轮询方式的，也就是说无论你是不是上报数据，主机都会发送IN的请求事务，这样会造成USB总线带宽的浪费。</p>
+<p><img src="/img/usb/10.png"></p>
+<p>​	这之后则是请求HID报表描述符了，具体可以看<a target="_blank" rel="noopener" href="https://www.usbzh.com/article/detail-877.html">HID报表描述符原理解释</a>，这里就不贴出来了，HID报表描述符主要用来描述符USB HID设备上报的数据信息格式，这里定义了三次。</p>
+<p><img src="/img/usb/11.png"></p>
+<p>​	在定义了数据信息的格式之后，就可以使用中断传输的方式传输HID的信息了。</p>
+<h3 id="HID信息传输"><a href="#HID信息传输" class="headerlink" title="HID信息传输"></a>HID信息传输</h3><p>​	鸽了，想做的时候再分析吧（</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://TutuBinary.github.io">小石头 Tutubinary</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://tutubinary.github.io/2024/02/21/1.Software/4.protocol/1.usb_analysis_wireshark/">https://tutubinary.github.io/2024/02/21/1.Software/4.protocol/1.usb_analysis_wireshark/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://TutuBinary.github.io" target="_blank">小石头的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/wireshark/">wireshark</a><a class="post-meta__tags" href="/tags/usb/">usb</a></div><div class="post_share"><div class="social-share" data-image="/img/usb.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/01/29/4.tool/4.draw/"><img class="next-cover" src="/img/draw.svg" onerror="onerror=null;src='/img/404/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">画图、绘图工具</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/logo.jpg" onerror="this.onerror=null;this.src='/img/404/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">小石头 Tutubinary</div><div class="author-info__description">挫折经历的太少，才会觉得鸡毛蒜皮都是烦恼</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">14</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/TutuBinary" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://qm.qq.com/q/LNNoptNiU4" target="_blank" title="qq"><i class="fab fa-qq"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#USB"><span class="toc-number">1.</span> <span class="toc-text">USB</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%85%A5%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90"><span class="toc-number">1.1.</span> <span class="toc-text">接入过程分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E8%AE%BE%E5%A4%87%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-number">1.1.1.</span> <span class="toc-text">获取设备描述符</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E9%85%8D%E7%BD%AE%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-number">1.1.2.</span> <span class="toc-text">获取配置描述符</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#USBHID"><span class="toc-number">2.</span> <span class="toc-text">USBHID</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HID%E4%BF%A1%E6%81%AF%E4%BC%A0%E8%BE%93"><span class="toc-number">2.1.</span> <span class="toc-text">HID信息传输</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/02/21/1.Software/4.protocol/1.usb_analysis_wireshark/" title="USB协议分析(wireshark抓包)"><img src="/img/usb.jpg" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="USB协议分析(wireshark抓包)"/></a><div class="content"><a class="title" href="/2024/02/21/1.Software/4.protocol/1.usb_analysis_wireshark/" title="USB协议分析(wireshark抓包)">USB协议分析(wireshark抓包)</a><time datetime="2024-02-21T06:19:59.280Z" title="发表于 2024-02-21 14:19:59">2024-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/29/4.tool/4.draw/" title="画图、绘图工具"><img src="/img/draw.svg" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="画图、绘图工具"/></a><div class="content"><a class="title" href="/2024/01/29/4.tool/4.draw/" title="画图、绘图工具">画图、绘图工具</a><time datetime="2024-01-29T10:14:08.683Z" title="发表于 2024-01-29 18:14:08">2024-01-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/29/1.Software/3.components/3.dynamic_loader/" title="MCU动态加载函数的方法"><img src="/img/dynamic_loader.png" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="MCU动态加载函数的方法"/></a><div class="content"><a class="title" href="/2024/01/29/1.Software/3.components/3.dynamic_loader/" title="MCU动态加载函数的方法">MCU动态加载函数的方法</a><time datetime="2024-01-29T08:05:07.090Z" title="发表于 2024-01-29 16:05:07">2024-01-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/29/3.Hardware/1.Power/3.battery_capacity/" title="库仑计统计电池电量"><img src="/img/battery_capacity.jpg" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="库仑计统计电池电量"/></a><div class="content"><a class="title" href="/2024/01/29/3.Hardware/1.Power/3.battery_capacity/" title="库仑计统计电池电量">库仑计统计电池电量</a><time datetime="2024-01-29T07:38:42.781Z" title="发表于 2024-01-29 15:38:42">2024-01-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/29/1.Software/3.components/2.script_parse/" title="脚本解析器"><img src="/img/script.png" onerror="this.onerror=null;this.src='/img/404/404.jpg'" alt="脚本解析器"/></a><div class="content"><a class="title" href="/2024/01/29/1.Software/3.components/2.script_parse/" title="脚本解析器">脚本解析器</a><time datetime="2024-01-29T07:16:58.008Z" title="发表于 2024-01-29 15:16:58">2024-01-29</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/usb.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By 小石头 Tutubinary</div><div class="footer_custom_text">欢迎来到我的博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><a class="icon-V hidden" onclick="switchNightMode()" title="浅色和深色模式转换"><svg width="25" height="25" viewBox="0 0 1024 1024"><use id="modeicon" xlink:href="#icon-moon"></use></svg></a><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script type="text/javascript" src="/js/custom/jquery.min.js"></script><script src="/js/custom/mouse_snow.min.js"></script><script src="/js/custom/sun_moon.js" async></script><script src="/js/custom/runtime.js" async></script><script src="/js/custom/nav.js" async></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><div id="ghbdages" style="overflow:hidden;max-height:60px;height:auto;text-align:center;margin-top:10px"><div class="swiper-wrapper"><div class="swiper-slide"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" title="博客框架为Hexo_v5.4.0"><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" title="主题版本Butterfly_v4.5.0"><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a></div><div class="swiper-slide"><a class="github-badge" target="_blank" href="https://github.com/TutuBinary" style="margin-inline:5px" title="本站项目由Github托管"><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></div></div></div><style>a.github-badge:hover:before {display:none}</style>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="/js/runtime.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-footer-beautify/lib/swiperbdage_init.min.js"></script><!-- hexo injector body_end end --></body></html>

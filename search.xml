@@ -1848,4 +1848,106 @@
         <tag>C解析器</tag>
       </tags>
   </entry>
+  <entry>
+    <title>USB协议分析(wireshark抓包)</title>
+    <url>/2024/02/21/1.Software/4.protocol/1.usb_analysis_wireshark/</url>
+    <content><![CDATA[<p>​   本文将在windows下从wireshark抓包的角度对USB协议进行分析，可以同时参考以下内容进行学习： <a href="https://www.cnblogs.com/shenLong1356/p/11287833.html#_label0_2">stm32f4USB项目开发详解</a></p>
+<h2 id="USB"><a href="#USB" class="headerlink" title="USB"></a>USB</h2><p>​	在抓包的过程中我的电脑上一共连接了3个usb设备，分别为一个键盘、一个无线鼠标接收器以及一个U盘</p>
+<p>​	下面是我的设备管理器的显示，由于电脑上除了我外连的三个usb设备之外还有电脑内的主机控制器和根集线器等设备，所以设备管理器显示有6个。</p>
+<p><img src="/img/usb/1.png"></p>
+<p>​	usb设备是三段地址描述， <strong>第一个是总线，第二个是设备地址，第三个是端口.</strong> 我们可以使用这种方式在wireshark内进行过滤</p>
+<p><img src="/img/usb/2.png"></p>
+<p>​	我们可以看到图中有一部分数据为 <code>USB URB</code> ， 那么什么是URB呢？根据microsoft的官方文档我们可以看到URB的定义。<a href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/usbcon/communicating-with-a-usb-device">相关网页</a></p>
+<blockquote>
+<p>​	通用串行总线 (USB) 客户端驱动程序无法直接与其设备通信。 相反，客户端驱动程序创建请求并将其提交到 USB 驱动程序堆栈进行处理。 在每个请求中，客户端驱动程序提供长度可变的数据结构，称为 <em>USB 请求块 (URB)</em> 。 <a href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/ddi/usb/ns-usb-_urb"><strong>URB</strong></a>结构描述请求的详细信息，还包含有关已完成请求的状态的信息。 客户端驱动程序通过 URBs 执行所有设备特定的操作，包括数据传输。 在将 URB 提交到 USB  驱动程序堆栈之前，客户端驱动程序必须用该请求的相关信息对其进行初始化。 对于某些类型的请求，Microsoft 提供了 helper  例程和宏，用于分配 <strong>URB</strong> 结构并使用客户端驱动程序提供的详细信息填充 <strong>URB</strong> 结构的必要成员。</p>
+</blockquote>
+<h3 id="接入过程分析"><a href="#接入过程分析" class="headerlink" title="接入过程分析"></a>接入过程分析</h3><h4 id="获取设备描述符"><a href="#获取设备描述符" class="headerlink" title="获取设备描述符"></a>获取设备描述符</h4><p>​	我们以插入的键盘（地址为7）为例进行分析</p>
+<p>​	可以看到，主机首先向1.7.0发送了一个GetDescriptor请求，这里请求的是设备描述符。</p>
+<p><img src="/img/usb/3.png"></p>
+<p>​	之后我的键盘向主机返回了一个18字节的设备描述符，里面指明了usb版本为2.0，产品id为阿米洛的键盘，可能的配置数为1等等信息。</p>
+<p><img src="/img/usb/4.png"></p>
+<p>​	设备描述符结构如下所示：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">DEVICE_DESCRIPTOR_STRUCT</span> </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    BYTE bLength;           <span class="comment">//设备描述符的字节数大小，为0x12 </span></span><br><span class="line">    BYTE bDescriptorType;   <span class="comment">//描述符类型编号，为0x01 </span></span><br><span class="line">    WORD bcdUSB;            <span class="comment">//USB版本号 </span></span><br><span class="line">    BYTE bDeviceClass;      <span class="comment">//USB分配的设备类代码，0x01~0xfe为标准设备类，0xff为厂商自定义类型 </span></span><br><span class="line">   						  <span class="comment">//0x00不是在设备描述符中定义的，如HID </span></span><br><span class="line">    BYTE bDeviceSubClass;   <span class="comment">//usb分配的子类代码，同上，值由USB规定和分配的 </span></span><br><span class="line">    BYTE bDeviceProtocol;   <span class="comment">//USB分配的设备协议代码，同上 </span></span><br><span class="line">    BYTE bMaxPacketSize0;   <span class="comment">//端点0的最大包的大小 </span></span><br><span class="line">    WORD idVendor;          <span class="comment">//厂商编号 </span></span><br><span class="line">    WORD idProduct;         <span class="comment">//产品编号 </span></span><br><span class="line">    WORD bcdDevice;         <span class="comment">//设备出厂编号 </span></span><br><span class="line">    BYTE iManufacturer;     <span class="comment">//描述厂商字符串的索引 </span></span><br><span class="line">    BYTE iProduct;          <span class="comment">//描述产品字符串的索引 </span></span><br><span class="line">    BYTE iSerialNumber;     <span class="comment">//描述设备序列号字符串的索引 </span></span><br><span class="line">    BYTE bNumConfiguration; <span class="comment">//可能的配置数量 </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li><p>bLength : 描述符大小．固定为0x12．</p>
+</li>
+<li><p>bDescriptorType : 设备描述符类型．固定为0x01．</p>
+</li>
+<li><p>bcdUSB : USB 规范发布号．表示了本设备能适用于那种协议，如2.0&#x3D;0200，1.1&#x3D;0110等．</p>
+</li>
+<li><p>bDeviceClass : 类型代码（由USB指定）。当它的值是0时，表示所有接口在<a href="https://www.usbzh.com/article/detail-67.html">配置描述符</a>里，并且所有接口是独立的。当它的值是1到FEH时，表示不同的接口关联的。当它的值是FFH时，它是厂商自己定义的．</p>
+</li>
+<li><p>bDeviceSubClass : 子类型代码（由USB分配）．如果bDeviceClass值是0，一定要设置为0．其它情况就跟据USB-IF组织定义的编码．</p>
+</li>
+<li><p>bDeviceProtocol : 协议代码（由USB分配）．如果使用USB-IF组织定义的协议，就需要设置这里的值，否则直接设置为0。如果厂商自己定义的可以设置为FFH．</p>
+<blockquote>
+<p>操作系统使用bDeviceClass、bDeviceSubClass和bDeviceProtocol来查找设备的类驱动程序。通常只有  bDeviceClass 设置在设备级别。大多数类规范选择在接口级别标识自己，因此将 bDeviceClass 设置为  0x00。这允许一个设备支持多个类，即USB复合设备。</p>
+</blockquote>
+</li>
+<li><p>bMaxPacketSize0 : 端点０最大分组大小（只有8,16,32,64有效）．</p>
+</li>
+<li><p><a href="https://www.usbzh.com/article/detail-953.html">idVendor</a> : 供应商ID（由USB分配）．</p>
+</li>
+<li><p>idProduct : 产品ID（由厂商分配）．由供应商ID和产品ID，就可以让操作系统加载不同的驱动程序．</p>
+</li>
+<li><p>bcdDevice : 设备出产编码．由厂家自行设置．</p>
+</li>
+<li><p>iManufacturer : 厂商描述符字符串索引．索引到对应的<a href="https://www.usbzh.com/article/detail-53.html">字符串描述符</a>． 为０则表示没有．</p>
+</li>
+<li><p>iProduct : :产品描述符字符串索引．同上．</p>
+</li>
+<li><p>iSerialNumber : 设备序列号字符串索引．同上．</p>
+</li>
+<li><p>bNumConfigurations : 可能的配置数．定义设备以当前速度支持的配置数量</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="获取配置描述符"><a href="#获取配置描述符" class="headerlink" title="获取配置描述符"></a>获取配置描述符</h4><p>​	这之后，主机又向1.7.0发出了获取描述符的请求，这次要获取的是配置描述符</p>
+<p><img src="/img/usb/5.png"></p>
+<p>​	配置描述符定义了设备的配置信息，一个设备可以有多个配置描述符，大部分的USB设备只有一个配置描这符</p>
+<p>​	读取配置描述符时，它会返回整个配置层次结构，其中包括所有相关的接口和<a href="https://www.usbzh.com/article/detail-56.html">端点描述符</a>。wTotalLength字段反映配置描述符层次结构中的字节数</p>
+<p>​	配置描述符在USB设备的枚举过程中，需要获取两次：第一次只获取配置描这符的基本长度9字节，获取后从wTotalLength字节中解析出配置描述符的总长度，然后再次获取全部的描述符</p>
+<p>​	配置描述符结构如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">CONFIGURATION_DESCRIPTOR_STRUCT</span> </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    BYTE bLength;           <span class="comment">//配置描述符的字节数大小，固定为0x09</span></span><br><span class="line">    BYTE bDescriptorType;   <span class="comment">//描述符类型编号，为0x02 </span></span><br><span class="line">    WORD wTotalLength;     <span class="comment">//返回整个数据的长度．指此配置返回的配置描述符，接口描述符以及端点描述符的全部大小 </span></span><br><span class="line">    BYTE bNumInterface;     <span class="comment">//此配置所支持的接口数量 </span></span><br><span class="line">    BYTE bConfigurationVale;   <span class="comment">//Set_Configuration命令需要的参数值 </span></span><br><span class="line">    BYTE iConfiguration;       <span class="comment">//描述该配置的字符串的索引值 </span></span><br><span class="line">    BYTE bmAttribute;           <span class="comment">//供电模式的选择，Bit4-0保留，D7:总线供电，D6:自供电，D5:远程唤醒</span></span><br><span class="line">    BYTE MaxPower;             <span class="comment">//设备从总线提取的最大电流 </span></span><br><span class="line">&#125;CONFIGURATION_DESCRIPTOR_STRUCT</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>bLength : 描述符大小．固定为0x09．</li>
+<li>bDescriptorType : 配置描述符类型．固定为0x02．</li>
+<li>wTotalLength : 返回整个数据的长度．指此配置返回的配置描述符，<a href="https://www.usbzh.com/article/detail-64.html">接口描述符</a>以及<a href="https://www.usbzh.com/article/detail-56.html">端点描述符</a>的全部大小．</li>
+<li>bNumInterfaces : 配置所支持的接口数．指该配置配备的接口数量，也表示该配置下接口描述符数量．</li>
+<li>bConfigurationValue : 作为Set Configuration的一个参数选择配置值．</li>
+<li>iConfiguration : 用于描述该配置<a href="https://www.usbzh.com/article/detail-53.html">字符串描述符</a>的索引．</li>
+<li>bmAttributes : 供电模式选择．Bit4-0保留，D7:总线供电，D6:自供电，D5:远程唤醒．</li>
+<li>MaxPower : 总线供电的USB设备的最大消耗电流．以2mA为单位．</li>
+<li>接口描述符：接口描述符说明了接口所提供的配置，一个配置所拥有的接口数量通过配置描述符的bNumInterfaces决定。</li>
+</ul>
+</blockquote>
+<p>​	可以看到，1.7.0先是向主机返回了9个字节的配置描述符，并在其中指明了总长度为91</p>
+<p><img src="/img/usb/6.png"></p>
+<p>​	而后主机又向设备发送了对配置描述符的请求，而这次1.7.0返回了91字节的全部配置描述符，里面包括了3个接口描述符，4个端点描述符和3个HID描述符，HID描述符附属的描述符的类型都是HID Report，4个端点为0-3，也就是说我们还有1.7.1-1.7.3可以进行交互，这里就不依次展开截图了</p>
+<p><img src="/img/usb/7.png"></p>
+<p><img src="/img/usb/8.png"></p>
+<p>​	后面还有一些无法解析的包以及三次获取字符串描述符：获取阿米洛自己的名字字符串的包，这里不详述</p>
+<p><img src="/img/usb/9.png"></p>
+<h2 id="USBHID"><a href="#USBHID" class="headerlink" title="USBHID"></a>USBHID</h2><p>​	因为我们的设备是键盘，是一种HID设备，所以在完成接入的准备后会有USBHID协议的部分，这里我们继续做分析</p>
+<p>​	首先主机向1.7.0发送了SET_IDLE请求，SET_IDLE请求会使HID设备相关的中断管道（端点）停止定时上报报告数据，直到有新的事件（有效数据）或直到的SET_IDLE时才继续上报报告数据。</p>
+<p>​	HID设备以中断的方向进行上报数据给方机，比如说USB鼠标键盘，当无操作时，设备无须上报给数据给主机。不过USB设备的中断其实是轮询方式的，也就是说无论你是不是上报数据，主机都会发送IN的请求事务，这样会造成USB总线带宽的浪费。</p>
+<p><img src="/img/usb/10.png"></p>
+<p>​	这之后则是请求HID报表描述符了，具体可以看<a href="https://www.usbzh.com/article/detail-877.html">HID报表描述符原理解释</a>，这里就不贴出来了，HID报表描述符主要用来描述符USB HID设备上报的数据信息格式，这里定义了三次。</p>
+<p><img src="/img/usb/11.png"></p>
+<p>​	在定义了数据信息的格式之后，就可以使用中断传输的方式传输HID的信息了。</p>
+<h3 id="HID信息传输"><a href="#HID信息传输" class="headerlink" title="HID信息传输"></a>HID信息传输</h3><p>​	鸽了，想做的时候再分析吧（</p>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>协议介绍</category>
+      </categories>
+      <tags>
+        <tag>wireshark</tag>
+        <tag>usb</tag>
+      </tags>
+  </entry>
 </search>
