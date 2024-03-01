@@ -1950,4 +1950,111 @@
         <tag>usb</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Sphinx 如何生成 PDF 文档 [2024.3.1]</title>
+    <url>/2024/03/01/4.tool/5.sphinx_to_pdf/</url>
+    <content><![CDATA[<h1 id="Sphinx-如何生成-PDF-文档-2024-3-1"><a href="#Sphinx-如何生成-PDF-文档-2024-3-1" class="headerlink" title="Sphinx 如何生成 PDF 文档 [2024.3.1]"></a>Sphinx 如何生成 PDF 文档 [2024.3.1]</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>sphinx + rst</strong> 编写文档有以下优势：</p>
+<ul>
+<li>简单易学</li>
+<li>格式多样化: html&#x2F;pdf</li>
+<li>便于维护 (git)</li>
+<li>跨平台</li>
+</ul>
+<p><strong>rst</strong> 标记语言可以很容易的输出 <strong>html 页面</strong>， 但是想要输出 <strong>pdf 文档</strong> 会麻烦一点，这里就教大家如何生成 pdf 格式的文档。</p>
+<p><strong>rst 转 PDF 原理: 首先将 rst 转换为 tex, 再由 tex 转换为 PDF</strong></p>
+<p>下面会教两种方法给大家:</p>
+<ul>
+<li>通过 texlive 和 TeXstudio 生成 pdf 文档</li>
+<li>通道 readthedocs 代理服务器自动发生成 pdf 文档</li>
+</ul>
+<blockquote>
+<p>第一种方法最靠谱， TeXstudio 软件在生成 pdf 文档时可以提示错误原因，方便找问题</p>
+</blockquote>
+<blockquote>
+<p>第二种方法最简单，不需要再电脑上搭建环境，一旦出现错误很难查找问题所在</p>
+</blockquote>
+<h2 id="通过-texlive-和-TeXstudio-生成-pdf-文档"><a href="#通过-texlive-和-TeXstudio-生成-pdf-文档" class="headerlink" title="通过 texlive 和 TeXstudio 生成 pdf 文档"></a>通过 texlive 和 TeXstudio 生成 pdf 文档</h2><ul>
+<li>texlive 提供 tex 文档编写的各种依赖环境， 安装包比较大，安装时间久</li>
+<li>TeXstudio 提供 tex 文档编辑器，编辑、编译 tex 文档特别方便</li>
+</ul>
+<p>这种方式最稳定，  texlive 和 TeXstudio 安装比较麻烦</p>
+<h3 id="texlive-安装"><a href="#texlive-安装" class="headerlink" title="texlive 安装"></a>texlive 安装</h3><p>texlive  安装特别慢， 环境没设置好特别容易失败， 在安装之前先把下面我遇到的问题提前说明，方便快速安装成功</p>
+<ul>
+<li><p>关闭电脑的防火墙</p>
+</li>
+<li><p>打开 <strong>windwos</strong> 用户路径 <code>%homepath%\AppData\Local</code> 修改 <strong>temp</strong> 文件夹的权限，具体修改如下:</p>
+<ul>
+<li>“temp”右键–&gt;“属性”—&gt;“安全”—&gt;单击选择“Users”—&gt;“编辑”—&gt;选择“读取和执行”、“列出文件夹内容”、“读取”—&gt;“确认”。</li>
+<li>“temp”右键–&gt;“属性”—&gt;“常规”—&gt;“高级”—&gt;选择“可以存档文件夹”“除了文件属性外……”—&gt;“确认”</li>
+<li>“temp”右键–&gt;“属性”—&gt;“常规”—&gt;点击“只读”（使前面的框里什么都没有）</li>
+</ul>
+</li>
+<li><p>以管理员权限执行安装程序</p>
+</li>
+</ul>
+<h4 id="texlive-下载地址"><a href="#texlive-下载地址" class="headerlink" title="texlive 下载地址"></a>texlive 下载地址</h4><ul>
+<li>清华镜像  <a href="https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/">https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/</a></li>
+<li>科大镜像  <a href="https://mirrors.ustc.edu.cn/CTAN/systems/texlive/Images/">https://mirrors.ustc.edu.cn/CTAN/systems/texlive/Images/</a></li>
+<li>南大镜像  <a href="https://mirrors.nju.edu.cn/CTAN/systems/texlive/Images/">https://mirrors.nju.edu.cn/CTAN/systems/texlive/Images/</a></li>
+<li>香港镜像  <a href="https://mirror-hk.koddos.net/CTAN/systems/texlive/Images/">https://mirror-hk.koddos.net/CTAN/systems/texlive/Images/</a></li>
+</ul>
+<blockquote>
+<p>以管理员权限执行安装程序<br>以管理员权限执行安装程序<br>以管理员权限执行安装程序</p>
+</blockquote>
+<p>点击 <strong>install-tl-windows.bat</strong> 文件进行安装即可，安装过程需要很久！！！</p>
+<h4 id="texlive-检查是否安装成功"><a href="#texlive-检查是否安装成功" class="headerlink" title="texlive 检查是否安装成功"></a>texlive 检查是否安装成功</h4><ul>
+<li>添加环境变量, 把安装目录(2023\bin\windows) 添加到系统 path 环境变量下</li>
+<li>执行 <code>tex –version</code> </li>
+<li>执行 <code>latex –version</code></li>
+<li>执行 <code>xelatex –version</code></li>
+</ul>
+<h3 id="texstudio-安装"><a href="#texstudio-安装" class="headerlink" title="texstudio 安装"></a>texstudio 安装</h3><h4 id="texstudio-下载地址"><a href="#texstudio-下载地址" class="headerlink" title="texstudio 下载地址"></a>texstudio 下载地址</h4><ul>
+<li><a href="https://www.texstudio.org/">https://www.texstudio.org/</a></li>
+</ul>
+<p>这个安装很简单， 没有特殊要求</p>
+<h3 id="生成-PDF-文档"><a href="#生成-PDF-文档" class="headerlink" title="生成 PDF 文档"></a>生成 PDF 文档</h3><p>texlive 和 texstudio 安装好后就可以使用 sphin 生成文档了</p>
+<p>打开 sphinx 的 conf.py 文件， 添加以下代码： </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">latex_elements = &#123;</span><br><span class="line"><span class="comment"># Additional stuff for the LaTeX preamble.</span></span><br><span class="line"><span class="comment"># &#x27;preamble&#x27;: &#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># \\hypersetup&#123;unicode=true&#125;</span></span><br><span class="line"><span class="comment"># \\usepackage&#123;CJKutf8&#125;</span></span><br><span class="line"><span class="comment"># \\AtBeginDocument&#123;\\begin&#123;CJK&#125;&#123;UTF8&#125;&#123;gbsn&#125;&#125;</span></span><br><span class="line"><span class="comment"># \\AtEndDocument&#123;\\end&#123;CJK&#125;&#125;</span></span><br><span class="line"><span class="comment"># &#x27;&#x27;&#x27;,</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Grouping the document tree into LaTeX files. List of tuples</span></span><br><span class="line"><span class="comment"># (source start file, target name, title,</span></span><br><span class="line"><span class="comment">#  author, documentclass [howto, manual, or own class]).</span></span><br><span class="line">latex_documents = [</span><br><span class="line">    (master_doc, <span class="string">&#x27;atk_hmi_manual.tex&#x27;</span>, <span class="string">&#x27;正点原子HMI用户手册&#x27;</span>,</span><br><span class="line">     <span class="string">&#x27;作者: 正点原子团队&#x27;</span>, <span class="string">&#x27;manual&#x27;</span>),</span><br><span class="line">]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>latex_elements 网上都说要填，用于设置中文的字体，按照要求设置后 texstudio 一直提示错误，我这里留空了</li>
+<li>latex_documents 根据需求设置即可</li>
+</ul>
+<blockquote>
+<p>注意： latex 好像不支持 svg 矢量图片，所以不要在文档中嵌入，否则编译会报错</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">make latexpdf</span><br></pre></td></tr></table></figure>
+
+<p>就会在目录下生成 PDF文档: <code>_build\latex</code></p>
+<h2 id="通过-readthedocs-服务器生成-PDF-文档"><a href="#通过-readthedocs-服务器生成-PDF-文档" class="headerlink" title="通过 readthedocs 服务器生成 PDF 文档"></a>通过 readthedocs 服务器生成 PDF 文档</h2><p>&#x3D;&#x3D;该方式会随服务器的更新而失效，并不一定靠谱，当前记录时间 2024.3.1&#x3D;&#x3D;</p>
+<p>readthedocs 服务器对托管的文档有一定的格式要求，如下：</p>
+<ul>
+<li>提供 .readthedocs.yaml</li>
+<li>提供 requirements.txt </li>
+<li>提供 pyproject.toml (空文件， 不然服务器会出错)</li>
+</ul>
+<p><strong>.readthedocs.yaml 内容如下</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># .readthedocs.yaml</span></span><br><span class="line"><span class="comment"># Read the Docs configuration file</span></span><br><span class="line"><span class="comment"># See https://docs.readthedocs.io/en/stable/config-file/v2.html for details</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Required</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="attr">formats:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">pdf</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">htmlzip</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the version of Python and other tools you might need</span></span><br><span class="line"><span class="attr">build:</span></span><br><span class="line">   <span class="attr">os:</span> <span class="string">ubuntu-22.04</span></span><br><span class="line">   <span class="attr">tools:</span></span><br><span class="line">     <span class="attr">python:</span> <span class="string">&quot;3.10&quot;</span></span><br><span class="line">     <span class="comment"># You can also specify other tool versions:</span></span><br><span class="line">     <span class="comment"># nodejs: &quot;16&quot;</span></span><br><span class="line">     <span class="comment"># rust: &quot;1.55&quot;</span></span><br><span class="line">     <span class="comment"># golang: &quot;1.17&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Build documentation in the docs/ directory with Sphinx</span></span><br><span class="line"><span class="attr">sphinx:</span></span><br><span class="line">   <span class="attr">configuration:</span> <span class="string">docs/conf.py</span></span><br><span class="line">   <span class="attr">fail_on_warning:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># If using Sphinx, optionally build your docs in additional formats such as PDF</span></span><br><span class="line"><span class="comment"># formats:</span></span><br><span class="line"><span class="comment">#    - pdf</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Optionally declare the Python requirements required to build your docs</span></span><br><span class="line"><span class="attr">python:</span></span><br><span class="line">   <span class="attr">install:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="attr">requirements:</span> <span class="string">docs/requirements.txt</span></span><br><span class="line">   <span class="bullet">-</span> <span class="attr">method:</span> <span class="string">pip</span></span><br><span class="line">     <span class="attr">path:</span> <span class="string">.</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>requirements.txt 内容如下</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">sphinx==5.0.2</span></span><br><span class="line"></span><br><span class="line"><span class="string">sphinx-rtd-theme==1.0.0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>详细 sphinx 工程请参考以下工程:</p>
+<blockquote>
+<p><a href="https://gitee.com/tutubinary/sphinx-readthedocs-temp.git">https://gitee.com/tutubinary/sphinx-readthedocs-temp.git</a></p>
+</blockquote>
+<p>工程准备好后，在 <strong>readthedocs</strong> 上导入一个项目等项目构建成功后，即可在 <strong>下载</strong> 页面下载pdf手册</p>
+<p>&#x3D;&#x3D;如果自己工程有问题, 就仔细对比上述提到的三个文件内容&#x3D;&#x3D;</p>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+        <category>标记语言</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>标记语言</tag>
+        <tag>Sphinx</tag>
+        <tag>PDF</tag>
+        <tag>readthedocs</tag>
+      </tags>
+  </entry>
 </search>
