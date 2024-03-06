@@ -1355,6 +1355,14 @@
 <ul>
 <li><a href="https://github.com/TutuBinary/mr-library">https://github.com/TutuBinary/mr-library</a></li>
 </ul>
+<blockquote>
+<p>PikaPython</p>
+</blockquote>
+<p>PikaPython 是一款超轻量级 Python 解释器，仅用 4KB RAM 运行，零依赖。它开箱即用，无需任何配置，并且易于使用 C 进行扩展。</p>
+<p>里面移植了很多库资源，可以学习</p>
+<ul>
+<li><a href="https://github.com/pikasTech/PikaPython">https://github.com/pikasTech/PikaPython</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>软件资料</category>
