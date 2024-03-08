@@ -1781,14 +1781,22 @@
 <blockquote>
 <p><a href="https://app.diagrams.net/">https://app.diagrams.net/</a></p>
 </blockquote>
+<p><img src="/img/tools/drawio.png"></p>
+<h3 id="Lorien"><a href="#Lorien" class="headerlink" title="Lorien"></a>Lorien</h3><p>Lorien 是一款无限画布绘图&#x2F;笔记应用程序，专注于性能、小型保存文件和简单性。  适用于 Windows、Linux 和 macOS，支持中文。</p>
+<blockquote>
+<p><a href="https://github.com/mbrlabs/Lorien">https://github.com/mbrlabs/Lorien</a></p>
+</blockquote>
+<p><img src="/img/tools/lorien.png"></p>
 <h3 id="波形图绘制工具"><a href="#波形图绘制工具" class="headerlink" title="波形图绘制工具"></a>波形图绘制工具</h3><h4 id="WaveDrom"><a href="#WaveDrom" class="headerlink" title="WaveDrom"></a>WaveDrom</h4><p>WaveDrom 根据简单的文本描述绘制时序图或波形。他有在线版本和离线版本，可以从它的官网下载安装版本。</p>
 <blockquote>
 <p><a href="https://wavedrom.com/editor.html">https://wavedrom.com/editor.html</a></p>
 </blockquote>
+<p><img src="/img/tools/WaveDrom.svg"></p>
 <h4 id="TimeGen"><a href="#TimeGen" class="headerlink" title="TimeGen"></a>TimeGen</h4><p>TimeGen是一款简单实用的画时序图工具，用户可以快速的通过该软件进行时序图的创建，软件具有矩形或圆形边缘的轮廓文本框，方便用户对各种模式的时序图进行制作，在构图时，用户可以一次性选择多个文本框，通过快捷键就能立即实现一键添加，在很大程度上提高了设计时间，同时您可以使用编辑工具移动文本框与您的鼠标，在添加文本时，用户可以自由设置每个文本框的属性字体样式、字体 大小和颜色，非常具有个性化</p>
 <blockquote>
 <p><a href="https://www.xfusionsoftware.com/">https://www.xfusionsoftware.com/</a></p>
 </blockquote>
+<p><img src="/img/tools/TimeGen.png"></p>
 ]]></content>
       <categories>
         <category>软件工具</category>
