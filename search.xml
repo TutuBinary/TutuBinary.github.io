@@ -1363,6 +1363,13 @@
 <ul>
 <li><a href="https://github.com/pikasTech/PikaPython">https://github.com/pikasTech/PikaPython</a></li>
 </ul>
+<blockquote>
+<p>nuttx</p>
+</blockquote>
+<p>NuttX 是一个实时操作系统 (RTOS)，强调标准合规性和占用空间小。NuttX 的主要管理标准是 POSIX 和 ANSI 标准，可从 8 位微控制器环境扩展到 64 位微控制器环境。来自 Unix 和其他常见 RTOS（例如 VxWorks）的附加标准 API 被用于这些标准下不可用的功能，或者不适合深度嵌入环境的功能（例如 fork()</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx">https://github.com/apache/nuttx</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>软件资料</category>
