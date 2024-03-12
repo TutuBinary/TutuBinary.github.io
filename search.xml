@@ -1874,7 +1874,11 @@
   <entry>
     <title>USB协议分析(wireshark抓包)</title>
     <url>/2024/02/21/1.Software/4.protocol/1.usb_analysis_wireshark/</url>
-    <content><![CDATA[<p>​   本文将在windows下从wireshark抓包的角度对USB协议进行分析，可以同时参考以下内容进行学习： <a href="https://www.cnblogs.com/shenLong1356/p/11287833.html#_label0_2">stm32f4USB项目开发详解</a></p>
+    <content><![CDATA[<p>USB资料汇总，这个在线资料算是USB规格书的提炼，方便大家查阅</p>
+<blockquote>
+<p><a href="https://www.beyondlogic.org/usbnutshell/usb1.shtm">https://www.beyondlogic.org/usbnutshell/usb1.shtm</a></p>
+</blockquote>
+<p>​   本文将在windows下从wireshark抓包的角度对USB协议进行分析，可以同时参考以下内容进行学习： <a href="https://www.cnblogs.com/shenLong1356/p/11287833.html#_label0_2">stm32f4USB项目开发详解</a></p>
 <h2 id="USB"><a href="#USB" class="headerlink" title="USB"></a>USB</h2><p>​	在抓包的过程中我的电脑上一共连接了3个usb设备，分别为一个键盘、一个无线鼠标接收器以及一个U盘</p>
 <p>​	下面是我的设备管理器的显示，由于电脑上除了我外连的三个usb设备之外还有电脑内的主机控制器和根集线器等设备，所以设备管理器显示有6个。</p>
 <p><img src="/img/usb/1.png"></p>
