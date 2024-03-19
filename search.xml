@@ -2243,4 +2243,57 @@
         <tag>工作外包</tag>
       </tags>
   </entry>
+  <entry>
+    <title>各种常用小工具汇总</title>
+    <url>/2024/03/19/4.tool/0.tools/</url>
+    <content><![CDATA[<blockquote>
+<p>tts-vue 文字转语音工具 (微软接口)</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/TutuBinary/tts-vue">https://github.com/TutuBinary/tts-vue</a></li>
+</ul>
+<blockquote>
+<p>Lorien 无限画板</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/TutuBinary/Lorien">https://github.com/TutuBinary/Lorien</a></li>
+</ul>
+<blockquote>
+<p>天若OCR文字识别V4.49</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/TutuBinary/tianruoocr_last.git">https://github.com/TutuBinary/tianruoocr_last.git</a></li>
+</ul>
+<blockquote>
+<p>Snipaste 截图软件</p>
+</blockquote>
+<ul>
+<li><a href="https://www.snipaste.com/">https://www.snipaste.com/</a></li>
+</ul>
+<blockquote>
+<p>CLaunch 快捷启动软件</p>
+</blockquote>
+<ul>
+<li><a href="https://hp.vector.co.jp/authors/VA018351/index.html">https://hp.vector.co.jp/authors/VA018351/index.html</a></li>
+</ul>
+<blockquote>
+<p>Everything  搜索软件</p>
+</blockquote>
+<ul>
+<li><a href="https://www.voidtools.com/zh-cn/">https://www.voidtools.com/zh-cn/</a></li>
+</ul>
+<blockquote>
+<p>ShadowsocksR-Windows</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/HMBSbige/ShadowsocksR-Windows">https://github.com/HMBSbige/ShadowsocksR-Windows</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+      </tags>
+  </entry>
 </search>
