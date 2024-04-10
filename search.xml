@@ -2234,4 +2234,36 @@
         <tag>加密方案</tag>
       </tags>
   </entry>
+  <entry>
+    <title>OCR离线文字识别库</title>
+    <url>/2024/04/10/1.Software/5.misc/1.ocr_offine/</url>
+    <content><![CDATA[<p>完全开源免费的文字识别库</p>
+<ul>
+<li>离线文字识别软件</li>
+</ul>
+<blockquote>
+<p><a href="https://github.com/TutuBinary/Umi-OCR">https://github.com/TutuBinary/Umi-OCR</a></p>
+</blockquote>
+<ul>
+<li>离线文字识别库  PaddleOCR-json  (兼容性不好，性能高)</li>
+</ul>
+<blockquote>
+<p><a href="https://github.com/TutuBinary/PaddleOCR-json">https://github.com/TutuBinary/PaddleOCR-json</a><br><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6">https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6</a>   (原库)</p>
+</blockquote>
+<ul>
+<li>离线文字识别库  RapidOCR-json  (兼容性好，性能中等)</li>
+</ul>
+<blockquote>
+<p><a href="https://github.com/TutuBinary/RapidOCR-json">https://github.com/TutuBinary/RapidOCR-json</a><br><a href="https://github.com/TutuBinary/RapidOcrOnnx">https://github.com/TutuBinary/RapidOcrOnnx</a>  (原库)</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>文字识别</category>
+      </categories>
+      <tags>
+        <tag>OCR</tag>
+        <tag>离线文字识别</tag>
+      </tags>
+  </entry>
 </search>
