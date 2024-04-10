@@ -2266,4 +2266,60 @@
         <tag>离线文字识别</tag>
       </tags>
   </entry>
+  <entry>
+    <title>视频语音文字识别转换 (视频翻译和配音工具)</title>
+    <url>/2024/04/10/1.Software/5.misc/2.ai_video_audio/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://github.com/TutuBinary/pyvideotrans">https://github.com/TutuBinary/pyvideotrans</a></p>
+</blockquote>
+<p>一个视频翻译配音工具，可将一种语言的视频翻译为指定语言的视频，自动生成和添加该语言的字幕和配音。</p>
+<p>主要用途和使用方式<br>####</p>
+<ul>
+<li>【翻译视频并配音】根据需要设置各个选项，自由配置组合，实现翻译和配音、自动加减速、合并等</li>
+<li>【识别字幕不翻译】选择视频文件，选择视频源语言，则从视频【语音中识别出文字】并自动导出字幕文件到目标文件夹</li>
+<li>【提取字幕并翻译】选择视频文件，选择视频源语言，设置想翻译到的目标语言，则从【视频语音中识别出文字】并翻译为目标语言，然后导出双语字幕文件到目标文件夹</li>
+<li>【字幕和视频合并】选择视频，然后将已有的字幕文件拖拽到右侧字幕区，将源语言和目标语言都设为字幕所用语言、然后选择配音类型和角色，开始执行</li>
+<li>【为字幕创建配音】将本地的字幕文件拖拽到右侧字幕编辑器，然后选择目标语言、配音类型和角色，将生成配音后的音频文件到目标文件夹</li>
+<li>【音视频识别文字】将视频或音频拖拽到识别窗口，将识别出文字并导出为srt字幕格式</li>
+<li>【将文字合成语音】将一段文字或者字幕，使用指定的配音角色生成配音</li>
+<li>【从视频分离音频】将视频文件分离为音频文件和无声视频</li>
+<li>【音视频字幕合并】音频文件、视频文件、字幕文件合并为一个视频文件</li>
+<li>【音视频格式转换】各种格式之间的相互转换</li>
+<li>【文字字幕翻译】将文字或srt字幕文件翻译为其他语言</li>
+<li>【人声背景乐分离】将视频中的人声和背景音乐分别分离出来，生成2个音频文件</li>
+<li>【下载油管视频】可从youtube上下载视频</li>
+</ul>
+<p>离线语音转文字方案：</p>
+<ul>
+<li>openai-whisper</li>
+<li>faster-whisper</li>
+</ul>
+<p>openai-whisper 使用<br>####</p>
+<p>windows 下有配套的工具使用</p>
+<ul>
+<li>下载客户端 ： <a href="https://github.com/TutuBinary/Whisper">https://github.com/TutuBinary/Whisper</a></li>
+<li>下载模型：<a href="https://huggingface.co/ggerganov/whisper.cpp">https://huggingface.co/ggerganov/whisper.cpp</a> (模型越大，越准确，越慢, 电脑配置要求越高， 可以选中配模型)</li>
+</ul>
+<p>使用</p>
+<ul>
+<li>加载下载好的模型</li>
+<li>选择GPU，点OK</li>
+<li>选择需要转换的语言, chinese</li>
+<li>选择音频</li>
+<li>选择输出格式</li>
+<li>选择输出路径</li>
+<li>点击 <code>Transcribe</code> 开始转换</li>
+</ul>
+<p>实测 <code>ggml-medium.bin</code> 和 <code>ggml-large-v1.bin</code> 两个模型还可以</p>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>语音识别</category>
+      </categories>
+      <tags>
+        <tag>音频转文字</tag>
+        <tag>视频处理</tag>
+        <tag>离线语音转文字</tag>
+      </tags>
+  </entry>
 </search>
