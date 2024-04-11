@@ -1324,7 +1324,11 @@
   <entry>
     <title>画图、绘图工具</title>
     <url>/2024/01/29/4.tool/4.draw/</url>
-    <content><![CDATA[<h3 id="drawio"><a href="#drawio" class="headerlink" title="drawio"></a>drawio</h3><p>draw.io是一个在线作图网站，功能很多，思维导图、流程图、网络图等等，电路图也有。里面的很多图都可以设置成草图样式，挺酷炫的。</p>
+    <content><![CDATA[<h3 id="excalidraw"><a href="#excalidraw" class="headerlink" title="excalidraw"></a>excalidraw</h3><p>虚拟手绘风格白板</p>
+<blockquote>
+<p><a href="https://github.com/excalidraw/excalidraw">https://github.com/excalidraw/excalidraw</a><br><a href="https://excalidraw.com/">https://excalidraw.com/</a></p>
+</blockquote>
+<h3 id="drawio"><a href="#drawio" class="headerlink" title="drawio"></a>drawio</h3><p>draw.io是一个在线作图网站，功能很多，思维导图、流程图、网络图等等，电路图也有。里面的很多图都可以设置成草图样式，挺酷炫的。</p>
 <blockquote>
 <p><a href="https://app.diagrams.net/">https://app.diagrams.net/</a></p>
 </blockquote>
