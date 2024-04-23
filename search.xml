@@ -910,6 +910,12 @@
 <ul>
 <li><a href="https://github.com/apache/nuttx">https://github.com/apache/nuttx</a></li>
 </ul>
+<blockquote>
+<p>tbox 是一个用c语言实现的跨平台开发库。</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/tboox/tbox">https://github.com/tboox/tbox</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>软件资料</category>
@@ -2356,6 +2362,35 @@
         <tag>音频转文字</tag>
         <tag>视频处理</tag>
         <tag>离线语音转文字</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>图片解码库</title>
+    <url>/2024/04/23/1.Software/0.Reference/4.decode_picture/</url>
+    <content><![CDATA[<blockquote>
+<p>QOI (速度很快的图片格式，编解码速度都很快)</p>
+</blockquote>
+<p>QOI 很快。它将图像无损压缩为与 PNG 类似的大小，同时编码速度提高 20 到 50 倍，解码速度提高 3 到 4 倍。</p>
+<p>QOI 很简单。参考编码器&#x2F;解码器可容纳大约 300 行 C 语言。文件格式规范是单页 PDF。</p>
+<ul>
+<li><a href="https://qoiformat.org/">https://qoiformat.org/</a></li>
+</ul>
+<blockquote>
+<p>QOA (用于快速、有损压缩的相当不错的音频格式)</p>
+</blockquote>
+<p>QOA 很快。它的音频解码速度比 Ogg-Vorbis 快 3 倍，同时提供比 ADPCM 更好的质量和压缩（44khz 立体声为 278 kbits&#x2F;s）。</p>
+<p>QOA 很简单。参考编码器&#x2F;解码器可容纳大约 400 行 C 语言。文件格式规范是单页 PDF。</p>
+<ul>
+<li><a href="https://qoaformat.org/">https://qoaformat.org/</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>参考资料</category>
+      </categories>
+      <tags>
+        <tag>参考代码</tag>
+        <tag>图片解码</tag>
       </tags>
   </entry>
 </search>
