@@ -2393,4 +2393,43 @@
         <tag>图片解码</tag>
       </tags>
   </entry>
+  <entry>
+    <title>无线串流、投屏</title>
+    <url>/2024/06/11/4.tool/6.Streaming/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>主要讲解 <code>Sunshine</code> + <code>Moonlight</code> 串流方案</p>
+<p>使用场景</p>
+<ul>
+<li>局域网内可以实现无线投屏，延迟非常低</li>
+<li>如果配合虚拟显示器使用，可以将手机或者平板当电脑幅屏使用，工具：parsec-vdd (github)</li>
+<li>如果配合内网穿透工具使用，可以实现远程投屏, 例如：皎月连</li>
+</ul>
+<h3 id="Sunshine-介绍-服务器"><a href="#Sunshine-介绍-服务器" class="headerlink" title="Sunshine 介绍  (服务器)"></a>Sunshine 介绍  (服务器)</h3><p>Sunshine 是 Moonlight 的自托管游戏流主机。提供低延迟、云游戏服务器功能，支持 AMD、Intel 和 Nvidia GPU 进行硬件编码。还提供软件编码。您可以从各种设备上的任何 Moonlight 客户端连接到 Sunshine。提供了一个 Web UI，允许从您最喜欢的 Web 浏览器进行配置和客户端配对。从本地服务器或任何移动设备进行配对。</p>
+<ul>
+<li><a href="https://github.com/LizardByte/Sunshine">https://github.com/LizardByte/Sunshine</a></li>
+</ul>
+<h3 id="Moonlight-介绍-（客户端）"><a href="#Moonlight-介绍-（客户端）" class="headerlink" title="Moonlight 介绍 （客户端）"></a>Moonlight 介绍 （客户端）</h3><p>Moonlight 可让您在几乎任何设备上玩 PC 游戏，无论您是在另一个房间还是距离游戏设备数英里远。</p>
+<p>Moonlight 安装在需要显示的设备上，连接主机IP信息即可</p>
+<ul>
+<li><a href="https://moonlight-stream.org/">https://moonlight-stream.org/</a></li>
+</ul>
+<h3 id="parsec-vdd-介绍-（虚拟显示器）"><a href="#parsec-vdd-介绍-（虚拟显示器）" class="headerlink" title="parsec-vdd 介绍 （虚拟显示器）"></a>parsec-vdd 介绍 （虚拟显示器）</h3><p>Parsec VDD 是 Parsec 开发的一款完美的软件驱动程序。它利用 IddCx API （间接显示驱动程序）在 Windows 10+ 上创建虚拟显示器。这种虚拟显示器在物理显示器可能不可用或需要额外屏幕的情况下特别有用。</p>
+<ul>
+<li><a href="https://github.com/nomi-san/parsec-vdd">https://github.com/nomi-san/parsec-vdd</a></li>
+</ul>
+<h3 id="皎月连"><a href="#皎月连" class="headerlink" title="皎月连"></a>皎月连</h3><p>皎月连一键内网穿透能够实现两点之间的P2P直连内网穿透，并不是通过第三方服务器提供流量中转服务。软件采用了最新的P2P算法，在连接双方都没有公网IP和IPV6的情况下，可满足包括对称型NAT在内的大多数连接需求。因为在数据传输过程中不需要第三方服务器作为中转，所以节约了服务器成本和流量成本，同时又可以提高传输速度。数据在传输过程中采用了加密算法，拥有更高的安全性与私密性。在连接过程中提供了TCP与UDP两种传输协议，更广泛的满足使用需求。皎月连一键内网穿透可应用于家庭摄像头直连、NAS访问、远程控制或远程游戏联机、串流等各种应用场景。</p>
+<ul>
+<li><a href="https://natpierce.cn/">https://natpierce.cn/</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+        <category>串流</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>串流</tag>
+        <tag>无线投屏</tag>
+        <tag>无线串流</tag>
+      </tags>
+  </entry>
 </search>
