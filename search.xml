@@ -2432,4 +2432,34 @@
         <tag>无线串流</tag>
       </tags>
   </entry>
+  <entry>
+    <title>硬件开发需求参考文档</title>
+    <url>/2024/06/12/6.PMP/1.hardware_request/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>高质量的产品需求文档，是硬件产品成功的关键,是硬件产品由概念阶段进入设计阶段的第一个重要文档，其作用是将客户需求转化成开发团队能够理解的产品功能、性能、指标和参数，将前期市场调研和需求洞察所发现的市场机会进行锁定，落地到具体的产品定义。</p>
+<p>下面是我整理的需求文档，可以直接下载</p>
+<ul>
+<li><a href="https://github.com/user-attachments/files/15796986/default.xlsx">https://github.com/user-attachments/files/15796986/default.xlsx</a></li>
+</ul>
+<h3 id="功能需求很清晰，很详细"><a href="#功能需求很清晰，很详细" class="headerlink" title="功能需求很清晰，很详细"></a>功能需求很清晰，很详细</h3><p><img src="/img/hardware_req/1.jpg"></p>
+<p>以前的客户有设计需求的时候，一般都是说一下要设计一个什么样的东西，要有哪几个功能，其他的都是模模糊糊，不清不楚的，让我们自己去理解，自己去猜测。</p>
+<p>基本都是理解不了，都是花很多时间精力去和客户沟通，沟通，再沟通，才勉强全面理解客户的需求。</p>
+<h3 id="参考器件，方便选型"><a href="#参考器件，方便选型" class="headerlink" title="参考器件，方便选型"></a>参考器件，方便选型</h3><p><img src="/img/hardware_req/2.jpg"></p>
+<p>给我们提供了一关键器件的图片，让我们参考，大大方便我们选型，节省我们的时间。</p>
+<h3 id="PCB布局提供参考草图"><a href="#PCB布局提供参考草图" class="headerlink" title="PCB布局提供参考草图"></a>PCB布局提供参考草图</h3><p><img src="/img/hardware_req/3.jpg"></p>
+<p>虽然没有具体的PCB板框图纸，但是也给我们提供了一个PCB布局草图，很清晰地标出哪些连接器、开关、指示灯应该放在哪个位置，免得我们自由发挥，不能满足客户的需求。</p>
+<h3 id="PCB布局提供参考草图-1"><a href="#PCB布局提供参考草图-1" class="headerlink" title="PCB布局提供参考草图"></a>PCB布局提供参考草图</h3><p>客户明确任务完成目标，需要输出电路图、PCB板原始文件，BOM等。</p>
+<p>以前很多客户都是要聊了好久，才知道到底要输出什么东西给他们。</p>
+<p>总之，看了客户这份硬件开发需求文档后，我一下就清楚明了整个项目的需求，一个疑问都没有，只回复一句“好的，我评估好费用后就回复你”。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>如果大家以后有硬件开发需求的，可以参考这位客户的硬件开发需求文档，按照自己的的需求写一份规范标准的硬件开发需求文档。</p>
+<p>这样就可以大大节省沟通成本，很快就能评估出报价，大大消除你们等待报价出来焦急的心情。</p>
+<p>也能快速匹配到合适的高手，可靠地为你们把东西设计出来。</p>
+]]></content>
+      <categories>
+        <category>项目管理</category>
+      </categories>
+      <tags>
+        <tag>项目管理</tag>
+        <tag>硬件需求文档</tag>
+      </tags>
+  </entry>
 </search>
