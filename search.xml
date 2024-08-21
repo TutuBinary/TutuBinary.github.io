@@ -2604,7 +2604,7 @@
   <entry>
     <title>自动生成注释插件  - VScode</title>
     <url>/2024/08/16/4.tool/8.code_comments/</url>
-    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文就推荐一种在用vscode编写代码时自动化生成标准化注释格式的方法。</p>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文推荐一种在用vscode编写代码时自动化生成标准化注释格式的方法。</p>
 <p>插件名字：Doxygen Documentation Generator</p>
 <p>插件使用说明：</p>
 <blockquote>
@@ -2628,6 +2628,38 @@
       <tags>
         <tag>软件工具</tag>
         <tag>vscode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自动格式化工具  - AStyle</title>
+    <url>/2024/08/21/4.tool/9.vscode_astyle/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文推荐一种格式化工具， <code>AStyle</code></p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="下载-AStyle"><a href="#下载-AStyle" class="headerlink" title="下载 AStyle"></a>下载 AStyle</h4><p>Astyle官网下载地址：</p>
+<blockquote>
+<p><a href="https://sourceforge.net/projects/astyle">https://sourceforge.net/projects/astyle</a></p>
+</blockquote>
+<h4 id="在-vscode-中安装-AStyle"><a href="#在-vscode-中安装-AStyle" class="headerlink" title="在 vscode 中安装 AStyle"></a>在 vscode 中安装 AStyle</h4><p>在 vscode 扩展商城中安装 AStyle 插件</p>
+<p><img src="/img/AStyle/1.png"></p>
+<h4 id="配置-AStyle-路径"><a href="#配置-AStyle-路径" class="headerlink" title="配置 AStyle 路径"></a>配置 AStyle 路径</h4><ul>
+<li>在 vscode 中按快捷键： <code>CTRL+SHIFT+P</code> 搜索 <code>setting</code> , 打开 <code>settings.json</code></li>
+<li>输入以下信息，配置路径</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;astyle.executable&quot;</span><span class="punctuation">:</span> <span class="string">&quot;E:\\1.software\\astyle-3.6-x64\\astyle.exe&quot;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置-AStyle-参数"><a href="#配置-AStyle-参数" class="headerlink" title="配置 AStyle 参数"></a>配置 AStyle 参数</h4><ul>
+<li>在 vscode 中按快捷键： <code>CTRL+SHIFT+P</code> 搜索 <code>setting</code> , 打开 <code>settings.json</code></li>
+<li>输入以下信息，配置路径</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;astyle.astylerc&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">//   &quot;astyle.cmd_options&quot;: [</span></span><br><span class="line">    <span class="comment">/* AStyle */</span></span><br><span class="line">    <span class="attr">&quot;astyle.additional_languages&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    </span><br><span class="line">        <span class="string">&quot;*.c&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;*.cpp&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;*.h&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;*.hpp&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;astyle.cmd_options&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="comment">// 预定义风格 -----------------------------------------------------------</span></span><br><span class="line">        <span class="comment">// &quot;--style=ansi&quot;,             //ANSI 风格格式和缩进</span></span><br><span class="line">        <span class="string">&quot;--style=linux&quot;</span><span class="punctuation">,</span>               <span class="comment">//Linux 风格格式和缩进</span></span><br><span class="line">        <span class="comment">//&quot;--style=gnu&quot;,               //GNU 风格格式和缩进</span></span><br><span class="line">        <span class="string">&quot;--indent=spaces=4&quot;</span><span class="punctuation">,</span>            <span class="comment">//缩进4个空格</span></span><br><span class="line">        <span class="string">&quot;--indent-preproc-block&quot;</span><span class="punctuation">,</span>  <span class="comment">//pressor</span></span><br><span class="line">        <span class="string">&quot;--pad-oper&quot;</span><span class="punctuation">,</span>               <span class="comment">//在操作符号两边增加空格字符；</span></span><br><span class="line">        <span class="string">&quot;--pad-header&quot;</span><span class="punctuation">,</span>             <span class="comment">//在关键字”if”、”for”、”while”等后面增加空格</span></span><br><span class="line">        <span class="string">&quot;--unpad-paren&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;--suffix=none&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;--align-pointer=type&quot;</span><span class="punctuation">,</span>     <span class="comment">// *、&amp;这类字符靠近类型；</span></span><br><span class="line">        <span class="string">&quot;--align-pointer=name&quot;</span><span class="punctuation">,</span>     <span class="comment">//*、&amp;这类字符靠近变量名字；</span></span><br><span class="line">        <span class="string">&quot;--lineend=linux&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;--convert-tabs&quot;</span><span class="punctuation">,</span>            <span class="comment">//TAB转换为空格</span></span><br><span class="line">        <span class="string">&quot;--verbose&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="string">&quot;--delete-empty-lines&quot;</span><span class="punctuation">,</span>     <span class="comment">//删除多余空行--delete-empty-lines</span></span><br><span class="line">        <span class="comment">//&quot;--pad-paren-in&quot;,         //括号内部加入空格</span></span><br><span class="line">        <span class="string">&quot;--unpad-paren&quot;</span><span class="punctuation">,</span>            <span class="comment">//移除括号两端多余空格</span></span><br><span class="line">        <span class="string">&quot;-S&quot;</span><span class="punctuation">,</span>                       <span class="comment">//switch 与case不同列,case缩进</span></span><br><span class="line">        <span class="string">&quot;-F&quot;</span><span class="punctuation">,</span>                       <span class="comment">//空行分隔无关块</span></span><br><span class="line">        </span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+        <category>vscode</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>vscode</tag>
+        <tag>AStyle</tag>
       </tags>
   </entry>
 </search>
