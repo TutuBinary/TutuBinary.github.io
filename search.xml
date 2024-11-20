@@ -2702,4 +2702,35 @@
         <tag>串口数据</tag>
       </tags>
   </entry>
+  <entry>
+    <title>PYTHON ASCII generator 将图像转成ASCII码文字、图像</title>
+    <url>/2024/11/20/4.tool/11.ascii_generator/</url>
+    <content><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>这是我的 ASCII 生成器的 Python 源代码。我的代码如下</p>
+<ul>
+<li><p>给定输入图像，我们可以生成以不同语言的文本格式存储的 ASCII 艺术（.txt）</p>
+</li>
+<li><p>给定输入图像，我们可以生成以不同语言（.png、.jpg 等）的图像格式存储的 ASCII 艺术图。每种- 格式都有 2 个选项：黑色背景和白色字符，或反之亦然</p>
+</li>
+<li><p>给定输入视频，我们可以生成以不同语言的视频格式（.avi，.mp4，…）存储的 ASCII 艺术。</p>
+</li>
+<li><p>视频&#x2F;图像输出可以是灰度或彩色格式。完全由您决定</p>
+</li>
+<li><p><a href="https://github.com/TutuBinary/ASCII-generator">https://github.com/TutuBinary/ASCII-generator</a></p>
+</li>
+</ul>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><img src="/img/ascii_generator/1.jpg"></p>
+<p><img src="/img/ascii_generator/input.jpg"></p>
+<p><img src="/img/ascii_generator/2.jpg"></p>
+<p><img src="/img/ascii_generator/3.jpg"></p>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+        <category>ASCII generator</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>python</tag>
+        <tag>生成ASCII码图片</tag>
+      </tags>
+  </entry>
 </search>
