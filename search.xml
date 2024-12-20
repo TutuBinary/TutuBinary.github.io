@@ -2760,4 +2760,29 @@
         <tag>ICON</tag>
       </tags>
   </entry>
+  <entry>
+    <title>芯片收集</title>
+    <url>/2024/12/20/3.Hardware/4.chip/1.mcu/</url>
+    <content><![CDATA[<blockquote>
+<p>辉芒微电子FMD  - FT60</p>
+</blockquote>
+<p>国产芯片，芯片价格低，封装小:FT60系列（8bit）, FT32F030F6CU7(32bit系列)</p>
+<ul>
+<li><a href="https://www.fremontmicro.com/#/home">https://www.fremontmicro.com/#/home</a></li>
+</ul>
+<blockquote>
+<p>普冉 - py32</p>
+</blockquote>
+<ul>
+<li><a href="https://www.puyasemi.com/">https://www.puyasemi.com/</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>硬件资料</category>
+        <category>芯片</category>
+      </categories>
+      <tags>
+        <tag>芯片</tag>
+      </tags>
+  </entry>
 </search>
