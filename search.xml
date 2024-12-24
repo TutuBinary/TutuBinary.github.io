@@ -2903,4 +2903,23 @@
         <tag>ABI</tag>
       </tags>
   </entry>
+  <entry>
+    <title>python 算法实现库</title>
+    <url>/2024/12/24/1.Software/0.Reference/5.algorithm/</url>
+    <content><![CDATA[<p>几位印度小哥在 GitHub 上建了一个各种 Python 算法的新手入门大全。从原理到代码，全都给你交代清楚了。为了让新手更加直观的理解，有的部分还配了动图。</p>
+<p>这个项目主要包括两部分内容：一是各种算法的基本原理讲解，二是各种算法的代码实现。</p>
+<p>代码以 Python 文件格式保存在 GitHub 上，需要的同学可以自行保存下载。</p>
+<blockquote>
+<p><a href="https://github.com/TheAlgorithms/Python">https://github.com/TheAlgorithms/Python</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件资料</category>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>参考代码</tag>
+        <tag>算法</tag>
+      </tags>
+  </entry>
 </search>
