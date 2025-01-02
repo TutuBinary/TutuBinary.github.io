@@ -2773,8 +2773,23 @@
 <blockquote>
 <p>普冉 - py32</p>
 </blockquote>
+<p>代表芯片：PY32F002B (Cortex-M0 为内核的 32 位微控制器)</p>
 <ul>
 <li><a href="https://www.puyasemi.com/">https://www.puyasemi.com/</a></li>
+</ul>
+<blockquote>
+<p>灵动微 MM32G系列</p>
+</blockquote>
+<p>代表芯片： MM32G0001 (Cortex-M0 为内核的 32 位微控制器)</p>
+<ul>
+<li><a href="https://www.mindmotion.com.cn/">https://www.mindmotion.com.cn/</a></li>
+</ul>
+<blockquote>
+<p>芯源 CW32L系列</p>
+</blockquote>
+<p>代表芯片：芯源CW32L010 (Cortex-M0 为内核的 32 位微控制器)</p>
+<ul>
+<li><a href="https://www.whxy.com/">https://www.whxy.com/</a></li>
 </ul>
 ]]></content>
       <categories>
