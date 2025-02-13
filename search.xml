@@ -981,6 +981,22 @@
 <blockquote>
 <p><a href="https://github.com/thingsboard/thingsboard?tab=readme-ov-file">https://github.com/thingsboard/thingsboard?tab=readme-ov-file</a></p>
 </blockquote>
+<blockquote>
+<p>Pebble </p>
+</blockquote>
+<p>Pebble最初通过一个非常成功的Kickstarter项目推出。Pebble的第一次Kickstarter项目是当时筹资最多的，而其继任者Pebble Time的Kickstarter项目也重复了这一壮举——至今仍是第二大筹资项目！在四年的时间里，Pebble售出了超过二百万只智能手表，培养了一个蓬勃发展的开发者社区，开发出了超过一万款Pebble应用和表盘。</p>
+<p>2016年，Fitbit收购了Pebble，包括Pebble的知识产权。后来，Fitbit也被谷歌收购，Pebble操作系统也随之被带走。尽管Pebble的硬件和软件支持在八年前已停止，但Pebble依然拥有成千上万的忠实粉丝。</p>
+<p>这个代码库包含了整个操作系统，它提供了所有标准的智能手表功能——通知、媒体控制、健身追踪、以及对自定义应用和表盘的支持——并且可以在小型ARM Cortex-M微控制器上运行。该操作系统基于FreeRTOS构建，包含了多个内存管理、图形和时间管理模块，并且提供了一个广泛的框架，可以加载和运行用C语言编写的自定义应用，也可以通过Jerryscript Javascript引擎运行用Javascript编写的应用。Pebble的架构使得该系统非常轻量化，同时提供了丰富的用户体验和非常长的电池寿命。</p>
+<p>需要注意的是，部分专有代码已经从代码库中删除，尤其是与芯片支持和蓝牙协议栈相关的代码。这意味着发布的代码包含了所有的构建系统文件（使用waf构建系统），但在发布时无法直接编译或链接。</p>
+<blockquote>
+<p><a href="https://github.com/google/pebble">https://github.com/google/pebble</a></p>
+</blockquote>
+<blockquote>
+<p>RTOS相关技术文档</p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.highintegritysystems.com/rtos/what-is-an-rtos/rtos-tutorials/">https://www.highintegritysystems.com/rtos/what-is-an-rtos/rtos-tutorials/</a></p>
+</blockquote>
 ]]></content>
       <categories>
         <category>软件资料</category>
