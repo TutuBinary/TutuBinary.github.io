@@ -2983,4 +2983,46 @@
         <tag>AI工具</tag>
       </tags>
   </entry>
+  <entry>
+    <title>RunAsDate - 修改程序运行时间</title>
+    <url>/2025/03/10/4.tool/15.RunAsDate/</url>
+    <content><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>RunAsDate 是一个小型实用程序，允许您在指定的日期和时间运行程序。 此实用程序不会更改计算机的当前系统日期和时间，但它只会注入 您在所需的应用程序中指定的日期&#x2F;时间。</p>
+<p>您可以同时运行多个应用程序，每个应用程序使用不同的日期和时间， 而系统的实际日期&#x2F;时间继续正常运行。</p>
+<ul>
+<li><a href="https://www.nirsoft.net/utils/run_as_date.html#google_vignette">https://www.nirsoft.net/utils/run_as_date.html#google_vignette</a></li>
+</ul>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>RunAsDate 拦截返回当前日期和时间的内核 API 调用（GetSystemTime、GetLocalTime、GetSystemTimeAsFileTime、NtQuerySystemTime、GetSystemTimePreciseAsFileTime）， 并用您指定的日期&#x2F;时间替换当前日期&#x2F;时间。</p>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>UI工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Axure - 一款专业的快速原型UI设计工具</title>
+    <url>/2025/03/10/4.tool/14.axure/</url>
+    <content><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Axure，全称叫做 Axure RP 。Axure作为专业的原型设计工具，它能快速、高效的创建原型，同时支持多人协作设计和版本控制管理。</p>
+<p>Axure 是一款专业的快速原型设计工具，拥有强大的组件库，可快速完成产品或 Web 线框图、流程图及原型设计，加上控件和动效的支持，堪称交互神器，支持 Window、macOS 系统。</p>
+<h4 id="官网"><a href="#官网" class="headerlink" title="官网"></a>官网</h4><ul>
+<li><a href="https://www.axure.com/">https://www.axure.com/</a></li>
+</ul>
+<h4 id="中文包"><a href="#中文包" class="headerlink" title="中文包"></a>中文包</h4><ul>
+<li><a href="https://github.com/pluwen/axure-cn?tab=readme-ov-file">https://github.com/pluwen/axure-cn?tab=readme-ov-file</a></li>
+</ul>
+<h4 id="破解-RunAsDate"><a href="#破解-RunAsDate" class="headerlink" title="破解 RunAsDate"></a>破解 RunAsDate</h4><ul>
+<li><a href="https://www.nirsoft.net/utils/run_as_date.html">https://www.nirsoft.net/utils/run_as_date.html</a></li>
+</ul>
+<p>原理介绍</p>
+<p>RunAsDate 拦截返回当前日期和时间的内核 API 调用（GetSystemTime、GetLocalTime、GetSystemTimeAsFileTime、NtQuerySystemTime、GetSystemTimePreciseAsFileTime）， 并用您指定的日期&#x2F;时间替换当前日期&#x2F;时间。</p>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+      </tags>
+  </entry>
 </search>
