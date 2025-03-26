@@ -1979,7 +1979,7 @@
   <entry>
     <title>脚本解析器</title>
     <url>/2024/01/29/1.Software/3.components/2.script_parse/</url>
-    <content><![CDATA[<h3 id="C4：4个函数实现的C语言编译器"><a href="#C4：4个函数实现的C语言编译器" class="headerlink" title="C4：4个函数实现的C语言编译器"></a>C4：4个函数实现的C语言编译器</h3><p>它是一个C语言编译器项目，整个实现只有：</p>
+    <content><![CDATA[<h3 id="C4：4个函数实现的C语言编译器-C语言脚本解释器"><a href="#C4：4个函数实现的C语言编译器-C语言脚本解释器" class="headerlink" title="C4：4个函数实现的C语言编译器 (C语言脚本解释器)"></a>C4：4个函数实现的C语言编译器 (C语言脚本解释器)</h3><p>它是一个C语言编译器项目，整个实现只有：</p>
 <ul>
 <li><p>一个C语言源码文件</p>
 </li>
@@ -1992,6 +1992,11 @@
 <p>它简洁，却不简单。</p>
 <blockquote>
 <p><a href="https://github.com/TutuBinary/c4.git">https://github.com/TutuBinary/c4.git</a></p>
+</blockquote>
+<h3 id="PicoC-PicoC-是一款非常小的-C-脚本解释器"><a href="#PicoC-PicoC-是一款非常小的-C-脚本解释器" class="headerlink" title="PicoC :PicoC 是一款非常小的 C 脚本解释器"></a>PicoC :PicoC 是一款非常小的 C 脚本解释器</h3><p>PicoC是一个轻量级的C语言编译器，它可以将C语言源代码编译成可执行文件。</p>
+<p>核心 C 源代码大约有 3500 行。它并非 ISO C 的完整实现，但它具备所有基本功能。编译后，它仅占用几 k 的代码空间，并且非常节省数据空间。这意味着它可以在小型嵌入式设备中很好地工作。它也是一个有趣的示例，展示了如何创建非常小的语言实现，同时仍保持代码的可读性。</p>
+<blockquote>
+<p><a href="https://github.com/jpoirier/picoc">https://github.com/jpoirier/picoc</a></p>
 </blockquote>
 <h3 id="QuickJS"><a href="#QuickJS" class="headerlink" title="QuickJS"></a>QuickJS</h3><p>QuickJS是一个小型并且可嵌入的Javascript引擎，它支持ES2020规范，包括模块，异步生成器和代理器。</p>
 <p>它可选支持数学扩展，例如大整数 (BigInt)，大浮点数 (BigFloat) 以及运算符重载。</p>
