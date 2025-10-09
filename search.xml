@@ -3066,4 +3066,70 @@
         <tag>软件工具</tag>
       </tags>
   </entry>
+  <entry>
+    <title>串口助手 - Serial Studio</title>
+    <url>/2025/07/07/4.tool/16.Serial_Studio/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="serial-port-plotter-多数据不卡"><a href="#serial-port-plotter-多数据不卡" class="headerlink" title="serial_port_plotter (多数据不卡)"></a>serial_port_plotter (多数据不卡)</h4><p>Serial Studio 是一个开源的跨平台遥测仪表板和实时数据可视化工具，用于监控、分析和调试来自嵌入式设备、外部软件和网络服务的数。它支持多种数据采集方法，包括串口、蓝牙低功耗（BLE）、MQTT 和 TCP&#x2F;UDP 套接字。</p>
+<p>核心功能​​</p>
+<ul>
+<li>​​多数据源支持​​：串口、网络套接字、蓝牙低功耗（BLE）、MQTT协议。</li>
+<li>​​灵活可视化​​：提供图表、仪表盘、地图等组件，支持JSON配置文件自定义。</li>
+<li>​​数据处理​​：通过JavaScript预处理数据帧，支持CSV导出&#x2F;回放。</li>
+<li>​​MQTT集成​​：实现分布式实时数据监控。</li>
+</ul>
+<p>其他更多高级操作请参考官方说明：</p>
+<ul>
+<li><a href="https://github.com/Serial-Studio/Serial-Studio">https://github.com/Serial-Studio/Serial-Studio</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+        <category>Serial Studio</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>串口数据</tag>
+        <tag>Serial Studio</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>进程变速器(游戏加速器/百度网盘加速器) - OpenSpeedy</title>
+    <url>/2025/10/09/4.tool/17.OpenSpeedy/</url>
+    <content><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>OpenSpeedy 是一个进程变速器，它可以将游戏进程的优先级提高到实时级别，从而提高游戏的运行速度。 它还可以将百度网盘进程的优先级提高到实时级别，从而提高百度网盘的运行速度。</p>
+<p>链接地址</p>
+<ul>
+<li><a href="https://github.com/game1024/OpenSpeedy">https://github.com/game1024/OpenSpeedy</a></li>
+</ul>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>OpenSpeedy 是一款开源免费的 Windows 平台游戏变速工具，主要功能是通过修改游戏进程的时间函数实现加速或减速，突破原生帧率限制，提升单机游戏流畅度。</p>
+<p>支持 Unity、Unreal、CryEngine 等主流游戏引擎，同时兼容 x86 与 x64 架构的进程。</p>
+<p><strong>然后我发现它居然还能在网盘加速上使用。</strong></p>
+<p>它对百度网盘的加速效果显著，可将下载速度提升至显示速度的 100 倍左右。原本显示 100KB&#x2F;s 的下载速度，实际下载速度可能达到 10MB&#x2F;s 甚至更高。</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><ol>
+<li>先打开百度网盘，先不要点击开始下载。</li>
+<li>启动 OpenSpeedy，把变速速率调整到1倍</li>
+</ol>
+<p><img src="/img/OpenSpeedy/1.webp"></p>
+<ol start="3">
+<li>在系统进程中搜索baidu，把所有百度网盘相关的进程（下图）都勾上（用拼音不要用汉字，因为运行程序都是文件的拼音名）</li>
+</ol>
+<p><img src="/img/OpenSpeedy/2.webp"></p>
+<ol start="4">
+<li>回到百度网盘中，开始下载</li>
+<li>回到OpenSpeedy，拖动调整上面的加速速率，建议调整到10-200</li>
+</ol>
+<p><strong>然后你就会发现，虽然百度网盘内状态栏显示的速度可能没什么变化，但仔细观察文件大小下方的进度条在增长，实际下载速度明显提升。</strong></p>
+<p><img src="/img/OpenSpeedy/3.gif"></p>
+]]></content>
+      <categories>
+        <category>软件工具</category>
+        <category>openSpeedy</category>
+      </categories>
+      <tags>
+        <tag>软件工具</tag>
+        <tag>游戏加速器</tag>
+        <tag>网盘加速器</tag>
+        <tag>OpenSpeedy</tag>
+        <tag>百度网盘加速器</tag>
+      </tags>
+  </entry>
 </search>
