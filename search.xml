@@ -3072,14 +3072,14 @@
     <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="serial-port-plotter-多数据不卡"><a href="#serial-port-plotter-多数据不卡" class="headerlink" title="serial_port_plotter (多数据不卡)"></a>serial_port_plotter (多数据不卡)</h4><p>Serial Studio 是一个开源的跨平台遥测仪表板和实时数据可视化工具，用于监控、分析和调试来自嵌入式设备、外部软件和网络服务的数。它支持多种数据采集方法，包括串口、蓝牙低功耗（BLE）、MQTT 和 TCP&#x2F;UDP 套接字。</p>
 <p>核心功能​​</p>
 <ul>
-<li>​​多数据源支持​​：串口、网络套接字、蓝牙低功耗（BLE）、MQTT协议。</li>
-<li>​​灵活可视化​​：提供图表、仪表盘、地图等组件，支持JSON配置文件自定义。</li>
-<li>​​数据处理​​：通过JavaScript预处理数据帧，支持CSV导出&#x2F;回放。</li>
-<li>​​MQTT集成​​：实现分布式实时数据监控。</li>
+<li>​无限制设计​​: 无坐标轴限制、无数据点限制、支持高波特率(最高912600bps)</li>
+<li>​​交互操作​​: 鼠标缩放拖动、悬停显示数值、图例控制</li>
+<li>​​导出功能​​: 支持PNG图像和CSV数据导出</li>
+<li>自动适应​​: 新通道自动创建图表，使用14种循环颜色</li>
 </ul>
 <p>其他更多高级操作请参考官方说明：</p>
 <ul>
-<li><a href="https://github.com/Serial-Studio/Serial-Studio">https://github.com/Serial-Studio/Serial-Studio</a></li>
+<li><a href="https://github.com/CieNTi/serial_port_plotter">https://github.com/CieNTi/serial_port_plotter</a></li>
 </ul>
 ]]></content>
       <categories>
