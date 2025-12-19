@@ -1003,6 +1003,13 @@
 <ul>
 <li><a href="https://github.com/tezc/sc">https://github.com/tezc/sc</a></li>
 </ul>
+<blockquote>
+<p>mcu-renderer  MCU 抗锯齿文本渲染</p>
+</blockquote>
+<p>mcu-renderer 是一款为微控制器（MCU）设计的轻量级 C 图形库，能够在单色和彩色 LCD 显示器上实现无闪烁、抗锯齿的文本渲染，同时以最小的资源占用实现。</p>
+<ul>
+<li><a href="https://github.com/Gissio/mcu-renderer">https://github.com/Gissio/mcu-renderer</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>软件资料</category>
@@ -3069,7 +3076,7 @@
   <entry>
     <title>串口助手 - Serial Studio</title>
     <url>/2025/07/07/4.tool/16.Serial_Studio/</url>
-    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="serial-port-plotter-多数据不卡"><a href="#serial-port-plotter-多数据不卡" class="headerlink" title="serial_port_plotter (多数据不卡)"></a>serial_port_plotter (多数据不卡)</h4><p>Serial Studio 是一个开源的跨平台遥测仪表板和实时数据可视化工具，用于监控、分析和调试来自嵌入式设备、外部软件和网络服务的数。它支持多种数据采集方法，包括串口、蓝牙低功耗（BLE）、MQTT 和 TCP&#x2F;UDP 套接字。</p>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="serial-port-plotter-多数据不卡"><a href="#serial-port-plotter-多数据不卡" class="headerlink" title="serial_port_plotter (多数据不卡)"></a>serial_port_plotter (多数据不卡)</h4><p>serial_port_plotter 是一个开源的基于Qt和QCustomPlot库开发的Windows应用程序，用于实时显示串口数据。</p>
 <p>核心功能​​</p>
 <ul>
 <li>​无限制设计​​: 无坐标轴限制、无数据点限制、支持高波特率(最高912600bps)</li>
