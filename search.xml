@@ -10,9 +10,10 @@
 <li><a href="https://github.com/TutuBinary/tts-vue">https://github.com/TutuBinary/tts-vue</a></li>
 </ul>
 <blockquote>
-<p>Lorien 无限画板</p>
+<p>无限画板</p>
 </blockquote>
 <ul>
+<li><a href="https://excalidraw.com/">https://excalidraw.com/</a></li>
 <li><a href="https://github.com/TutuBinary/Lorien">https://github.com/TutuBinary/Lorien</a></li>
 </ul>
 <blockquote>
@@ -56,6 +57,12 @@
 </blockquote>
 <ul>
 <li><a href="https://potplayer.daum.net/">https://potplayer.daum.net/</a></li>
+</ul>
+<blockquote>
+<p>开源的视频播放器</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/shinchiro/mpv-winbuild-cmake">https://github.com/shinchiro/mpv-winbuild-cmake</a></li>
 </ul>
 <blockquote>
 <p>Bandicam 视频录制软件</p>
@@ -111,6 +118,18 @@
 </blockquote>
 <ul>
 <li><a href="https://www.jam-software.com/treesize_free">https://www.jam-software.com/treesize_free</a></li>
+</ul>
+<blockquote>
+<p>OpenSpeedy 百度云加速器</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/game1024/Speedy">https://github.com/game1024/Speedy</a></li>
+</ul>
+<blockquote>
+<p>Mobaxterm 串口调试工具</p>
+</blockquote>
+<ul>
+<li><a href="https://mobaxterm.mobatek.net/">https://mobaxterm.mobatek.net/</a></li>
 </ul>
 ]]></content>
       <categories>
