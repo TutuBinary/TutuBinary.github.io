@@ -1035,6 +1035,20 @@
 <ul>
 <li><a href="https://github.com/Gissio/mcu-renderer">https://github.com/Gissio/mcu-renderer</a></li>
 </ul>
+<blockquote>
+<p>MCUFont  字体渲染库</p>
+</blockquote>
+<p>MCUFont 是一款用于微控制器系统的字体压缩、解压和渲染库。其主要目的是实现高质量的抗锯齿文本渲染，同时体积足够小，可以容纳典型的闪存存储器。</p>
+<ul>
+<li><a href="https://github.com/mcufont/mcufont">https://github.com/mcufont/mcufont</a></li>
+</ul>
+<blockquote>
+<p>mquickjs  一个轻量级的 javascript 引擎</p>
+</blockquote>
+<p>MicroQuickJS（又名 MQuickJS）是一款面向嵌入式系统的 JavaScript 引擎。它能编译并运行 JavaScript 程序，使用仅 10 kB 的内存。整个引擎需要约 100 kB 的 ROM（ARM Thumb-2 代码），包括 C 库。速度与 QuickJS 相当。</p>
+<ul>
+<li><a href="https://github.com/bellard/mquickjs">https://github.com/bellard/mquickjs</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>软件资料</category>
