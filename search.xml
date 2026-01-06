@@ -1049,6 +1049,13 @@
 <ul>
 <li><a href="https://github.com/bellard/mquickjs">https://github.com/bellard/mquickjs</a></li>
 </ul>
+<blockquote>
+<p>内存分配器的实现 tlsf</p>
+</blockquote>
+<p>TLSF（Two Level Segregated Fit）是一种高效的内存分配器，专为实时系统设计。它的主要优势在于其低延迟和高吞吐量，适用于需要快速内存分配和释放的应用场景。</p>
+<ul>
+<li><a href="https://github.com/mattconte/tlsf">https://github.com/mattconte/tlsf</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>软件资料</category>
