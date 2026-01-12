@@ -2038,7 +2038,29 @@
   <entry>
     <title>脚本解析器</title>
     <url>/2024/01/29/1.Software/3.components/2.script_parse/</url>
-    <content><![CDATA[<h3 id="C4：4个函数实现的C语言编译器-C语言脚本解释器"><a href="#C4：4个函数实现的C语言编译器-C语言脚本解释器" class="headerlink" title="C4：4个函数实现的C语言编译器 (C语言脚本解释器)"></a>C4：4个函数实现的C语言编译器 (C语言脚本解释器)</h3><p>它是一个C语言编译器项目，整个实现只有：</p>
+    <content><![CDATA[<h3 id="uvm32-一个极简、无依赖的虚拟机，可用于嵌入式执行bin文件"><a href="#uvm32-一个极简、无依赖的虚拟机，可用于嵌入式执行bin文件" class="headerlink" title="uvm32 一个极简、无依赖的虚拟机，可用于嵌入式执行bin文件"></a>uvm32 一个极简、无依赖的虚拟机，可用于嵌入式执行bin文件</h3><p>UVM32 是一个极简、无依赖的虚拟机沙盒，专为微控制器及其他资源受限设备设计。单 C 文件，无动态内存分配，异步设计，纯 C99。</p>
+<p>uvm32 是一个 RISC-V 模拟器，采用管理接口，并配备了构建高效代码的工具。</p>
+<p><strong>这是干什么用的？</strong></p>
+<ul>
+<li>作为嵌入式脚本引擎（Lua、Duktape、MicroPython 等）的简洁替代方案</li>
+<li>作为一个沙盒 ，用于隔离系统中不可信或不可靠的元素</li>
+<li>作为一种允许在现代系统编程语言中开发的方式，比如在可能没有目标编译器的情况下（rust-hello）</li>
+<li>作为一种写入一次、随处运行 、避免维护多个软件变体的方法</li>
+</ul>
+<p><strong>特色</strong></p>
+<ul>
+<li>用 C、Zig、Rust 和汇编编写的字节码示例应用</li>
+<li>非阻塞设计，防止不良的字节码导致主机停顿</li>
+<li>没有对主机 IO 能力的假设（没有标准配置）</li>
+<li>简单、带有主见的执行模型</li>
+<li>安全的最小类型 FFI</li>
+<li>体积小到能用“如果这样那个”的脚本&#x2F;插件，也能支持更多</li>
+<li>安全优先于速度，虚拟机中运行的糟糕代码绝不应该导致主机崩溃</li>
+</ul>
+<blockquote>
+<p><a href="https://github.com/TutuBinary/uvm32">https://github.com/TutuBinary/uvm32</a></p>
+</blockquote>
+<h3 id="C4：4个函数实现的C语言编译器-C语言脚本解释器"><a href="#C4：4个函数实现的C语言编译器-C语言脚本解释器" class="headerlink" title="C4：4个函数实现的C语言编译器 (C语言脚本解释器)"></a>C4：4个函数实现的C语言编译器 (C语言脚本解释器)</h3><p>它是一个C语言编译器项目，整个实现只有：</p>
 <ul>
 <li><p>一个C语言源码文件</p>
 </li>
