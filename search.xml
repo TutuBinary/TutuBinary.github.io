@@ -3647,4 +3647,41 @@
         <tag>SWD</tag>
       </tags>
   </entry>
+  <entry>
+    <title>AI skills 收集</title>
+    <url>/2026/04/03/7.AI/1.skill/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>收集好用的skill</p>
+<blockquote>
+<p>Superpowers </p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/obra/superpowers">https://github.com/obra/superpowers</a></li>
+</ul>
+<p>Superpowers 像请了个全能的 “首席架构师+项目经理”。 它不是单一的技能，而是一套由20+个可组合Skills构成的系统化工作流，涵盖从需求梳理、架构设计、测试驱动开发、代码审查到分支管理的全流程。</p>
+<p>当你启动编码代理时，它不会直接开始写代码，而是：</p>
+<ul>
+<li>先退一步，询问你真正想要实现什么</li>
+<li>提炼需求后，将设计方案分成易于阅读和理解的小块展示给你</li>
+<li>获得你的确认后，制定详细的实施计划（清晰到连”缺乏品味、没有判断力、缺少项目上下文且讨厌测试的初级工程师”都能遵循）</li>
+<li>强调真正的红-绿测试驱动开发（TDD）、YAGNI（你不会需要它）和DRY（不要重复自己）原则</li>
+<li>启动子代理驱动开发流程，让多个代理分工完成各项工程任务，相互检查和审查</li>
+<li>Claude能自主工作长达数小时而不偏离你制定的计划</li>
+<li>因为这些技能会自动触发，你无需做任何特殊操作。你的编码代理就这样拥有了”超能力”。</li>
+</ul>
+<blockquote>
+<p>baoyu-skills</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/JimLiu/baoyu-skills">https://github.com/JimLiu/baoyu-skills</a></li>
+</ul>
+<p>baoyu-skills工具集： 写大纲、填肉、找配图、做封面、抠图、调色、排版、</p>
+]]></content>
+      <categories>
+        <category>AI</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>skills</tag>
+      </tags>
+  </entry>
 </search>
