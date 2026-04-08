@@ -3675,6 +3675,25 @@
 <li><a href="https://github.com/JimLiu/baoyu-skills">https://github.com/JimLiu/baoyu-skills</a></li>
 </ul>
 <p>baoyu-skills工具集： 写大纲、填肉、找配图、做封面、抠图、调色、排版、</p>
+<blockquote>
+<p>planning-with-files</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/OthmanAdi/planning-with-files">https://github.com/OthmanAdi/planning-with-files</a></li>
+</ul>
+<p>随着 Claude Code、Cursor 等 AI 编程工具逐渐进入日常工作流，越来越多的人开始意识到：真正限制 AI 生产力的，往往不是模型能力本身，而是上下文管理能力。任务一旦变长、轮次一旦增多，AI 就容易遗忘约束、重复试错，甚至偏离最初目标。</p>
+<p><code>planning-with-files</code> 提供了一个非常有代表性的解决思路：不再把关键信息完全寄托在对话上下文里，而是通过 <code>task_plan.md</code>、<code>findings.md</code>、<code>progress.md</code> 三个文件，把目标、发现与进度沉淀到项目本地。这种方式本质上是在为 AI 建立可持续的“外部记忆系统”。</p>
+<p>planning-with-files是Claude Code的一个插件，复刻了Manus的”Context Engineering”（上下文工程）模式。<br>老金我用最简单的比喻给你讲清楚。</p>
+<p>传统AI助手就像一个失忆的实习生。<br>你说一句他干一件事，干完就忘。<br>下次遇到同样的问题，他还得重新查文档、重新踩坑。<br>效率低，而且你得一直盯着。</p>
+<p>planning-with-files就像给这个实习生配了个笔记本。<br>你让他把所有发现、所有错误、所有进度都记在本子上。<br>下次遇到同样问题，他翻开本子一看：”哦，这个问题之前遇到过，这样解决就行。”<br>关键是不用你一直盯着，他自己会记录、自己会查阅、自己会复盘。</p>
+<p>之前老金我写过各种记忆系统，本质上都是解决这个问题。<br>但planning-with-files的实现最简单，三个Markdown文件就搞定。</p>
+<blockquote>
+<p>self-improving-agent</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/peterskoett/self-improving-agent">https://github.com/peterskoett/self-improving-agent</a></li>
+</ul>
+<p>一个让AI Agent 自动学习，自动记忆、自动进步的系统设计，不靠人工调教，靠自身的运行机制持续进化</p>
 ]]></content>
       <categories>
         <category>AI</category>
